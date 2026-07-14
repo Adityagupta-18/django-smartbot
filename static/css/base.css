@@ -39,3 +39,23 @@ button:focus-visible, [tabindex]:focus-visible, input:focus-visible, textarea:fo
 .skel{ background:linear-gradient(90deg, var(--bg-surf2) 25%, var(--bg-surf3) 37%, var(--bg-surf2) 63%); background-size:400% 100%; animation: shimmer 1.6s ease infinite; border-radius:8px; }
 .spinner{ width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; animation:spin .7s linear infinite; }
 .spinner-dark{ border:2px solid var(--hairline-strong); border-top-color:var(--accent); }
+
+.app-shell{
+  min-height: 100vh;
+  display: flex;
+}
+
+.main-wrapper{
+  display: flex;
+  flex: 1;
+}
+
+.main-wrapper main{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.page-content{
+  flex: 1;
+}

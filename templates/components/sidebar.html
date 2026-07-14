@@ -1,0 +1,67 @@
+    <aside id="sidebar" class="sidebar-desktop flex-col w-[272px] shrink-0 border-r px-3 py-4" style="border-color:var(--hairline); background:var(--bg-surf); position:relative; z-index:45;">
+      <div class="flex items-center justify-between px-1.5 mb-5">
+        <div class="flex items-center gap-2">
+          <svg class="w-7 h-7"><use href="#i-logo"/></svg>
+          <span class="font-tight font-extrabold text-[15.5px] tracking-tight">SmartBot</span>
+        </div>
+        <svg class="icon cursor-pointer hide-mobile" style="color:var(--txt3)" onclick="closeDrawer()"><use href="#i-x"/></svg>
+      </div>
+
+      <button class="btn btn-secondary w-full flex items-center justify-center gap-2 py-2.5 mb-4" onclick="newChat()">
+        <svg class="icon" style="width:16px;height:16px"><use href="#i-plus"/></svg> New chat
+      </button>
+
+      <div class="input-icon-wrap mb-5">
+        <svg class="icon ico-left" style="width:16px;height:16px"><use href="#i-search"/></svg>
+        <input id="convSearch" class="input" autocomplete="off" style="padding-top:8px; padding-bottom:8px; font-size:13.5px;" placeholder="Search chats" oninput="filterConvos(this.value)" />
+      </div>
+
+      <div class="flex-1 overflow-y-auto scroll-thin -mx-1 px-1" id="convList">
+        <p class="text-[11px] font-semibold uppercase tracking-wider px-2 mb-1.5" style="color:var(--txt3)">Today</p>
+        <div class="sb-item active convo-item" data-title="Landing page copywriting ideas" onclick="loadConvo(this,'landing')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">Landing page copywriting ideas</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <div class="sb-item convo-item" data-title="Explaining useEffect cleanup" onclick="loadConvo(this,'useeffect')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">Explaining useEffect cleanup</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <p class="text-[11px] font-semibold uppercase tracking-wider px-2 mb-1.5 mt-4" style="color:var(--txt3)">Yesterday</p>
+        <div class="sb-item convo-item" data-title="Weekend trip itinerary — Manali" onclick="loadConvo(this,'empty')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">Weekend trip itinerary — Manali</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <div class="sb-item convo-item" data-title="SQL indexing strategies" onclick="loadConvo(this,'empty')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">SQL indexing strategies</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <p class="text-[11px] font-semibold uppercase tracking-wider px-2 mb-1.5 mt-4" style="color:var(--txt3)">Previous 7 days</p>
+        <div class="sb-item convo-item" data-title="Portfolio site content review" onclick="loadConvo(this,'empty')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">Portfolio site content review</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <div class="sb-item convo-item" data-title="Interview prep — system design" onclick="loadConvo(this,'empty')">
+          <svg class="icon" style="width:16px;height:16px"><use href="#i-chat"/></svg>
+          <span class="truncate">Interview prep — system design</span>
+          <svg class="icon more" style="width:15px;height:15px"><use href="#i-dots"/></svg>
+        </div>
+        <p class="text-[13px] text-center py-6 hidden" id="noConvoResults" style="color:var(--txt3)">No conversations found</p>
+      </div>
+
+      <div class="pt-3 mt-2 border-t" style="border-color:var(--hairline)">
+        <div class="flex items-center gap-2.5 px-1.5 py-2 rounded-xl cursor-pointer hover:bg-[color:var(--bg-surf2)]" onclick="switchView('profile')">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white shrink-0" style="background:linear-gradient(135deg,var(--accent),var(--accent-deep))">AS</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-[13px] font-semibold truncate">Aditya Gupta</p>
+            <p class="text-[11.5px] truncate" style="color:var(--txt3)">Pro plan</p>
+          </div>
+          <svg class="icon cursor-pointer" style="width:16px;height:16px;color:var(--txt3)" onclick="event.stopPropagation();switchView('settings')"><use href="#i-gear"/></svg>
+          <svg class="icon cursor-pointer" style="width:16px;height:16px;color:var(--txt3)" onclick="event.stopPropagation();openModal('logoutModal')"><use href="#i-logout"/></svg>
+        </div>
+      </div>
+    </aside>

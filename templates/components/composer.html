@@ -1,1 +1,28 @@
-Composer
+<div class="app-composer">
+  <form class="composer-inner mx-auto" method="post" action="{{ send_url }}">
+ 
+    <div class="composer-bar d-flex align-items-end gap-2">
+ 
+      <button type="button" class="composer-attach-btn flex-shrink-0" aria-label="Attach a file">
+        <svg class="icon" aria-hidden="true"><use href="#i-clip"></use></svg>
+      </button>
+ 
+      <label for="msgInput" class="visually-hidden">Message SmartBot</label>
+      <textarea
+        id="msgInput"
+        name="message"
+        class="composer-textarea flex-grow-1"
+        rows="1"
+        placeholder="Message SmartBot..."
+      ></textarea>
+ 
+      <button type="submit" class="composer-send-btn flex-shrink-0" aria-label="Send message">
+        <svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg>
+      </button>
+ 
+    </div>
+ 
+    <p class="composer-disclaimer text-center">SmartBot can make mistakes. Verify important information.</p>
+ 
+  </form>
+</div>

@@ -2,5 +2,48 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-Home page
+<section class="home-welcome mx-auto text-center">
+ 
+  <div class="home-visual" aria-hidden="true"></div>
+ 
+  <h1 class="home-title">What can I help you build today?</h1>
+  <p class="home-subtitle">Ask a question, paste some code, or pick a starting point below.</p>
+ 
+  <div class="home-suggestions row g-3 text-start">
+ 
+    <div class="col-12 col-md-6">
+      <button type="button" class="suggestion-card w-100 text-start">
+        <svg class="icon suggestion-icon" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+        <p class="suggestion-title">Explain a concept</p>
+        <p class="suggestion-description">SQL join types with examples</p>
+      </button>
+    </div>
+ 
+    <div class="col-12 col-md-6">
+      <button type="button" class="suggestion-card w-100 text-start">
+        <svg class="icon suggestion-icon" aria-hidden="true"><use href="#i-clip"></use></svg>
+        <p class="suggestion-title">Write some code</p>
+        <p class="suggestion-description">Debounce function in JavaScript</p>
+      </button>
+    </div>
+ 
+    <div class="col-12 col-md-6">
+      <button type="button" class="suggestion-card w-100 text-start">
+        <svg class="icon suggestion-icon" aria-hidden="true"><use href="#i-mail"></use></svg>
+        <p class="suggestion-title">Draft a message</p>
+        <p class="suggestion-description">Follow-up email after interview</p>
+      </button>
+    </div>
+ 
+    <div class="col-12 col-md-6">
+      <button type="button" class="suggestion-card w-100 text-start">
+        <svg class="icon suggestion-icon" aria-hidden="true"><use href="#i-globe"></use></svg>
+        <p class="suggestion-title">Plan something</p>
+        <p class="suggestion-description">3-day weekend trip itinerary</p>
+      </button>
+    </div>
+ 
+  </div>
+</section>
+ 
 {% endblock content %}

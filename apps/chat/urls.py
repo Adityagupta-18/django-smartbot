@@ -19,5 +19,6 @@ from django.urls import path
 from apps.chat.views import *
 
 urlpatterns = [
-    path('new/', new_chat, name='new_chat')
+    path('new/', new_chat, name='new_chat'),
+    path("<int:conversation_id>/", conversation_detail, name="conversation_detail")
 ]

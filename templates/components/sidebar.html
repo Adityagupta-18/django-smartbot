@@ -38,11 +38,13 @@
       <div class="sidebar-group" id="today-group">
         <p class="sidebar-group-label">Today</p>
 
-        <a href="#" class="sidebar-conversation" data-title="Landing page copywriting ideas">
+        {% for conv in all_conversations %}
+        <a href="{% url "conversation_detail" conversation_id=conv.id %}" class="sidebar-conversation {% if conversation.id == conv.id %}active{% endif %}" data-title="{{conv.title}}">
           <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>
-          <span class="sidebar-conversation-title">Landing page copywriting ideas</span>
+          <span class="sidebar-conversation-title">{{ conv.title }}</span>
           <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>
         </a>
+        {% endfor %}
 
         <a href="#" class="sidebar-conversation" data-title="Explaining useEffect cleanup">
           <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>

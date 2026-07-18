@@ -23,7 +23,8 @@ const mesginput=document.getElementById('msgInput')
 const composer_csrf = document.querySelector('#chat-container [name=csrfmiddlewaretoken]').value;
 const chatContainer = document.getElementById("chat-container");
 const conversationId = chatContainer.dataset.conversationId;
-
+const messagesContainer = document.getElementById("messages-container");
+const chatbody = document.querySelector(".chat-body");
 Sendbtn.addEventListener('click',()=>{
     const mesgcontent=mesginput.value
     if (mesgcontent===''){return}
@@ -38,6 +39,15 @@ fetch('/chat/send-message/', {
     content: mesgcontent})
 }).then(response=>response.json()).then(data=>{
     if (data.success) {
+        const messageHTML = `
+            <div class="d-flex justify-content-end mb-3">
+                <div class="msg-user message-bubble">
+                    ${mesgcontent}
+                </div>
+            </div>`;
+
+        messagesContainer.insertAdjacentElement("beforeend",messageHTML)
+        chatbody.scrollTop = chatbody.scrollHeight;
         console.log("Message saved successfully");
         mesginput.value = '';}
     else {console.log("Something went wrong");}
@@ -51,3 +61,10 @@ document.addEventListener('keydown',(event)=>{
         Sendbtn.click()
     }
 })
+
+
+
+// mesg is not saving in db
+// mesg is not showingf on the screen 
+// on creating new chat its showing errir message 
+// extra padding without anything there are bubble

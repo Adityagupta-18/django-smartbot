@@ -1,4 +1,4 @@
-<div id="chat-container" data-conversation-id="{{ conversation.id }}" class="app-composer">
+<div id="chat-container" class="app-composer" data-conversation-id="{{ conversation.id }}">
   <form class="composer-inner mx-auto" method="post" action="{{ send_url }}">
     {% csrf_token %}
  

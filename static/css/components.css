@@ -346,6 +346,7 @@
 .topbar-icon-btn:hover{ color:var(--txt); }
 
 
+
 /* ********** COMPOSER ********** */
 
 :root[data-theme="dark"]{
@@ -366,10 +367,12 @@
 
 .app-composer{
   padding:8px 16px 20px;
+  flex-shrink:0;
 }
  
 .composer-inner{
   max-width:768px;
+  flex-shrink:0;
 }
  
    /* Input bar */
@@ -450,10 +453,6 @@
 /* *********  Home ********** */
 
 /* Section shell */
-.home-welcome{
-  max-width:672px;
-  padding:40px 16px 24px;
-}
 
 /* Decorative visual (static fallback for the prototype's animated network canvas) */
 .home-visual{

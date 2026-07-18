@@ -1,5 +1,6 @@
-<div class="app-composer">
+<div id="chat-container" data-conversation-id="{{ conversation.id }}" class="app-composer">
   <form class="composer-inner mx-auto" method="post" action="{{ send_url }}">
+    {% csrf_token %}
  
     <div class="composer-bar d-flex align-items-end gap-2">
  
@@ -16,7 +17,7 @@
         placeholder="Message SmartBot..."
       ></textarea>
  
-      <button type="submit" class="composer-send-btn flex-shrink-0" aria-label="Send message">
+      <button type="button" id='send-btn' class="composer-send-btn flex-shrink-0" aria-label="Send message">
         <svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg>
       </button>
  

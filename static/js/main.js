@@ -3,25 +3,6 @@ const csrfToken = document.querySelector(
     "[name=csrfmiddlewaretoken]"
 ).value;
 
-// function addConversationToSidebar(data){
-//     const todaygroup=document.getElementById("today-group");
-//     const newConversation = document.createElement("a");
-//     const activeConversations = document.querySelectorAll(".sidebar-conversation.active");
-//     activeConversations.forEach(conversation => {
-//         conversation.classList.remove("active")});
-//     newConversation.innerHTML=`<svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>
-//                                 <span class="sidebar-conversation-title">${data.title}</span>
-//                                 <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>`;
-//                                 newConversation.classList.add('sidebar-conversation')
-//                                 newConversation.classList.add('active')
-//                                 newConversation.href='#'
-//                                 newConversation.dataset.conversationId = data.id;
-
-//     const label = document.querySelector(".sidebar-group-label");
-//     label.insertAdjacentElement("afterend", newConversation);
-
-// }
-
 const Newchatbutton=document.getElementById("new-chat-btn")
 Newchatbutton.addEventListener('click',()=>{
     fetch("/chat/new/", {
@@ -32,4 +13,41 @@ Newchatbutton.addEventListener('click',()=>{
     .then(data=>{
         window.location.href=`/chat/${data.id}/`
     })
+})
+
+
+// send button AJAX
+
+const Sendbtn=document.getElementById('send-btn')
+const mesginput=document.getElementById('msgInput')
+const composer_csrf = document.querySelector('#chat-container [name=csrfmiddlewaretoken]').value;
+const chatContainer = document.getElementById("chat-container");
+const conversationId = chatContainer.dataset.conversationId;
+
+Sendbtn.addEventListener('click',()=>{
+    const mesgcontent=mesginput.value
+    if (mesgcontent===''){return}
+
+fetch('/chat/send-message/', {
+    method:"POST",
+    headers: {
+    "Content-Type": "application/json",
+    "X-CSRFToken": csrfToken},
+    body: JSON.stringify({
+    conversation_id: conversationId,
+    content: mesgcontent})
+}).then(response=>response.json()).then(data=>{
+    if (data.success) {
+        console.log("Message saved successfully");
+        mesginput.value = '';}
+    else {console.log("Something went wrong");}
+    })
+})
+
+// Enter button 
+document.addEventListener('keydown',(event)=>{
+    if (event.key==='Enter'){
+        event.preventDefault()
+        Sendbtn.click()
+    }
 })

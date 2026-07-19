@@ -12,10 +12,7 @@ Newchatbutton.addEventListener('click',()=>{
     }}).then(response=>response.json())
     .then(data=>{
         if(data.success){
-            console.log(data);
-            console.log(data.conversation_id);
         window.location.href=`/chat/${data.conversation_id}/`}
-
     })
 })
 
@@ -26,14 +23,30 @@ const Sendbtn=document.getElementById('send-btn')
 const mesginput=document.getElementById('msgInput')
 const composer_csrf = document.querySelector('#chat-container [name=csrfmiddlewaretoken]').value;
 const chatContainer = document.getElementById("chat-container");
-const conversationId = chatContainer.dataset.conversationId;
+let conversationId = chatContainer.dataset.conversationId;
 const messagesContainer = document.getElementById("messages-container");
 const chatbody = document.querySelector(".chat-body");
 Sendbtn.addEventListener('click',()=>{
     const mesgcontent=mesginput.value
     if (mesgcontent===''){return}
+    if (conversationId ){
+        sendmessage(conversationId,mesgcontent,false)}
+    else{
+    fetch("/chat/new/", {
+    method: "POST",
+     headers: {
+        "X-CSRFToken": csrfToken
+    }}).then(response=>response.json())
+    .then(data=>{
+        if(data.success){
+        conversationId = data.conversation_id;
+        sendmessage(conversationId,mesgcontent,true)
+        if (isNewChat) {
+            window.location.href = `/chat/${conversationId}/`;}}
+})
 
-fetch('/chat/send-message/', {
+function sendmessage(conversationId,messagecontent,isNewChat){
+    fetch('/chat/send-message/', {
     method:"POST",
     headers: {
     "Content-Type": "application/json",
@@ -43,10 +56,13 @@ fetch('/chat/send-message/', {
     content: mesgcontent})
 }).then(response=>response.json()).then(data=>{
     if (data.success) {
+        const welcomeScreen = document.getElementById("welcome-screen");
+        if (welcomeScreen){
+            welcomeScreen.style.display="none";}
         const messageHTML = `
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-end message-row">
                 <div class="msg-user message-bubble">
-                    ${mesgcontent}
+                    ${messagecontent}
                 </div>
             </div>`;
 
@@ -55,7 +71,8 @@ fetch('/chat/send-message/', {
         mesginput.value = '';}
     else {console.log("Something went wrong");}
     })
-})
+}
+
 
 // Enter button 
 document.addEventListener('keydown',(event)=>{
@@ -64,10 +81,3 @@ document.addEventListener('keydown',(event)=>{
         Sendbtn.click()
     }
 })
-
-
-
-// mesg is not saving in db
-// mesg is not showingf on the screen 
-// on creating new chat its showing errir message 
-// extra padding without anything there are bubble

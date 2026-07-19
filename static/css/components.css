@@ -525,7 +525,7 @@
  
 /* Shared bubble sizing */
 .message-bubble{
-  max-width:75%;
+  max-width:60%;
   padding:12px 16px;
   font-size:14.5px;
   line-height:1.6;
@@ -546,3 +546,16 @@
   color:var(--txt);
   border-radius:18px 18px 18px 4px;
 }
+
+/* SCROLLBAR */
+.chat-body{
+  scrollbar-width:thin;
+  scrollbar-color: var(--hairline-strong) transparent;
+}
+.chat-body::-webkit-scrollbar{ width:8px; }
+.chat-body::-webkit-scrollbar-track{ background:transparent; }
+.chat-body::-webkit-scrollbar-thumb{
+  background:var(--hairline-strong);
+  border-radius:99px;
+}
+.chat-body::-webkit-scrollbar-thumb:hover{ background:var(--accent); }

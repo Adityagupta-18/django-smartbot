@@ -2,16 +2,15 @@
 {% block content %}
 
 <div class="chat-body">
-  {% if messages %}
 
-  <div class="messages-container">
-    
-        {% include "components/message.html" %}
-
+  <div id="messages-container">
+        {% for message in messages %}
+            {% include "components/message.html" %}
+        {% endfor %}
   </div>
 
-  {% else %}
-  <section class="home-welcome mx-auto text-center">
+  {% if not messages %}
+  <section id="welcome-screen" class="home-welcome mx-auto text-center">
     <div class="home-visual" aria-hidden="true"></div>
     <h1 class="home-title">What can I help you build today?</h1>
     <p class="home-subtitle">

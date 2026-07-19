@@ -43,6 +43,7 @@ Sendbtn.addEventListener('click',()=>{
         sendmessage(conversationId,mesgcontent,true)
         if (isNewChat) {
             window.location.href = `/chat/${conversationId}/`;}}
+        })}
 })
 
 function sendmessage(conversationId,messagecontent,isNewChat){
@@ -53,7 +54,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
     "X-CSRFToken": csrfToken},
     body: JSON.stringify({
     conversation_id: conversationId,
-    content: mesgcontent})
+    content: messagecontent})
 }).then(response=>response.json()).then(data=>{
     if (data.success) {
         const welcomeScreen = document.getElementById("welcome-screen");

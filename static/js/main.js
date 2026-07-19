@@ -11,7 +11,11 @@ Newchatbutton.addEventListener('click',()=>{
         "X-CSRFToken": csrfToken
     }}).then(response=>response.json())
     .then(data=>{
-        window.location.href=`/chat/${data.id}/`
+        if(data.success){
+            console.log(data);
+            console.log(data.conversation_id);
+        window.location.href=`/chat/${data.conversation_id}/`}
+
     })
 })
 
@@ -46,9 +50,8 @@ fetch('/chat/send-message/', {
                 </div>
             </div>`;
 
-        messagesContainer.insertAdjacentElement("beforeend",messageHTML)
+        messagesContainer.insertAdjacentHTML("beforeend",messageHTML)
         chatbody.scrollTop = chatbody.scrollHeight;
-        console.log("Message saved successfully");
         mesginput.value = '';}
     else {console.log("Something went wrong");}
     })

@@ -12,7 +12,7 @@ def new_chat(request):
             if not conversation.messages.exists():
                 return JsonResponse({
                 "success": True,
-                "id": conversation.id,
+                "conversation_id": conversation.id,
                 "title": conversation.title})
         
         conversation = Conversation.objects.create(
@@ -43,24 +43,25 @@ def conversation_detail(request,conversation_id):
 
 def send_message(request):
     if request.method=='POST':
-
         data = json.loads(request.body)
-        conversation_id=data.get('conversation_id')
-        content=data.get('content',"").strip()
 
-        if not conversation_id or not content:
-            return JsonResponse(
-                {"success": False,
-                    "message": "Conversation ID and content are required."
-                },status=400)
+        conversation_id = data.get("conversation_id")
+        content = data.get("content", "").strip()
 
-        conversation = get_object_or_404(Conversation,id=conversation_id,user=request.user)
-        Message.objects.create(conversation=conversation,sender="user",content=content)
+        conversation = get_object_or_404(
+            Conversation,
+            id=conversation_id,
+            user=request.user)
+
+        Message.objects.create(
+            conversation=conversation,
+            sender="USER",
+            content=content
+        )
         return JsonResponse({
             'success':True,
             "message": "Message saved successfully"
         })
-    
     return JsonResponse(
             {"success": False,
             "message": "Invalid request method."

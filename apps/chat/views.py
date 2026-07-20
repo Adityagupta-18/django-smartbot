@@ -3,8 +3,10 @@ from .models import *
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
+from apps.chat.ai import *
 
 # Create your views here.
+
 def new_chat(request):
     if request.method=='POST':
         new_chats = Conversation.objects.filter(user=request.user,title="New Chat")
@@ -58,7 +60,11 @@ def send_message(request):
                 history_dict.append({"role":"user","content":mesgcont.content})
             else:
                 history_dict.append({"role":"assistant","content":mesgcont.content})
-        print(history_dict)
+
+        ai_response=generate_ai_response(history_dict)
+        print(ai_response)
+        Message.objects.create(conversation=conversation,sender="AI",content=ai_response)
+
         return JsonResponse({
             'success':True,
             "message": "Message saved successfully"

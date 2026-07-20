@@ -62,13 +62,13 @@ def send_message(request):
                 history_dict.append({"role":"assistant","content":mesgcont.content})
 
         ai_response=generate_ai_response(history_dict)
-        print(ai_response)
         Message.objects.create(conversation=conversation,sender="AI",content=ai_response)
 
         return JsonResponse({
             'success':True,
-            "message": "Message saved successfully"
+            "ai_response": ai_response,
         })
+    
     return JsonResponse(
             {"success": False,
             "message": "Invalid request method."

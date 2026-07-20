@@ -39,7 +39,6 @@ Sendbtn.addEventListener('click',()=>{
 
     isSending = true;
     Sendbtn.disabled = true;
-
     if (conversationId ){
         sendmessage(conversationId,mesgcontent,false)
     }
@@ -83,7 +82,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
 
     messagesContainer.insertAdjacentHTML("beforeend",messageHTML)
     chatbody.scrollTop = chatbody.scrollHeight;
-
+    showTypingIndicator()
     const welcomeScreen = document.getElementById("welcome-screen");
     if (welcomeScreen){
         welcomeScreen.style.display="none";}
@@ -100,6 +99,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
         })
         .then(response=>response.json())
         .then(data=>{
+            removeTypingIndicator()
                 if (data.success) {
                     const aiMessageHTML =`<div class="d-flex message-row">
                     <div class="msg-ai message-bubble">
@@ -131,4 +131,26 @@ mesginput.addEventListener("keydown", (event) => {
         event.preventDefault();
         Sendbtn.click();
     }
-}); 
+});
+
+
+function showTypingIndicator(){
+    if (document.getElementById("typing-indicator")) {return;}
+    const typingindicator=document.createElement("div");
+    typingindicator.id="typing-indicator"
+    typingindicator.classList.add("d-flex","message-row")
+    typingindicator.innerHTML=`
+                        <div class="msg-ai message-bubble">
+                            <span>●</span><span>●</span><span>●</span>
+                    </div>`                  
+    messagesContainer.appendChild(typingindicator)
+    chatbody.scrollTop = chatbody.scrollHeight;
+}
+
+
+function removeTypingIndicator(){
+    const typingIndicator=document.getElementById('typing-indicator')
+    if (typingIndicator){
+        typingIndicator.remove()
+    }
+}

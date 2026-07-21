@@ -79,7 +79,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
         </div>`;
 
     messagesContainer.insertAdjacentHTML("beforeend",messageHTML)
-    scrollToBottom()
+    scrollToBottom("smooth")
     showTypingIndicator()
     const welcomeScreen = document.getElementById("welcome-screen");
     if (welcomeScreen){
@@ -108,6 +108,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
                     </div>`                    
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
                     highlightCodeBlocks()
+                    scrollToBottom("partial")
             }
             else {console.log("Something went wrong");
             }
@@ -142,7 +143,7 @@ function showTypingIndicator(){
     <span>●</span><span>●</span><span>●</span>
     </div>`                  
     messagesContainer.appendChild(typingindicator)
-    scrollToBottom()
+    scrollToBottom("smooth")
 }
 
 
@@ -173,13 +174,18 @@ function highlightCodeBlocks(){
 highlightCodeBlocks()
 
 
-function scrollToBottom(flow="smooth"){
-    if (flow==='instant'){
+function scrollToBottom(mode){
+    if (mode==='instant'){
     chatbody.scrollTop = chatbody.scrollHeight;}
-    else{
+    else if(mode==="smooth"){
     chatbody.scrollTo({
     top: chatbody.scrollHeight,
-    behavior: "smooth"
+    behavior: "smooth"});
+}
+else if(mode==="partial"){
+    window.scrollBy({
+  top: 500,
+  behavior: "smooth"
 });
 }
 }

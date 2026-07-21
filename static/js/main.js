@@ -109,8 +109,48 @@ function sendmessage(conversationId,messagecontent,isNewChat){
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
                     highlightCodeBlocks()
                     scrollToBottom("partial")
-            }
-            else {console.log("Something went wrong");
+                }
+                else if (data.error_type === "rate_limit"){
+                    console.log("AI usage limit reached.Try again later !");
+
+                    const errorBubble = document.createElement("div");
+                    errorBubble.className = "d-flex message-row";
+                    errorBubble.innerHTML = `
+                        <div class="msg-ai message-bubble" style="width:100%;">
+                           SmartBot <br>
+                           <hr>
+                            ${data.message}
+                              <br>
+                          Come back in: <span class="timer"></span>
+                            </div>`;                   
+                    messagesContainer.appendChild(errorBubble);
+                    Sendbtn.disabled = true;
+                    mesginput.disabled = true;
+
+                    let remainingTime = data.retry_after;
+                    const timerElement = errorBubble.querySelector(".timer");
+                    const countdown = setInterval(() => {
+                        remainingTime--;
+                        let hours = Math.floor(remainingTime / 3600);
+                        let minutes = Math.floor((remainingTime % 3600) / 60);
+                        let seconds = remainingTime % 60;
+
+                        timerElement.innerText =
+                            `${hours}h ${minutes}m ${seconds.toString().padStart(2, "0")}s`;
+
+                        if(remainingTime <= 0){
+                            clearInterval(countdown);
+                            errorBubble.remove();
+                            Sendbtn.disabled = false;
+                            mesginput.disabled = false;
+                        }
+
+                    },1000);
+
+                    scrollToBottom("partial")
+                    const timeout=setInterval(() => {
+                        
+                    }, 1000);
             }
         }) 
     .catch(err => {
@@ -182,11 +222,11 @@ function scrollToBottom(mode){
     top: chatbody.scrollHeight,
     behavior: "smooth"});
 }
-else if(mode==="partial"){
-    window.scrollBy({
-  top: 500,
-  behavior: "smooth"
-});
+else if (mode === "partial") {
+    chatbody.scrollBy({
+    top: 200,
+    behavior: "smooth"
+  });
 }
 }
 scrollToBottom("instant")

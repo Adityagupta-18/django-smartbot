@@ -60,16 +60,25 @@ def send_message(request):
                 history_dict.append({"role":"user","content":mesgcont.content})
             else:
                 history_dict.append({"role":"assistant","content":mesgcont.content})
+        
+        try:
+            ai_response=generate_ai_response(history_dict)
+            Message.objects.create(conversation=conversation,sender="AI",content=ai_response)
 
-        ai_response=generate_ai_response(history_dict)
-        Message.objects.create(conversation=conversation,sender="AI",content=ai_response)
+            return JsonResponse({
+                'success':True,
+                "ai_response": ai_response,
+            })
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "error_type": "rate_limit",
+                "message": "Daily AI usage limit has been reached. Please try again after the limit resets.",
+                "retry_after": 7200
+            })
 
-        return JsonResponse({
-            'success':True,
-            "ai_response": ai_response,
-        })
-    
     return JsonResponse(
-            {"success": False,
-            "message": "Invalid request method."
-            },status=405)
+            {
+    "success":False,
+    "message": "Daily AI usage limit has been reached. Please try again after the limit resets."
+        })

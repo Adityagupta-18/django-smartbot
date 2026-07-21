@@ -69,8 +69,6 @@ Sendbtn.addEventListener('click',()=>{
 
 
 
-
-
 function sendmessage(conversationId,messagecontent,isNewChat){
 
     const messageHTML = `
@@ -101,9 +99,12 @@ function sendmessage(conversationId,messagecontent,isNewChat){
         .then(data=>{
             removeTypingIndicator()
                 if (data.success) {
+                    const markdowncontent=data.ai_response
+                    console.log(data.ai_response)
+                    const markedownHtml=marked.parse(markdowncontent)
                     const aiMessageHTML =`<div class="d-flex message-row">
                     <div class="msg-ai message-bubble">
-                    ${data.ai_response}
+                    ${markedownHtml}
                     </div>
                     </div>`                    
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
@@ -124,7 +125,6 @@ function sendmessage(conversationId,messagecontent,isNewChat){
 }
 
 
-
 // Enter button 
 mesginput.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -140,9 +140,9 @@ function showTypingIndicator(){
     typingindicator.id="typing-indicator"
     typingindicator.classList.add("d-flex","message-row")
     typingindicator.innerHTML=`
-                        <div class="msg-ai message-bubble">
-                            <span>●</span><span>●</span><span>●</span>
-                    </div>`                  
+    <div class="msg-ai message-bubble">
+    <span>●</span><span>●</span><span>●</span>
+    </div>`                  
     messagesContainer.appendChild(typingindicator)
     chatbody.scrollTop = chatbody.scrollHeight;
 }
@@ -154,3 +154,13 @@ function removeTypingIndicator(){
         typingIndicator.remove()
     }
 }
+
+function renderAllMarkdown(){
+    const allmesg=document.querySelectorAll('.msg-ai')
+    for(const mesg of allmesg){
+        const mesgcontent=mesg.textContent
+        const markdownText=marked.parse(mesgcontent)
+        mesg.innerHTML=markdownText
+    }
+}
+renderAllMarkdown();

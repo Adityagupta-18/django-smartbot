@@ -1,16 +1,17 @@
+
 <!-- User message (right aligned) -->
  {% if message.sender == "USER" %}
 <div class="d-flex justify-content-end message-row">
   <div class="msg-user message-bubble">
-    {{ message.content }}
+    {{message.content}}
   </div>
 </div>
 
  {% else %}
+
+
 <!-- Assistant message (left aligned) -->
 <div class="d-flex message-row">
-  <div class="msg-ai message-bubble">
-    {{ message.content }}
-  </div>
+  <div class="msg-ai message-bubble">{{message.content|safe}}</div>
 </div>
 {% endif %}

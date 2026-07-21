@@ -157,6 +157,7 @@
   display:flex;
   align-items:center;
   gap:10px;
+  margin-bottom: 3px;
   padding:9px 11px;
   border-radius:11px;
   color:var(--txt2);

@@ -4,7 +4,7 @@ body{
   margin:0; background:var(--bg-base); color:var(--txt); font-family:'Inter',system-ui,sans-serif;
   -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
-::selection{ background:var(--accent); color:#fff; }
+::selection{     background: #C4B5FD; color: #0B0B12; }
 .font-tight{ font-family:'Inter Tight','Inter',sans-serif; }
 textarea{ font-family:'Inter',sans-serif; }
 

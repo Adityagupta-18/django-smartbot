@@ -100,7 +100,6 @@ function sendmessage(conversationId,messagecontent,isNewChat){
             removeTypingIndicator()
                 if (data.success) {
                     const markdowncontent=data.ai_response
-                    console.log(data.ai_response)
                     const markedownHtml=marked.parse(markdowncontent)
                     const aiMessageHTML =`<div class="d-flex message-row">
                     <div class="msg-ai message-bubble">
@@ -158,9 +157,23 @@ function removeTypingIndicator(){
 function renderAllMarkdown(){
     const allmesg=document.querySelectorAll('.msg-ai')
     for(const mesg of allmesg){
-        const mesgcontent=mesg.textContent
+        const mesgcontent=mesg.textContent;
         const markdownText=marked.parse(mesgcontent)
         mesg.innerHTML=markdownText
     }
 }
 renderAllMarkdown();
+
+
+function highlightCodeBlocks(){
+    const codeblocks=document.querySelectorAll(".msg-ai pre code")
+    for (const code of codeblocks){
+        hljs.highlightElement(code);
+    }
+}
+highlightCodeBlocks()
+
+
+
+
+//  Respondive and animation 

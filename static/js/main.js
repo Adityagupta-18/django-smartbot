@@ -79,7 +79,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
         </div>`;
 
     messagesContainer.insertAdjacentHTML("beforeend",messageHTML)
-    chatbody.scrollTop = chatbody.scrollHeight;
+    scrollToBottom()
     showTypingIndicator()
     const welcomeScreen = document.getElementById("welcome-screen");
     if (welcomeScreen){
@@ -107,8 +107,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
                     </div>
                     </div>`                    
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
-
-                chatbody.scrollTop = chatbody.scrollHeight;
+                    highlightCodeBlocks()
             }
             else {console.log("Something went wrong");
             }
@@ -143,7 +142,7 @@ function showTypingIndicator(){
     <span>●</span><span>●</span><span>●</span>
     </div>`                  
     messagesContainer.appendChild(typingindicator)
-    chatbody.scrollTop = chatbody.scrollHeight;
+    scrollToBottom()
 }
 
 
@@ -174,6 +173,16 @@ function highlightCodeBlocks(){
 highlightCodeBlocks()
 
 
-
+function scrollToBottom(flow="smooth"){
+    if (flow==='instant'){
+    chatbody.scrollTop = chatbody.scrollHeight;}
+    else{
+    chatbody.scrollTo({
+    top: chatbody.scrollHeight,
+    behavior: "smooth"
+});
+}
+}
+scrollToBottom("instant")
 
 //  Respondive and animation 

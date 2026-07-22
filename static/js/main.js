@@ -99,6 +99,7 @@ function sendmessage(conversationId,messagecontent,isNewChat){
         .then(data=>{
             removeTypingIndicator()
                 if (data.success) {
+                    removeRateLimitBanner();
                     const markdowncontent=data.ai_response
                     const markedownHtml=marked.parse(markdowncontent)
                     const aiMessageHTML =`<div class="d-flex message-row">
@@ -110,52 +111,15 @@ function sendmessage(conversationId,messagecontent,isNewChat){
                     highlightCodeBlocks()
                     scrollToBottom("partial")
                 }
-                else if (data.error_type === "rate_limit"){
-                    console.log("AI usage limit reached.Try again later !");
+                else if (data.error_type === "rate_limit") {
+                     showRateLimitBanner(data.retry_after);
 
-                    const errorBubble = document.createElement("div");
-                    errorBubble.className = "d-flex message-row";
-                    errorBubble.innerHTML = `
-                        <div class="msg-ai message-bubble" style="width:100%;">
-                           SmartBot <br>
-                           <hr>
-                            ${data.message}
-                              <br>
-                          Come back in: <span class="timer"></span>
-                            </div>`;                   
-                    messagesContainer.appendChild(errorBubble);
-                    Sendbtn.disabled = true;
-                    mesginput.disabled = true;
-
-                    let remainingTime = data.retry_after;
-                    const timerElement = errorBubble.querySelector(".timer");
-                    const countdown = setInterval(() => {
-                        remainingTime--;
-                        let hours = Math.floor(remainingTime / 3600);
-                        let minutes = Math.floor((remainingTime % 3600) / 60);
-                        let seconds = remainingTime % 60;
-
-                        timerElement.innerText =
-                            `${hours}h ${minutes}m ${seconds.toString().padStart(2, "0")}s`;
-
-                        if(remainingTime <= 0){
-                            clearInterval(countdown);
-                            errorBubble.remove();
-                            Sendbtn.disabled = false;
-                            mesginput.disabled = false;
-                        }
-
-                    },1000);
-
-                    scrollToBottom("partial")
-                    const timeout=setInterval(() => {
-                        
-                    }, 1000);
-            }
+                } else {
+                    console.log("Something went wrong.");
+                }
         }) 
     .catch(err => {
         console.error("Error:", err);
-        alert("Something went wrong. Please try again.");
     })       
     .finally(() => {
         isSending = false;
@@ -224,11 +188,87 @@ function scrollToBottom(mode){
 }
 else if (mode === "partial") {
     chatbody.scrollBy({
-    top: 200,
+    top: 400,
     behavior: "smooth"
   });
 }
 }
 scrollToBottom("instant")
+
+
+
+function startCountdown(seconds){
+
+    const countdown=document.getElementById("countdown");
+    let remaining=seconds;
+    const timer=setInterval(()=>{
+
+        const hours=Math.floor(remaining/3600);
+        const minutes=Math.floor((remaining%3600)/60);
+        const secs=remaining%60;
+
+        countdown.innerText=
+        `${hours}h ${minutes}m ${secs}s`;
+
+        remaining--;
+        if (remaining < 0) {
+
+            clearInterval(timer);
+
+            const statusContainer = document.getElementById("system-status");
+
+            statusContainer.innerHTML = `
+                <div class="alert alert-info mb-0" role="alert">
+                    SmartBot is checking whether AI access has been restored.
+                    You can try sending a message now.
+                </div>
+            `;
+
+            mesginput.disabled = false;
+            Sendbtn.disabled = false;
+}
+
+    },1000);
+
+}
+
+function showRateLimitBanner(retryAfter) {
+    const statusContainer = document.getElementById("system-status");
+    statusContainer.innerHTML = `
+        <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
+            <div>
+                <strong>SmartBot is temporarily unavailable</strong><br>
+                Daily AI usage limit has been reached.
+            </div>
+            <div id="countdown" class="fw-semibold"></div>
+        </div>
+    `;
+
+    mesginput.disabled = true;
+    Sendbtn.disabled = true;
+    startCountdown(retryAfter);
+}
+
+function removeRateLimitBanner(){
+    const statusContainer = document.getElementById("system-status");
+
+    if(statusContainer){
+        statusContainer.innerHTML = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (!window.AI_AVAILABLE) {
+
+        mesginput.disabled = true;
+        Sendbtn.disabled = true;
+
+        showRateLimitBanner(window.RETRY_AFTER);
+    }
+
+});
+
+
+
 
 //  Respondive and animation 

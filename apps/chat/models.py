@@ -20,3 +20,8 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.sender} - {self.conversation.title}"
+    
+
+class AIStatus(models.Model):
+    is_available = models.BooleanField(default=True)
+    reset_time = models.DateTimeField(null=True, blank=True)

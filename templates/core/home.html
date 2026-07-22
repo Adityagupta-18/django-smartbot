@@ -1,8 +1,9 @@
 {% extends "base.html" %} {% block title %}Home{% endblock title %} 
 {% block content %}
 
+<!-- System Status Banner -->
+<div id="system-status" class="mb-3"></div>
 <div class="chat-body">
-
   <div id="messages-container">
         {% for message in messages %}
             {% include "components/message.html" %}
@@ -62,3 +63,10 @@
   {% endif %}
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+    window.AI_AVAILABLE = {{ ai_available|yesno:"true,false" }};
+    window.RETRY_AFTER = {{ retry_after }};
+</script>
+{% endblock %}

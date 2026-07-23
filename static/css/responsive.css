@@ -1,0 +1,16 @@
+/* mobile / tablet: hidden off-canvas by default, shown as a drawer via .is-open */
+@media (max-width: 991.98px){
+  .app-sidebar{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:84%;
+    max-width:300px;
+  }
+  .app-sidebar.is-open{
+    display:flex;
+    flex-direction:column;
+  }
+}

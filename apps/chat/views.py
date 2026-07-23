@@ -54,6 +54,7 @@ def conversation_detail(request,conversation_id):
          int(
              (AIservicestatus.reset_time - timezone.now()).total_seconds())
          )
+    
     context={'conversation':conversation , 
              'messages':messages , 
              'all_conversations':all_conversations,

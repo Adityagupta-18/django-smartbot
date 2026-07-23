@@ -67,6 +67,6 @@
 {% block extra_js %}
 <script>
     window.AI_AVAILABLE = {{ ai_available|yesno:"true,false" }};
-    window.RETRY_AFTER = {{ retry_after }};
+    window.RETRY_AFTER = {{ retry_after|default:0 }};
 </script>
 {% endblock %}

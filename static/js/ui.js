@@ -2,10 +2,10 @@ function showTypingIndicator(){
     if (document.getElementById("typing-indicator")) {return;}
     const typingindicator=document.createElement("div");
     typingindicator.id="typing-indicator"
-    typingindicator.classList.add("d-flex","message-row")
+    typingindicator.classList.add("d-flex","message-row","typing-enter")
     typingindicator.innerHTML=`
     <div class="msg-ai message-bubble">
-    <span>●</span><span>●</span><span>●</span>
+    <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
     </div>`                  
     messagesContainer.appendChild(typingindicator)
     scrollToBottom("smooth")
@@ -33,7 +33,7 @@ function scrollToBottom(mode){
 }
 else if (mode === "partial") {
     chatbody.scrollBy({
-    top: 350,
+    top: 400,
     behavior: "smooth"
   });
 }

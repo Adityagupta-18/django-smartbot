@@ -42,7 +42,6 @@ function decorateCodeBlocks(){
             .then(() => {
 
                 const checkIcon=document.createElement('img')
-                checkIcon.classList.add('checksvg')
                 checkIcon.src='/static/icons/check.svg'
                 checkIcon.alt='Copied'
 
@@ -61,7 +60,7 @@ function decorateCodeBlocks(){
 
                     copyBtn.replaceChildren(copyIcon, copyText);
 
-                }, 3000);
+                }, 2000);
         })
         .catch(err => {
             console.error("Failed to copy: ", err);

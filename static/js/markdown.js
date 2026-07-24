@@ -42,6 +42,7 @@ function decorateCodeBlocks(){
             .then(() => {
 
                 const checkIcon=document.createElement('img')
+                checkIcon.classList.add('checksvg')
                 checkIcon.src='/static/icons/check.svg'
                 checkIcon.alt='Copied'
 
@@ -57,7 +58,7 @@ function decorateCodeBlocks(){
 
                     const copyText = document.createElement('span');
                     copyText.innerText = "Copy";
-                    
+
                     copyBtn.replaceChildren(copyIcon, copyText);
 
                 }, 3000);

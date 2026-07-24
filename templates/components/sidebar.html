@@ -4,24 +4,24 @@
     <!-- Brand -->
     <header class="sidebar-header d-flex align-items-center justify-content-between">
       <div class="sidebar-brand d-flex align-items-center gap-2">
-        <svg class="sidebar-logo" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <svg class="sidebar-logo" aria-hidden="true"><use href="/static/icons/logo.svg"></use></svg>
         <span class="sidebar-brand-text">SmartBot</span>
       </div>
       <button type="button" class="sidebar-close-btn d-lg-none" aria-label="Close menu" aria-controls="appSidebar">
-        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-x"></use></svg>
+        <svg class="icon icon-sm" aria-hidden="true"><use href="/static/svg/close.svg"></use></svg>
       </button>
     </header>
 
     <!-- New chat -->
     <button type="button" id="new-chat-btn" class="sidebar-new-chat-btn d-flex align-items-center justify-content-center gap-2 w-100">
-      <svg class="icon icon-sm" aria-hidden="true"><use href="#i-plus"></use></svg>
+      <svg class="icon icon-sm" aria-hidden="true"><use href="/static/svg/plus.svg"></use></svg>
       <span>New chat</span>
     </button>
 
     <!-- Search -->
     <form class="sidebar-search" role="search" aria-label="Search conversations">
       <label for="convSearch" class="visually-hidden">Search chats</label>
-      <svg class="icon icon-sm sidebar-search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+      <svg class="icon icon-sm sidebar-search-icon" aria-hidden="true"><use href="/static/icons/search.svg"></use></svg>
       <input
         type="search"
         id="convSearch"
@@ -40,7 +40,7 @@
 
         {% for conv in all_conversations %}
         <a href="{% url "conversation_detail" conversation_id=conv.id %}" class="sidebar-conversation {% if conversation.id == conv.id %}active{% endif %}" data-title="{{conv.title}}">
-          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>
+          <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/chat.svg"></use></svg>
           <span class="sidebar-conversation-title">{{ conv.title }}</span>
           <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>
         </a>
@@ -52,13 +52,13 @@
         <p class="sidebar-group-label">Previous 7 days</p>
 
         <a href="#" class="sidebar-conversation" data-title="Portfolio site content review">
-          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>
+          <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/chat.svg"></use></svg>
           <span class="sidebar-conversation-title">Portfolio site content review</span>
           <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>
         </a>
 
         <a href="#" class="sidebar-conversation" data-title="Interview prep — system design">
-          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chat"></use></svg>
+          <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/chat.svg"></use></svg>
           <span class="sidebar-conversation-title">Interview prep — system design</span>
           <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>
         </a>
@@ -77,11 +77,11 @@
       </div>
 
       <button type="button" class="sidebar-icon-btn" aria-label="Open settings">
-        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-gear"></use></svg>
+        <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/settings.svg"></use></svg>
       </button>
 
       <button type="button" class="sidebar-icon-btn" aria-label="Log out">
-        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-logout"></use></svg>
+        <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/logout.svg"></use></svg>
       </button>
     </footer>
 

@@ -78,7 +78,6 @@ function startCountdown(seconds){
 }
 
 function showRateLimitBanner(retryAfter) {
-
      if (!retryAfter || retryAfter <= 0) {
         return;
     }
@@ -98,6 +97,7 @@ function showRateLimitBanner(retryAfter) {
     startCountdown(retryAfter);
 }
 
+
 function removeRateLimitBanner(){
     const statusContainer = document.getElementById("system-status");
 
@@ -110,15 +110,10 @@ function removeRateLimitBanner(){
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (typeof window.AI_AVAILABLE === "undefined") {
-        return;
-    }
     if (
         window.AI_AVAILABLE === false &&
         window.RETRY_AFTER > 0
     ) {
-        mesginput.disabled = true;
-        Sendbtn.disabled = true;
         showRateLimitBanner(window.RETRY_AFTER);
     }
 

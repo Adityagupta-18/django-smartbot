@@ -105,3 +105,118 @@
   margin:0;
 }
 
+
+/* ==========================================
+   Markdown Code Block
+========================================== */
+
+.code-block {
+    margin: 1rem 0;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-surf);
+}
+
+
+/* Code Header */
+
+.code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0.65rem 1rem;
+
+    background: var(--bg-surf1);
+    border-bottom: 1px solid var(--hairline);
+}
+
+
+.code-language {
+    color: var(--txt2);
+
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+
+/* Code Area */
+
+.code-block pre {
+    margin: 0;
+
+    padding: 1rem;
+
+    background: var(--bg-surf3);
+
+    overflow-x: auto;
+}
+
+
+.code-block code {
+    font-size: 0.9rem;
+    line-height: 1.6;
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+}
+
+
+/* ==========================================
+   Code Block Copy Button
+========================================== */
+
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+
+    padding: 0.35rem 0.7rem;
+
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--txt2);
+
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.copy-btn img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+}
+
+
+/* Hover */
+.copy-btn:hover {
+    background: var(--bg-surf3);
+    border-color: var(--hairline-strong);
+    color: var(--txt);
+}
+
+/* Click feedback */
+.copy-btn:active {
+    transform: scale(0.96);
+}
+
+
+/* Copied state */
+.copy-btn span {
+    line-height: 1;
+}

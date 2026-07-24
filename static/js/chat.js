@@ -39,6 +39,7 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                     </div>
                     </div>`                    
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
+                    decorateCodeBlocks()
                     highlightCodeBlocks()
                     scrollToBottom("partial")
                 }
@@ -123,6 +124,7 @@ mesginput.addEventListener("keydown", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     renderAllMarkdown();
+    decorateCodeBlocks();
     highlightCodeBlocks();
     scrollToBottom("instant")
     const pendingMessage = sessionStorage.getItem("pending_message");

@@ -289,8 +289,8 @@
     opacity: 0;
     transform: translateY(12px) scale(0.98);
     transition:
-        opacity 640ms ease,
-        transform 640ms ease;
+        opacity 540ms ease,
+        transform 540ms ease;
     will-change: opacity, transform;
 }
 

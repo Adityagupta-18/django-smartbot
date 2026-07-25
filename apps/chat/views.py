@@ -78,7 +78,10 @@ def send_message(request):
         conversation = get_object_or_404(Conversation,id=conversation_id,user=request.user)
 
         Message.objects.create(conversation=conversation,sender="USER",content=content)
-        history = conversation.messages.all().order_by("created_at")
+        
+        MAX_HISTORY_MESSAGES = 20
+        history = list(conversation.messages.all().order_by("-created_at")[:MAX_HISTORY_MESSAGES])
+        history.reverse()
         history_dict=[]
         for mesgcont in history:
             if mesgcont.sender=='USER':

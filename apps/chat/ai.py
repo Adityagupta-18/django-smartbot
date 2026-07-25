@@ -1,11 +1,18 @@
 import os
 from groq import Groq
+from apps.chat.prompts import SYSTEM_PROMPT
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"),)
 
 def generate_ai_response(history):
     chat_completion = client.chat.completions.create(
-        messages=history,
+        messages=[
+            {
+                'role':'system',
+                "content": SYSTEM_PROMPT,
+            },
+            *history
+        ],
         model="llama-3.3-70b-versatile",
         temperature=0.7)
 

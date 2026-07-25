@@ -31,17 +31,25 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
             removeTypingIndicator()
                 if (data.success) {
                     removeRateLimitBanner();
+
                     const markdowncontent=data.ai_response
                     const markedownHtml=marked.parse(markdowncontent)
-                    const aiMessageHTML =`<div class="d-flex message-row">
+
+                    const aiMessageHTML =`<div class="d-flex message-row ai-message-enter">
                     <div class="msg-ai message-bubble">
                     ${markedownHtml}
                     </div>
-                    </div>`                    
+                    </div>`             
+
                     messagesContainer.insertAdjacentHTML("beforeend",aiMessageHTML)
+                    const newMessage = messagesContainer.lastElementChild;
+                    
                     decorateCodeBlocks()
                     highlightCodeBlocks()
-                    scrollToBottom("partial")
+                    requestAnimationFrame(() => {
+                        newMessage.classList.add("ai-message-show");
+                    });
+                    scrollToBottom("partial");
                 }
                 else if (data.error_type === "rate_limit") {
                      showRateLimitBanner(data.retry_after);

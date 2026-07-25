@@ -283,3 +283,19 @@
 
 }
 
+
+/* ********** RESPONSE ANIMATION ********* */
+.ai-message-enter {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    transition:
+        opacity 640ms ease,
+        transform 640ms ease;
+    will-change: opacity, transform;
+}
+
+
+.ai-message-enter.ai-message-show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}

@@ -107,6 +107,209 @@
 
 
 /* ==========================================
+   Markdown Rendering
+========================================== */
+/* Headings */
+.msg-ai table {
+    width: 100%;
+    margin: 1rem 0;
+    border-collapse: collapse;
+
+    background: var(--bg-surf3);
+    border: 1px solid var(--hairline);
+
+    font-size: 0.92rem;
+}
+
+.msg-ai th {
+    padding: 0.85rem 1rem;
+
+    background: var(--bg-surf);
+    color: var(--txt);
+
+    text-align: left;
+    font-weight: 600;
+
+    border-bottom: 1px solid var(--hairline);
+}
+
+.msg-ai td {
+    padding: 0.85rem 1rem;
+
+    color: var(--txt2);
+    vertical-align: top;
+
+    border-top: 1px solid var(--hairline);
+}
+
+.msg-ai tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+
+/* Paragraphs */
+.msg-ai p {
+    margin: 0.85rem 0;
+    color: var(--txt);
+    line-height: 1.75;
+}
+
+.msg-ai p:last-child {
+    margin-bottom: 0;
+}
+
+/* Lists */
+.msg-ai ul,
+.msg-ai ol {
+    margin: 1rem 0;
+    padding-left: 1.6rem;
+}
+
+.msg-ai li {
+    margin: 0.45rem 0;
+    line-height: 1.7;
+}
+
+.msg-ai li > ul,
+.msg-ai li > ol {
+    margin-top: 0.5rem;
+}
+
+/* Tables */
+.msg-ai table {
+    width: 100%;
+    margin: 1rem 0;
+    border-collapse: collapse;
+
+    background: var(--bg-surf3);
+    border: 1px solid var(--hairline);
+
+    font-size: 0.92rem;
+}
+
+.msg-ai th {
+    padding: 0.85rem 1rem;
+
+    background: var(--bg-surf);
+    color: var(--txt);
+
+    text-align: left;
+    font-weight: 600;
+
+    border-bottom: 1px solid var(--hairline);
+}
+
+.msg-ai td {
+    padding: 0.85rem 1rem;
+
+    color: var(--txt2);
+    vertical-align: top;
+
+    border-top: 1px solid var(--hairline);
+}
+
+.msg-ai tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+
+
+
+/* Blockquotes */
+.msg-ai blockquote {
+    margin: 1rem 0;
+    padding: 0.9rem 1rem;
+
+    border-left: 4px solid var(--accent);
+
+    background: var(--bg-surf3);
+
+    color: var(--txt2);
+
+    font-style: italic;
+}
+
+
+/* Inline Code */
+.msg-ai :not(pre) > code {
+    padding: 0.18rem 0.45rem;
+
+    border-radius: 6px;
+
+    background: var(--bg-surf);
+
+    color: var(--accent);
+
+    font-size: 0.9em;
+
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        monospace;
+}
+
+
+/* Links */
+.msg-ai a {
+    color: var(--accent);
+
+    text-decoration: none;
+
+    transition: color .2s ease;
+}
+
+.msg-ai a:hover {
+    color: var(--accent-deep);
+
+    text-decoration: underline;
+}
+
+
+/* Horizontal Rules */
+.msg-ai hr {
+    margin: 1.75rem 0;
+
+    border: none;
+    height: 1px;
+
+    background: var(--hairline);
+
+    opacity: 0.8;
+}
+
+
+/* Strong & Emphasis */
+.msg-ai strong {
+    color: var(--txt);
+
+    font-weight: 700;
+}
+
+.msg-ai em {
+    font-style: italic;
+}
+
+
+/* SPACING */
+.msg-ai > *:first-child {
+    margin-top: 0;
+}
+
+.msg-ai > *:last-child {
+    margin-bottom: 0;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+/* ==========================================
    Markdown Code Block
 ========================================== */
 
@@ -166,6 +369,8 @@
         "Fira Code",
         monospace;
 }
+
+
 
 
 /* ==========================================

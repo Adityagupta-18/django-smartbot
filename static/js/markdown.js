@@ -74,6 +74,31 @@ function decorateCodeBlocks(){
         codeBlock.append(codeHeader,pre)
 
     }
+
+    // TABLE WRAPPER
+    const tables = document.querySelectorAll(".msg-ai table");
+    tables.forEach(table => {
+        // Skip if already wrapped
+        if (table.parentElement.classList.contains("table-wrapper")) {
+            return;
+        }
+
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("table-wrapper");
+
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+
+});
+
+
+    // EXTERNAL LINKS
+    const links = document.querySelectorAll(".msg-ai a");
+
+    links.forEach(link => {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+    });
 }
 
 

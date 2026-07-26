@@ -51,6 +51,25 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                         newMessage.classList.add("ai-message-show");
                     });
                     scrollToBottom("partial");
+
+                    const chattitle=document.getElementById("chatTitle");
+                    chattitle.innerText=data.title
+
+                    if(data.title){
+
+                        const conversationItem = document.querySelector(
+                            `#conversation-${conversationId}`
+                        );
+
+                        if(conversationItem){
+                            conversationItem.querySelector(
+                                ".sidebar-conversation-title"
+                            ).textContent = data.title;
+
+                        }
+                    }
+                    
+
                 }
                 
                 else if (data.error_type === "rate_limit") {
@@ -131,6 +150,112 @@ mesginput.addEventListener("keydown", (e) => {
     }
 });
 
+
+
+// Rename button
+const renameBtn = document.getElementById("renameConversationBtn");
+const chatTitle = document.getElementById("chatTitle");
+const chatTitleInput = document.getElementById("chatTitleInput");
+
+renameBtn.addEventListener("click", () => {
+
+    chatTitle.classList.add("d-none");
+    chatTitleInput.classList.remove("d-none");
+    chatTitleInput.value = chatTitle.textContent.trim();
+
+    chatTitleInput.focus();
+    chatTitleInput.select();
+
+});
+function saveConversationTitle(){
+
+    const newTitle = chatTitleInput.value.trim();
+    if(newTitle === ""){
+
+        chatTitleInput.value = chatTitle.textContent;
+        chatTitle.classList.remove("d-none");
+        chatTitleInput.classList.add("d-none");
+
+        return;
+
+    }
+
+    fetch("/chat/rename-conversation/",{
+
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "X-CSRFToken":csrfToken
+        },
+
+        body:JSON.stringify({
+
+            conversation_id:conversationId,
+            title:newTitle
+
+        })
+
+    })
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        if(data.success){
+
+            chatTitle.textContent = data.title;
+            chatTitleInput.value = data.title;
+
+            const sidebarConversation =
+                document.querySelector(
+                    `#conversation-${conversationId} .sidebar-conversation-title`
+                );
+
+            if(sidebarConversation){
+
+                sidebarConversation.textContent = data.title;
+
+            }
+
+        }
+
+        chatTitle.classList.remove("d-none");
+        chatTitleInput.classList.add("d-none");
+
+    });
+
+}
+
+// ENTER TO RENAME
+chatTitleInput.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Enter"){
+        saveConversationTitle();
+    }
+
+});
+
+// ESCAPE TO CANCEL
+chatTitleInput.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Escape"){
+
+        chatTitleInput.classList.add("d-none");
+        chatTitle.classList.remove("d-none");
+
+    }
+
+});
+
+
+// CLICK OUTSIDE - NO SAVE
+chatTitleInput.addEventListener("blur", () => {
+
+    chatTitleInput.classList.add("d-none");
+    chatTitle.classList.remove("d-none");
+    chatTitleInput.value = chatTitle.textContent;
+
+});
 
 
 document.addEventListener("DOMContentLoaded", () => {

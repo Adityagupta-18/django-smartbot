@@ -77,7 +77,26 @@ def send_message(request):
 
         conversation = get_object_or_404(Conversation,id=conversation_id,user=request.user)
 
-        Message.objects.create(conversation=conversation,sender="USER",content=content)
+        message=Message.objects.create(conversation=conversation,sender="USER",content=content)
+
+        
+        if conversation.messages.count() == 1 and conversation.title == "New Chat":
+            first_message=message.content.title()
+            cleaned=" ".join(first_message.strip().replace("\n"," ").split())
+            filler_words = {
+                "is","am","are","was","were",
+                "of","the","a","an",
+                "can","you","i","me",
+                "what","how","why",
+                "please","tell","explain"
+            }
+            title_words = [w for w in cleaned.split() if w.lower() not in filler_words]
+            title = " ".join(title_words)
+            title = title[:50] + ("..." if len(title) > 50 else "")
+            
+            conversation.title = title
+            conversation.save()
+
         
         MAX_HISTORY_MESSAGES = 20
         history = list(conversation.messages.all().order_by("-created_at")[:MAX_HISTORY_MESSAGES])
@@ -122,6 +141,7 @@ def send_message(request):
             return JsonResponse({
                 "success": True,
                 "ai_response": ai_response,
+                "title": conversation.title,
             })
 
         except RateLimitError as e:
@@ -167,3 +187,33 @@ def send_message(request):
     "success":False,
     "message": "Daily AI usage limit has been reached. Please try again after the limit resets."
         })
+
+
+
+
+def rename_conversation(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        conversation_id = data.get("conversation_id")
+        new_title = data.get("title").strip()
+
+        conversation = get_object_or_404(
+            Conversation,
+            id=conversation_id,
+            user=request.user
+        )
+
+        conversation.title = new_title
+        conversation.save()
+
+        return JsonResponse({
+            "success": True,
+            "title": conversation.title
+        })
+
+    return JsonResponse({
+        "success": False
+    })

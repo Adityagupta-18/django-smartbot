@@ -39,7 +39,7 @@
         <p class="sidebar-group-label">Today</p>
 
         {% for conv in all_conversations %}
-        <a href="{% url "conversation_detail" conversation_id=conv.id %}" class="sidebar-conversation {% if conversation.id == conv.id %}active{% endif %}" data-title="{{conv.title}}">
+        <a href="{% url "conversation_detail" conversation_id=conv.id %}" id="conversation-{{ conv.id }}" class="sidebar-conversation {% if conversation.id == conv.id %}active{% endif %}" data-title="{{conv.title}}">
           <svg class="icon icon-sm" aria-hidden="true"><use href="/static/icons/chat.svg"></use></svg>
           <span class="sidebar-conversation-title">{{ conv.title }}</span>
           <svg class="icon icon-sm sidebar-conversation-more" aria-hidden="true"><use href="#i-dots"></use></svg>

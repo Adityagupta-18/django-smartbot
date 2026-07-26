@@ -39,6 +39,39 @@
 }
 
 
+/* scroll button */
+.circle-btn {
+  display: none;              /* initially hidden */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;         /* makes it circular */
+  border: none;
+  background: var(--accent);  /* your theme color */
+  color: #fff;                /* SVG color */
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.circle-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Show button when you want */
+.circle-btn.show {
+  display: flex;              /* reveal as flex for centering */
+}
+
+/* Hover effect */
+.circle-btn:hover {
+  background: var(--txt);     /* change color on hover */
+}
+
+
+
+
 
 
 /* *********  Home ********** */

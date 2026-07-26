@@ -21,5 +21,6 @@ from apps.chat.views import *
 urlpatterns = [
     path('new/', new_chat, name='new_chat'),
     path("<int:conversation_id>/", conversation_detail, name="conversation_detail"),
-    path("send-message/", send_message, name="send_message")
+    path("send-message/", send_message, name="send_message"),
+    path("rename-conversation/",rename_conversation,name="rename_conversation"),
 ]

@@ -28,7 +28,7 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
         })
         .then(response=>response.json())
         .then(data=>{
-            removeTypingIndicator()
+            removeTypingIndicator().then(() => {
                 if (data.success) {
                     removeRateLimitBanner();
 
@@ -46,18 +46,21 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                     
                     decorateCodeBlocks()
                     highlightCodeBlocks()
+                    
                     requestAnimationFrame(() => {
                         newMessage.classList.add("ai-message-show");
                     });
                     scrollToBottom("partial");
                 }
+                
                 else if (data.error_type === "rate_limit") {
                      showRateLimitBanner(data.retry_after);
 
                 } else {
                     console.log("Something went wrong.");
                 }
-        }) 
+        })
+            }) 
     .catch(err => {
         console.error("Error:", err);
     })       

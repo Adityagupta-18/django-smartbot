@@ -12,13 +12,27 @@ function showTypingIndicator(){
 }
 
 
-function removeTypingIndicator(){
-    const typingIndicator=document.getElementById('typing-indicator')
-    if (typingIndicator){
-        typingIndicator.remove()
-    }
-}
+function removeTypingIndicator() {
+    return new Promise((resolve) => {
 
+        const typingIndicator = document.getElementById("typing-indicator");
+        if (!typingIndicator) {
+            resolve();
+            return;
+        }
+
+        typingIndicator.classList.add("typing-leave");
+
+        typingIndicator.addEventListener(
+            "transitionend",
+            () => {
+                typingIndicator.remove();
+                resolve();
+            },
+            { once: true }
+        );
+    });
+}
 
 
 

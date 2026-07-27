@@ -17,3 +17,4 @@ def generate_ai_response(history):
         temperature=0.7)
 
     return chat_completion.choices[0].message.content
+

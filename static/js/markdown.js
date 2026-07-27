@@ -23,13 +23,22 @@ function decorateCodeBlocks(){
         codeLanguage.classList.add('code-language')
         codeLanguage.innerText=code.className.replace('language-',"")
 
-        const copyBtn=document.createElement('button')
-        copyBtn.classList.add('copy-btn')
-        const copyIcon = document.createElement('img');
-        copyIcon.src = "/static/icons/copy.svg";
-        copyIcon.alt = "Copy";
-        const copyText = document.createElement('span');
+        const copyBtn = document.createElement("button");
+        copyBtn.classList.add("copy-btn");
+
+        // Copy Icon (Inline SVG)
+        const copyIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        copyIcon.setAttribute("viewBox", "0 0 24 24");
+        copyIcon.classList.add("copy-icon");
+
+        copyIcon.innerHTML = `
+            <rect x="9" y="9" width="12" height="12" rx="2.3"></rect>
+            <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+        `;
+
+        const copyText = document.createElement("span");
         copyText.innerText = "Copy";
+
         copyBtn.append(copyIcon, copyText);
 
         copyBtn.addEventListener("click", () => {
@@ -39,33 +48,45 @@ function decorateCodeBlocks(){
             const text = code.innerText;
 
             navigator.clipboard.writeText(text)
-            .then(() => {
+                .then(() => {
 
-                const checkIcon=document.createElement('img')
-                checkIcon.src='/static/icons/check.svg'
-                checkIcon.alt='Copied'
+                    const checkIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    checkIcon.setAttribute("viewBox", "0 0 24 24");
+                    checkIcon.classList.add("copy-icon");
 
-                const copyDone = document.createElement('span');
-                copyDone.innerText = "Copied";
+                    checkIcon.innerHTML = `
+                        <path d="M5 12l5 5L20 6"></path>
+                    `;
 
-                copyBtn.replaceChildren(checkIcon, copyDone);
+                    const copyDone = document.createElement("span");
+                    copyDone.innerText = "Copied";
 
-                setTimeout(() => {
-                    const copyIcon = document.createElement('img');
-                    copyIcon.src = "/static/icons/copy.svg";
-                    copyIcon.alt = "Copy";
+                    copyBtn.replaceChildren(checkIcon, copyDone);
 
-                    const copyText = document.createElement('span');
-                    copyText.innerText = "Copy";
+                    setTimeout(() => {
 
-                    copyBtn.replaceChildren(copyIcon, copyText);
+                        const copyIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        copyIcon.setAttribute("viewBox", "0 0 24 24");
+                        copyIcon.classList.add("copy-icon");
 
-                }, 2000);
-        })
-        .catch(err => {
-            console.error("Failed to copy: ", err);
+                        copyIcon.innerHTML = `
+                            <rect x="9" y="9" width="12" height="12" rx="2.3"></rect>
+                            <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+                        `;
+
+                        const copyText = document.createElement("span");
+                        copyText.innerText = "Copy";
+
+                        copyBtn.replaceChildren(copyIcon, copyText);
+
+                    }, 2000);
+
+                })
+                .catch(err => {
+                    console.error("Failed to copy:", err);
+                });
+
         });
-            });
 
 
         codeHeader.append(codeLanguage,copyBtn)

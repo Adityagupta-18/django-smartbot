@@ -449,11 +449,16 @@
 }
 
 
-.copy-btn img {
-    /* color: var(--txt2); */
-    width: 15px;
-    height: 15px;
-    object-fit: contain;
+.copy-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 

@@ -74,6 +74,7 @@ main{
     overflow-y:auto;
     display:flex;
     flex-direction:column;
+    position: relative;
 }
 
 .home-welcome{

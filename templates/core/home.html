@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Home{% endblock title %} 
+{% extends "base.html" %} {% block title %}{{conversation.title}}{% endblock title %} 
 {% block content %}
 
 <!-- System Status Banner -->
@@ -10,7 +10,7 @@
         {% endfor %}
   </div>
 
-  <button class="circle-btn">
+  <button id="scroll-btn" class="circle-btn">
 <svg class="icon" aria-hidden="true"><use href="/static/svg/download.svg"></use></svg>
 </button>
 

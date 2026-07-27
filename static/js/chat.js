@@ -51,6 +51,7 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                         newMessage.classList.add("ai-message-show");
                     });
                     scrollToBottom("partial");
+                    updateScrollButton();
 
                     const chattitle=document.getElementById("chatTitle");
                     chattitle.innerText=data.title

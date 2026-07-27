@@ -12,4 +12,5 @@ const chatContainer = document.getElementById("chat-container");
 let conversationId = chatContainer.dataset.conversationId;
 const messagesContainer = document.getElementById("messages-container");
 const chatbody = document.querySelector(".chat-body");
+const scrollBtn=document.getElementById("scroll-btn")
 let isSending=false;

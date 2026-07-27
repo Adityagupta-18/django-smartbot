@@ -39,19 +39,33 @@
 }
 
 
-/* scroll button */
+/* SCROLL BUTTON */
 .circle-btn {
-  display: none;              /* initially hidden */
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;         /* makes it circular */
-  border: none;
-  background: var(--accent);  /* your theme color */
-  color: #fff;                /* SVG color */
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+    display: none;  
+    position:sticky;
+    bottom:20px;
+    left:50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;   
+    border: none;
+    background: var(--accent); 
+    color: #fff;          
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 400ms ease,
+                transform 400ms ease,
+                visibility 400ms;
 }
 
 .circle-btn svg {
@@ -59,16 +73,17 @@
   height: 20px;
 }
 
-/* Show button when you want */
 .circle-btn.show {
-  display: flex;              /* reveal as flex for centering */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
 }
 
 /* Hover effect */
 .circle-btn:hover {
-  background: var(--txt);     /* change color on hover */
+  background: var(--accent2);
 }
-
 
 
 
@@ -419,7 +434,7 @@
 
     border: 1px solid var(--hairline);
     border-radius: 8px;
-    background: transparent;
+    background: var(--bg-surf3);
     color: var(--txt2);
 
     font-size: 0.8rem;
@@ -435,6 +450,7 @@
 
 
 .copy-btn img {
+    /* color: var(--txt2); */
     width: 15px;
     height: 15px;
     object-fit: contain;

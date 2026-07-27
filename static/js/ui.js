@@ -40,19 +40,43 @@ function removeTypingIndicator() {
 function scrollToBottom(mode){
     if (mode==='instant'){
     chatbody.scrollTop = chatbody.scrollHeight;}
+
     else if(mode==="smooth"){
     chatbody.scrollTo({
     top: chatbody.scrollHeight,
     behavior: "smooth"});
 }
-else if (mode === "partial") {
-    chatbody.scrollBy({
-    top: 400,
-    behavior: "smooth"
-  });
+    else if (mode === "partial") {
+        chatbody.scrollBy({
+        top: 400,
+        behavior: "smooth"
+    });
 }
 }
 
+
+
+function updateScrollButton(){
+        const distanceFromBottom =
+        chatbody.scrollHeight -
+        (chatbody.scrollTop + chatbody.clientHeight);
+        const threshold =400;
+
+        if (distanceFromBottom <= threshold){
+            scrollBtn.classList.remove("show");
+        }
+        else{
+            scrollBtn.classList.add("show")
+        }
+
+}
+
+chatbody.addEventListener("scroll", updateScrollButton);
+scrollBtn.addEventListener("click", () => {
+    scrollToBottom('smooth')
+});
+
+updateScrollButton();
 
 
 

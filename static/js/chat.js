@@ -69,8 +69,8 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
 
                         }
                     }
-                    
-
+                    const firstConversation = todayGroup.querySelector(".sidebar-conversation");
+                    todayGroup.insertBefore(currentConversation,firstConversation);
                 }
                 
                 else if (data.error_type === "rate_limit") {

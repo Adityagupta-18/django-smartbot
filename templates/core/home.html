@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- System Status Banner -->
-<div id="system-status" class="mb-3"></div>
+<div id="system-status"></div>
 <div class="chat-body">
   <div id="messages-container">
         {% for message in messages %}
@@ -16,7 +16,7 @@
 
 
   {% if not messages %}
-  <section id="welcome-screen" class="home-welcome mx-auto text-center">
+  <section id="welcome-screen" class="home-welcome mx-auto text-center" style="margin-top:-64px">
     <div class="home-visual" aria-hidden="true"></div>
     <h1 class="home-title">What can I help you build today?</h1>
     <p class="home-subtitle">

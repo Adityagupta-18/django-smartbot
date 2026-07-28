@@ -138,6 +138,9 @@ def send_message(request):
                 content=ai_response
             )
 
+            # Updating conversation 
+            conversation.save() 
+
             return JsonResponse({
                 "success": True,
                 "ai_response": ai_response,

@@ -47,10 +47,12 @@ function scrollToBottom(mode){
     behavior: "smooth"});
 }
     else if (mode === "partial") {
+    if (chatbody.scrollTop > 0) {
         chatbody.scrollBy({
-        top: 400,
-        behavior: "smooth"
-    });
+            top: 400,
+            behavior: "smooth"
+        });
+    }
 }
 }
 

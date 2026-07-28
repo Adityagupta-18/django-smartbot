@@ -14,3 +14,7 @@ const messagesContainer = document.getElementById("messages-container");
 const chatbody = document.querySelector(".chat-body");
 const scrollBtn=document.getElementById("scroll-btn")
 let isSending=false;
+
+// SIDE BAR
+const todayGroup=document.getElementById("today-group");
+const currentConversation=document.getElementById(`conversation-${conversationId}`)

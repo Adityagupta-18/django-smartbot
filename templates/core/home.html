@@ -23,46 +23,16 @@
       Ask a question, paste some code, or pick a starting point below.
     </p>
 
-    <div class="home-suggestions row g-3 text-start">
-      <div class="col-12 col-md-6">
+    <div id="suggestions-container" class="home-suggestions row g-3 text-start">
+
+      {% comment %} <div class="col-12 col-md-6">
         <button type="button" class="suggestion-card w-100 text-start">
-          <svg class="icon suggestion-icon" aria-hidden="true">
-            <use href="/static/svg/sparkle.svg"></use>
-          </svg>
           <p class="suggestion-title">Explain a concept</p>
           <p class="suggestion-description">SQL join types with examples</p>
-        </button>
-      </div>
+        </button> 
+      </div> {% endcomment %}
 
-      <div class="col-12 col-md-6">
-        <button type="button" class="suggestion-card w-100 text-start">
-          <svg class="icon suggestion-icon" aria-hidden="true">
-            <use href="/static/svg/attachment.svg"></use>
-          </svg>
-          <p class="suggestion-title">Write some code</p>
-          <p class="suggestion-description">Debounce function in JavaScript</p>
-        </button>
-      </div>
 
-      <div class="col-12 col-md-6">
-        <button type="button" class="suggestion-card w-100 text-start">
-          <svg class="icon suggestion-icon" aria-hidden="true">
-            <use href="/static/svg/mail.svg"></use>
-          </svg>
-          <p class="suggestion-title">Draft a message</p>
-          <p class="suggestion-description">Follow-up email after interview</p>
-        </button>
-      </div>
-
-      <div class="col-12 col-md-6">
-        <button type="button" class="suggestion-card w-100 text-start">
-          <svg class="icon suggestion-icon" aria-hidden="true">
-            <use href="/static/svg/globe.svg"></use>
-          </svg>
-          <p class="suggestion-title">Plan something</p>
-          <p class="suggestion-description">3-day weekend trip itinerary</p>
-        </button>
-      </div>
     </div>
   </section>
   {% endif %}

@@ -19,6 +19,7 @@ let isSending=false;
 const todayGroup=document.getElementById("today-group");
 const currentConversation=document.getElementById(`conversation-${conversationId}`)
 
+
 // SUGGESTION CARD PROMPTS
 const SMARTBOT_SUGGESTIONS = [
     {

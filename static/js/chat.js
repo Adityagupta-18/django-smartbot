@@ -1,3 +1,35 @@
+// Card layout 
+function getRandomSuggestions(arr, count) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, count);
+}
+const randomSuggestions = getRandomSuggestions(SMARTBOT_SUGGESTIONS, 4);
+
+
+function renderSuggestionCards(arrsuggestions){
+    const SuggestionContainer=document.getElementById('suggestions-container')
+    if(!SuggestionContainer){return}
+
+    const cardsHTML = randomSuggestions.map(item => {
+                            return `
+                                <div class="col-12 col-md-6">
+                                <button type="button" class="suggestion-card w-100 text-start">
+                                <p class="suggestion-title">${item.title}</p>
+                                <p class="suggestion-description">${item.subtitle}</p>
+                                </button>
+                            </div>
+                            `;
+                        }).join("");
+
+}
+
+
+
+
 
 
 // Sending message

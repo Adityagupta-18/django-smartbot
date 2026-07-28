@@ -70,8 +70,10 @@
     {% endif %}
 
   {% else %}
-    <p class="sidebar-group-label"><strong>No conversations yet</strong></p>
-    <p class="sidebar-group-label"><strong>Start a new chat to begin.</strong></p>
+  <div class="sidebar-empty-state">
+    <p class="sidebar-empty-title">No conversations yet</p>
+    <p class="sidebar-empty-subtitle">Start a new chat to begin.</p>
+  </div>
 {% endif %}
 
 

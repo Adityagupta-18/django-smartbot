@@ -193,6 +193,29 @@
   padding:24px 0;
 }
 
+
+.sidebar-empty-state{
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.sidebar-empty-title{
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--txt);
+}
+
+.sidebar-empty-subtitle{
+    font-size: .82rem;
+    color: var(--txt2);
+}
+
+
 /* Footer / profile */
 .sidebar-footer{
   padding:10px 6px 2px;

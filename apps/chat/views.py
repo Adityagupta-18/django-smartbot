@@ -38,13 +38,15 @@ def new_chat(request):
 
 
 def conversation_detail(request,conversation_id):
+    print('conevrsation detailed called')
     user=request.user
     all_conversations=Conversation.objects.filter(user=user).order_by('-updated_at')
     today=date.today()
-    has_conversations = bool(all_conversations)
+    has_conversations = all_conversations.exists()
     today_conversations = []
     previous_conversations = []
     for conversation in all_conversations:
+        print(conversation.title, conversation.updated_at)
         if conversation.updated_at.date()==today:
             today_conversations.append(conversation)
         else:
@@ -67,6 +69,7 @@ def conversation_detail(request,conversation_id):
     
     context={'conversation':conversation , 
              'messages':messages , 
+             "all_conversations": all_conversations,
              "has_conversations":has_conversations,
              "today_conversations": today_conversations,
              "previous_conversations": previous_conversations,

@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from apps.chat.ai import *
 from django.utils import timezone
 from groq import RateLimitError
-from datetime import timedelta
+from datetime import date, timedelta
 import re
 
 # Create your views here.
@@ -40,6 +40,16 @@ def new_chat(request):
 def conversation_detail(request,conversation_id):
     user=request.user
     all_conversations=Conversation.objects.filter(user=user).order_by('-updated_at')
+    today=date.today()
+    has_conversations = bool(all_conversations)
+    today_conversations = []
+    previous_conversations = []
+    for conversation in all_conversations:
+        if conversation.updated_at.date()==today:
+            today_conversations.append(conversation)
+        else:
+            previous_conversations.append(conversation)
+
     conversation=get_object_or_404(Conversation,id=conversation_id,user=user)
     messages=conversation.messages.all().order_by('created_at')
 
@@ -57,7 +67,9 @@ def conversation_detail(request,conversation_id):
     
     context={'conversation':conversation , 
              'messages':messages , 
-             'all_conversations':all_conversations,
+             "has_conversations":has_conversations,
+             "today_conversations": today_conversations,
+             "previous_conversations": previous_conversations,
              "ai_available": (
                                 AIservicestatus.is_available
                                 if AIservicestatus

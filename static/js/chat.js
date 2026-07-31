@@ -11,12 +11,12 @@ const randomSuggestions = getRandomSuggestions(SMARTBOT_SUGGESTIONS, 4);
 
 
 function renderSuggestionCards(arrsuggestions){
-    const SuggestionContainer=document.getElementById('suggestions-container')
-    if(!SuggestionContainer){return}
+    const suggestionContainer=document.getElementById('suggestions-container')
+    if(!suggestionContainer){return}
 
-    const cardsHTML = randomSuggestions.map(item => {
+    const cardsHTML = arrsuggestions.map(item => {
                             return `
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-6 ">
                                 <button type="button" class="suggestion-card w-100 text-start">
                                 <p class="suggestion-title">${item.title}</p>
                                 <p class="suggestion-description">${item.subtitle}</p>
@@ -24,9 +24,11 @@ function renderSuggestionCards(arrsuggestions){
                             </div>
                             `;
                         }).join("");
-
+    
+    suggestionContainer.innerHTML=cardsHTML;
 }
 
+renderSuggestionCards(randomSuggestions)
 
 
 

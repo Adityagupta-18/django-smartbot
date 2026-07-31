@@ -10,7 +10,6 @@ def home(request):
     today_conversations = []
     previous_conversations = []
     for conversation in all_conversations:
-        print(conversation.title, conversation.updated_at)
         if conversation.updated_at.date()==today:
             today_conversations.append(conversation)
         else:

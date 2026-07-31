@@ -6,7 +6,7 @@
 
     <aside class="auth-visual" aria-hidden="true">
       <div class="auth-visual-badge">
-        <svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+        <svg class="icon" aria-hidden="true"><use href="/static/svg/sparkle.svg"></use></svg>
         Free to start
       </div>
       <h2 class="auth-visual-title">Your second brain,<br>set up in a minute.</h2>
@@ -17,12 +17,12 @@
       <div class="auth-panel-inner">
 
         <div class="auth-brand">
-          <svg class="logo-mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <svg class="logo-mark" aria-hidden="true"><use href="/static/icons/login_logo.svg"></use></svg>
           <span class="auth-brand-text">SmartBot</span>
         </div>
 
         <h1 id="auth-title" class="auth-title">Create your account</h1>
-        <p class="auth-subtitle">Takes less than a minute. No credit card needed.</p>
+        <p class="auth-subtitle">Takes less than a minute.</p>
 
         {% if form.non_field_errors %}
         <div class="auth-error" role="alert">
@@ -69,7 +69,7 @@
           <div class="form-group">
             <label for="id_email" class="field-label">Email address</label>
             <div class="input-icon-wrap">
-              <svg class="icon ico-left" aria-hidden="true"><use href="#i-mail"></use></svg>
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/mail.svg"></use></svg>
               <input
                 type="email"
                 name="email"
@@ -88,7 +88,7 @@
           <div class="form-group">
             <label for="id_password" class="field-label">Password</label>
             <div class="input-icon-wrap">
-              <svg class="icon ico-left" aria-hidden="true"><use href="#i-lock"></use></svg>
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
               <input
                 type="password"
                 name="password"
@@ -105,14 +105,8 @@
                 aria-label="Show password"
                 aria-pressed="false"
               >
-                <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg>
+                <svg class="icon" aria-hidden="true"><use href="/static/svg/eye.svg"></use></svg>
               </button>
-            </div>
-            <div class="password-strength" aria-hidden="true">
-              <span class="password-strength-bar"></span>
-              <span class="password-strength-bar"></span>
-              <span class="password-strength-bar"></span>
-              <span class="password-strength-bar"></span>
             </div>
             <p class="password-strength-hint">Use 8+ characters with a mix of letters, numbers &amp; symbols</p>
             {% if form.password.errors %}
@@ -123,7 +117,7 @@
           <div class="form-group">
             <label for="id_confirm_password" class="field-label">Confirm password</label>
             <div class="input-icon-wrap">
-              <svg class="icon ico-left" aria-hidden="true"><use href="#i-lock"></use></svg>
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
               <input
                 type="password"
                 name="confirm_password"
@@ -142,22 +136,6 @@
           <button type="submit" class="btn btn-primary btn-block">Create account</button>
         </form>
 
-        <div class="auth-divider">
-          <span class="auth-divider-line"></span>
-          <span class="auth-divider-text">OR</span>
-          <span class="auth-divider-line"></span>
-        </div>
-
-        <div class="auth-social-grid">
-          <button type="button" class="btn btn-social">
-            <svg class="icon" aria-hidden="true"><use href="#i-google"></use></svg>
-            Google
-          </button>
-          <button type="button" class="btn btn-social">
-            <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
-            GitHub
-          </button>
-        </div>
 
         <p class="auth-footer-text">
           Already have an account?

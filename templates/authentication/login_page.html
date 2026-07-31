@@ -82,23 +82,6 @@
           <button type="submit" class="btn btn-primary btn-block">Sign in</button>
         </form>
 
-        <div class="auth-divider">
-          <span class="auth-divider-line"></span>
-          <span class="auth-divider-text">OR</span>
-          <span class="auth-divider-line"></span>
-        </div>
-
-        <div class="auth-social-grid">
-          <button type="button" class="btn btn-social">
-            <svg class="icon" aria-hidden="true"><use href="#i-google"></use></svg>
-            Google
-          </button>
-          <button type="button" class="btn btn-social">
-            <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
-            GitHub
-          </button>
-        </div>
-
         <p class="auth-footer-text">
           Don't have an account?
           <a href="{% url 'register' %}" class="auth-link">Create one</a>
@@ -109,7 +92,7 @@
 
     <aside class="auth-visual" aria-hidden="true">
       <div class="auth-visual-badge">
-        <svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+        <svg class="icon" aria-hidden="true"><use href="/static/svg/sparkle.svg"></use></svg>
         Built for focused thinking
       </div>
       <h2 class="auth-visual-title">Ideas move faster<br>when they connect.</h2>

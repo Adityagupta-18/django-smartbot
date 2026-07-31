@@ -13,6 +13,13 @@
   --err:#E0524A;
 }
 
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0; background:var(--bg-base); color:var(--txt); font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+
 .icon{
   width:18px; height:18px;
   stroke:currentColor; fill:none;
@@ -39,7 +46,7 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:56px 40px;
+  padding:20px 40px;
 }
 
 .auth-panel-inner{
@@ -57,7 +64,7 @@
   display:flex;
   align-items:center;
   gap:10px;
-  margin-bottom:40px;
+  margin-bottom:30px;
 }
 
 .auth-brand-text{
@@ -267,37 +274,11 @@
   transform:translateY(-1px);
 }
 
-.auth-divider{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin:24px 0;
-}
-
-.auth-divider-line{
-  height:1px;
-  flex:1;
-  background:var(--hairline);
-}
-
-.auth-divider-text{
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:0.04em;
-  color:var(--txt3);
-}
-
-.auth-social-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
 .auth-footer-text{
   text-align:center;
   font-size:13.5px;
   color:var(--txt2);
-  margin:32px 0 0;
+  margin:20px 0 0;
 }
 
 .auth-link{
@@ -361,6 +342,17 @@
   color:var(--txt2);
   margin:0;
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"] {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
 
 @media (max-width: 1023.98px){
   .auth-grid{ grid-template-columns:1fr; }

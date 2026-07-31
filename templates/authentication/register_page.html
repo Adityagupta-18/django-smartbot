@@ -1,0 +1,172 @@
+{% extends "auth_base.html" %}
+
+{% block content %}
+<main class="auth-page">
+  <div class="auth-grid">
+
+    <aside class="auth-visual" aria-hidden="true">
+      <div class="auth-visual-badge">
+        <svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+        Free to start
+      </div>
+      <h2 class="auth-visual-title">Your second brain,<br>set up in a minute.</h2>
+      <p class="auth-visual-text">Create an account to save conversations, pick up threads later, and shape SmartBot around how you think.</p>
+    </aside>
+
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <div class="auth-panel-inner">
+
+        <div class="auth-brand">
+          <svg class="logo-mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span class="auth-brand-text">SmartBot</span>
+        </div>
+
+        <h1 id="auth-title" class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Takes less than a minute. No credit card needed.</p>
+
+        {% if form.non_field_errors %}
+        <div class="auth-error" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <form class="auth-form" method="post" action="{% url 'register' %}">
+          {% csrf_token %}
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="id_full_name" class="field-label">Full name</label>
+              <input
+                type="text"
+                name="full_name"
+                id="id_full_name"
+                class="input"
+                autocomplete="name"
+                placeholder="Aditya Sharma"
+                required
+              >
+              {% if form.full_name.errors %}
+              <p class="field-error">{{ form.full_name.errors|first }}</p>
+              {% endif %}
+            </div>
+            <div class="form-group">
+              <label for="id_username" class="field-label">Username</label>
+              <input
+                type="text"
+                name="username"
+                id="id_username"
+                class="input"
+                autocomplete="username"
+                placeholder="aditya.dev"
+                required
+              >
+              {% if form.username.errors %}
+              <p class="field-error">{{ form.username.errors|first }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_email" class="field-label">Email address</label>
+            <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="#i-mail"></use></svg>
+              <input
+                type="email"
+                name="email"
+                id="id_email"
+                class="input"
+                autocomplete="email"
+                placeholder="you@company.com"
+                required
+              >
+            </div>
+            {% if form.email.errors %}
+            <p class="field-error">{{ form.email.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="id_password" class="field-label">Password</label>
+            <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="#i-lock"></use></svg>
+              <input
+                type="password"
+                name="password"
+                id="id_password"
+                class="input input-has-toggle"
+                autocomplete="new-password"
+                placeholder="Create a strong password"
+                required
+              >
+              <button
+                type="button"
+                class="ico-right password-toggle"
+                data-target="id_password"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg>
+              </button>
+            </div>
+            <div class="password-strength" aria-hidden="true">
+              <span class="password-strength-bar"></span>
+              <span class="password-strength-bar"></span>
+              <span class="password-strength-bar"></span>
+              <span class="password-strength-bar"></span>
+            </div>
+            <p class="password-strength-hint">Use 8+ characters with a mix of letters, numbers &amp; symbols</p>
+            {% if form.password.errors %}
+            <p class="field-error">{{ form.password.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="id_confirm_password" class="field-label">Confirm password</label>
+            <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="#i-lock"></use></svg>
+              <input
+                type="password"
+                name="confirm_password"
+                id="id_confirm_password"
+                class="input"
+                autocomplete="new-password"
+                placeholder="Re-enter your password"
+                required
+              >
+            </div>
+            {% if form.confirm_password.errors %}
+            <p class="field-error">{{ form.confirm_password.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        </form>
+
+        <div class="auth-divider">
+          <span class="auth-divider-line"></span>
+          <span class="auth-divider-text">OR</span>
+          <span class="auth-divider-line"></span>
+        </div>
+
+        <div class="auth-social-grid">
+          <button type="button" class="btn btn-social">
+            <svg class="icon" aria-hidden="true"><use href="#i-google"></use></svg>
+            Google
+          </button>
+          <button type="button" class="btn btn-social">
+            <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+            GitHub
+          </button>
+        </div>
+
+        <p class="auth-footer-text">
+          Already have an account?
+          <a href="{% url 'login' %}" class="auth-link">Sign in</a>
+        </p>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+{% endblock content %}

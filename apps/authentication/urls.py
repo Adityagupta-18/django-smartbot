@@ -21,5 +21,5 @@ from apps.authentication.views import *
 urlpatterns = [
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
-    path('forgot-password/', forgot_password, name='fogot_password')
+    path('forgot-password/', forgot_password, name='forgot_password')
 ]

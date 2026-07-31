@@ -1,0 +1,121 @@
+{% extends "auth_base.html" %}
+
+{% block content %}
+<main class="auth-page">
+  <div class="auth-grid">
+
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <div class="auth-panel-inner">
+
+        <div class="auth-brand">
+          <svg class="logo-mark" aria-hidden="true"><use href="/static/icons/login_logo.svg"></use></svg>
+          <span class="auth-brand-text">SmartBot</span>
+        </div>
+
+        <h1 id="auth-title" class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in to pick up right where your ideas left off.</p>
+
+        {% if form.non_field_errors %}
+        <div class="auth-error" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <form class="auth-form" method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="id_email" class="field-label">Email address</label>
+            <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/mail.svg"></use></svg>
+              <input
+                type="email"
+                name="email"
+                id="id_email"
+                class="input"
+                autocomplete="email"
+                placeholder="you@company.com"
+                required
+              >
+            </div>
+            {% if form.email.errors %}
+            <p class="field-error">{{ form.email.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <div class="field-row">
+              <label for="id_password" class="field-label">Password</label>
+              <a href="{% url 'forgot_password' %}" class="auth-link-small">Forgot password?</a>
+            </div>
+            <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
+              <input
+                type="password"
+                name="password"
+                id="id_password"
+                class="input input-has-toggle"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+              >
+              <button
+                type="button"
+                class="ico-right password-toggle"
+                data-target="id_password"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                <svg class="icon" aria-hidden="true"><use href="/static/svg/eye.svg"></use></svg>
+              </button>
+            </div>
+            {% if form.password.errors %}
+            <p class="field-error">{{ form.password.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form-check-row">
+            <input type="checkbox" name="remember_me" id="id_remember_me" class="checkbox-input" checked>
+            <label for="id_remember_me" class="checkbox-label">Remember me on this device</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+        </form>
+
+        <div class="auth-divider">
+          <span class="auth-divider-line"></span>
+          <span class="auth-divider-text">OR</span>
+          <span class="auth-divider-line"></span>
+        </div>
+
+        <div class="auth-social-grid">
+          <button type="button" class="btn btn-social">
+            <svg class="icon" aria-hidden="true"><use href="#i-google"></use></svg>
+            Google
+          </button>
+          <button type="button" class="btn btn-social">
+            <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+            GitHub
+          </button>
+        </div>
+
+        <p class="auth-footer-text">
+          Don't have an account?
+          <a href="{% url 'register' %}" class="auth-link">Create one</a>
+        </p>
+
+      </div>
+    </section>
+
+    <aside class="auth-visual" aria-hidden="true">
+      <div class="auth-visual-badge">
+        <svg class="icon" aria-hidden="true"><use href="#i-sparkle"></use></svg>
+        Built for focused thinking
+      </div>
+      <h2 class="auth-visual-title">Ideas move faster<br>when they connect.</h2>
+      <p class="auth-visual-text">SmartBot links context across every conversation, so your best thinking is never more than a message away.</p>
+    </aside>
+
+  </div>
+</main>
+{% endblock content %}

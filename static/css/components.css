@@ -353,9 +353,28 @@
   transition:color .15s ease;
 }
 
-/* .topbar-icon-btn:hover{ color:var(--txt); } */
-.topbar-icon-btn:hover::after {
+
+.renameconversation:hover::after {
   content: "Rename";
+  position: absolute;
+  top: 100%;                 
+  left: 50%;        
+  z-index: 99;
+  transform: translateX(-50%);
+  background: var(--accent);    
+  color: #fff;      
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-top: 6px;     
+  pointer-events: none;       
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.deleteconversation:hover::after {
+  content: "Delete";
   position: absolute;
   top: 100%;                 
   left: 50%;        

@@ -10,6 +10,8 @@ function getRandomSuggestions(arr, count) {
 const randomSuggestions = getRandomSuggestions(SMARTBOT_SUGGESTIONS, 4);
 
 
+
+
 function renderSuggestionCards(arrsuggestions){
     const suggestionContainer=document.getElementById('suggestions-container')
     if(!suggestionContainer){return}
@@ -17,7 +19,7 @@ function renderSuggestionCards(arrsuggestions){
     const cardsHTML = arrsuggestions.map(item => {
                             return `
                                 <div class="col-12 col-md-6 ">
-                                <button type="button" class="suggestion-card w-100 text-start">
+                                <button type="button" class="suggestion-card w-100 text-start" data-prompt="${item.prompt}">
                                 <p class="suggestion-title">${item.title}</p>
                                 <p class="suggestion-description">${item.subtitle}</p>
                                 </button>
@@ -29,6 +31,21 @@ function renderSuggestionCards(arrsuggestions){
 }
 
 renderSuggestionCards(randomSuggestions)
+attachSuggestionEvents()
+
+
+function attachSuggestionEvents(){
+    const cards=document.querySelectorAll(".suggestion-card")
+    cards.forEach(card => {
+        card.addEventListener("click",()=>{
+            const prompt=card.dataset.prompt;
+            mesginput.value=prompt;
+            mesginput.focus();
+            Sendbtn.click();
+        })
+    });
+}
+
 
 
 
@@ -177,6 +194,7 @@ function sendMessage() {
 
 // Event Listeners
 Sendbtn.addEventListener("click", sendMessage);
+
 
 mesginput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {

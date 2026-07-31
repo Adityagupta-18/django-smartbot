@@ -22,8 +22,12 @@
     value="{{ conversation.title }}"
     maxlength="50">
  
-  <button type="button" id="renameConversationBtn" class="topbar-icon-btn" aria-label="Rename conversation">
+  <button type="button" id="renameConversationBtn" class="topbar-icon-btn renameconversation" aria-label="Rename conversation">
     <svg class="icon" aria-hidden="true"><use href="/static/icons/edit.svg"></use></svg>
+  </button>
+
+  <button type="button" id="deleteConversationBtn" class="topbar-icon-btn deleteconversation" aria-label="Delete conversation">
+    <svg class="icon" aria-hidden="true"><use href="/static/icons/delete.svg"></use></svg>
   </button>
  
 </header>

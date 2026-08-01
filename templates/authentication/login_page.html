@@ -24,6 +24,8 @@
         <form class="auth-form" method="post" action="{% url 'login' %}">
           {% csrf_token %}
 
+          <input type="hidden" name="next" value="{{ next }}">
+
           <div class="form-group">
             <label for="id_email" class="field-label">Email address</label>
             <div class="input-icon-wrap">

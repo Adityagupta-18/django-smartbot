@@ -106,8 +106,12 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "authentication.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    "authentication.backends.EmailAuthenticationBackend",
+    "apps.authentication.backends.EmailAuthenticationBackend",
 ]
+
+LOGIN_REDIRECT_URL = "chat:home"
+LOGIN_URL = "login"
+LOGOUT_REDIRECT_URL = "login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

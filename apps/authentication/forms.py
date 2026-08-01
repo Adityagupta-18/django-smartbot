@@ -27,6 +27,7 @@ class RegisterForm(UserCreationForm):
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField()
+    remember_me = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

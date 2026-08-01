@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from apps.authentication.views import *
 
+app_name = "authentication"
+
 urlpatterns = [
     path('login/', login_view, name='login'),
+    path("logout/", logout_view, name="logout"),
     path('register/', register_view, name='register'),
     path('forgot-password/', forgot_password, name='forgot_password')
 ]

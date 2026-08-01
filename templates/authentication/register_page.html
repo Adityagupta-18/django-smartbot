@@ -30,7 +30,7 @@
         </div>
         {% endif %}
 
-        <form class="auth-form" method="post" action="{% url 'register' %}">
+        <form class="auth-form" method="post" action="{% url 'authentication:register' %}">
           {% csrf_token %}
 
           <div class="form-row-2">
@@ -139,7 +139,7 @@
 
         <p class="auth-footer-text">
           Already have an account?
-          <a href="{% url 'login' %}" class="auth-link">Sign in</a>
+          <a href="{% url 'authentication:login' %}" class="auth-link">Sign in</a>
         </p>
 
       </div>

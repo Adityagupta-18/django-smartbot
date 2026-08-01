@@ -4,9 +4,15 @@ from django.shortcuts import render, redirect
 from .forms import *
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
+from django.contrib.auth import logout
+from django.views.decorators.http import require_POST
+
 
 def login_view(request):
     next_url = request.GET.get("next") or request.POST.get("next")
+    if next_url in (None, "", "None"):
+        next_url = None
+
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
     
@@ -14,7 +20,9 @@ def login_view(request):
         form=LoginForm(request.POST)
 
         if form.is_valid():
+            print("Authenticated user:", form.user)
             login(request,form.user)
+
             if not form.cleaned_data["remember_me"]:
                 request.session.set_expiry(0)
 
@@ -25,7 +33,7 @@ def login_view(request):
             ):
                 return redirect(next_url)
 
-            return redirect(settings.LOGIN_REDIRECT_URL)    
+            return redirect(settings.LOGIN_REDIRECT_URL)
 
     else:
         form=LoginForm()
@@ -35,6 +43,11 @@ def login_view(request):
     }
     return render(request,'authentication/login_page.html',context)
 
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
 def register_view(request):

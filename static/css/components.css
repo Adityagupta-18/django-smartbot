@@ -274,6 +274,11 @@
   cursor:pointer;
   transition:color .15s ease;
 }
+
+.sidebar-logout-form {
+    display: inline;
+}
+
 .sidebar-icon-btn:hover{ color:var(--txt); }
 
 

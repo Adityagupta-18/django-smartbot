@@ -109,9 +109,9 @@ AUTHENTICATION_BACKENDS = [
     "apps.authentication.backends.EmailAuthenticationBackend",
 ]
 
-LOGIN_REDIRECT_URL = "chat:home"
-LOGIN_URL = "login"
-LOGOUT_REDIRECT_URL = "login"
+LOGIN_REDIRECT_URL = "core:home"
+LOGIN_URL = "authentication:login"
+LOGOUT_REDIRECT_URL = "authentication:login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

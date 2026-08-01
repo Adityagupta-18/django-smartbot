@@ -15,16 +15,19 @@
         <h1 id="auth-title" class="auth-title">Welcome back</h1>
         <p class="auth-subtitle">Sign in to pick up right where your ideas left off.</p>
 
-        {% if form.non_field_errors %}
-        <div class="auth-error" role="alert">
-          {{ form.non_field_errors }}
-        </div>
-        {% endif %}
 
-        <form class="auth-form" method="post" action="{% url 'login' %}">
+        <form class="auth-form" method="post" action="{% url 'authentication:login' %}">
           {% csrf_token %}
 
-          <input type="hidden" name="next" value="{{ next }}">
+          {% if next %}
+              <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
+
+              {% if form.non_field_errors %}
+                  <div class="auth-error" role="alert">
+                      {{ form.non_field_errors }}
+                  </div>
+              {% endif %}
 
           <div class="form-group">
             <label for="id_email" class="field-label">Email address</label>
@@ -48,7 +51,7 @@
           <div class="form-group">
             <div class="field-row">
               <label for="id_password" class="field-label">Password</label>
-              <a href="{% url 'forgot_password' %}" class="auth-link-small">Forgot password?</a>
+              <a href="{% url 'authentication:forgot_password' %}" class="auth-link-small">Forgot password?</a>
             </div>
             <div class="input-icon-wrap">
               <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
@@ -86,7 +89,7 @@
 
         <p class="auth-footer-text">
           Don't have an account?
-          <a href="{% url 'register' %}" class="auth-link">Create one</a>
+          <a href="{% url 'authentication:register' %}" class="auth-link">Create one</a>
         </p>
 
       </div>

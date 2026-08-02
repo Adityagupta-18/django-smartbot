@@ -16,6 +16,15 @@
         <p class="auth-subtitle">Sign in to pick up right where your ideas left off.</p>
 
 
+        {% if messages %}
+          {% for message in messages %}
+              <div class="auth-message auth-message-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      {% endif %}
+
+
         <form class="auth-form" method="post" action="{% url 'authentication:login' %}">
           {% csrf_token %}
 

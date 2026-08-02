@@ -42,7 +42,7 @@
                 id="id_full_name"
                 class="input"
                 autocomplete="name"
-                placeholder="Aditya Sharma"
+                placeholder="Aditya Gupta"
                 required
               >
               {% if form.full_name.errors %}
@@ -91,7 +91,7 @@
               <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
               <input
                 type="password"
-                name="password"
+                name="password1"
                 id="id_password"
                 class="input input-has-toggle"
                 autocomplete="new-password"
@@ -107,6 +107,13 @@
               >
                 <svg class="icon" aria-hidden="true"><use href="/static/svg/eye.svg"></use></svg>
               </button>
+
+              {% if form.password1.errors %}
+              <p class="field-error">
+                  {{ form.password1.errors|first }}
+              </p>
+              {% endif %}
+
             </div>
             <p class="password-strength-hint">Use 8+ characters with a mix of letters, numbers &amp; symbols</p>
             {% if form.password.errors %}
@@ -120,7 +127,7 @@
               <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/lock.svg"></use></svg>
               <input
                 type="password"
-                name="confirm_password"
+                name="password2"
                 id="id_confirm_password"
                 class="input"
                 autocomplete="new-password"
@@ -128,13 +135,22 @@
                 required
               >
             </div>
-            {% if form.confirm_password.errors %}
-            <p class="field-error">{{ form.confirm_password.errors|first }}</p>
-            {% endif %}
           </div>
+
+          {% if form.password2.errors %}
+          <p class="field-error">
+              {{ form.password2.errors|first }}
+          </p>
+          {% endif %}
 
           <button type="submit" class="btn btn-primary btn-block">Create account</button>
         </form>
+
+        {% if form.non_field_errors %}
+        <div class="auth-error">
+            {{ form.non_field_errors|first }}
+        </div>
+        {% endif %}
 
 
         <p class="auth-footer-text">

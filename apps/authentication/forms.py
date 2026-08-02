@@ -5,19 +5,55 @@ from django.contrib.auth import authenticate
 
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    full_name = forms.CharField()
     email = forms.EmailField()
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
+        email = self.cleaned_data["email"].strip().lower()
+
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                "An account with this email already exists."
+            )
+
         return email
+
+    def clean_full_name(self):
+        full_name = self.cleaned_data["full_name"].strip().title()
+        return full_name
+
+    def clean_username(self):
+        username = self.cleaned_data["username"].strip().lower()
+        if CustomUser.objects.filter(username=username).exists():
+            raise forms.ValidationError(
+                "This username is already taken."
+            )
+        return username
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        full_name = self.cleaned_data["full_name"]
+
+        name_parts = full_name.split(" ", 1)
+
+        user.first_name = name_parts[0]
+
+        if len(name_parts) > 1:
+            user.last_name = name_parts[1]
+
+        user.username = self.cleaned_data["username"]
+        user.email = self.cleaned_data["email"]
+
+        if commit:
+            user.save()
+
+        return user
 
     class Meta:
         model = CustomUser
         fields = [
-            "first_name",
-            "last_name",
+            "full_name",
             "username",
             "email",
         ]

@@ -6,6 +6,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 
 def login_view(request):
@@ -20,7 +21,6 @@ def login_view(request):
         form=LoginForm(request.POST)
 
         if form.is_valid():
-            print("Authenticated user:", form.user)
             login(request,form.user)
 
             if not form.cleaned_data["remember_me"]:
@@ -44,14 +44,37 @@ def login_view(request):
     return render(request,'authentication/login_page.html',context)
 
 
+
+
 @require_POST
 def logout_view(request):
     logout(request)
     return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
+
+
 def register_view(request):
-    return render(request,'authentication/register_page.html')
+    if request.user.is_authenticated:
+        return redirect(settings.LOGIN_REDIRECT_URL)
+
+    if request.method=="POST":
+        form=RegisterForm(request.POST)
+
+        if form.is_valid():
+            user=form.save()
+            messages.success(request,"Your account has been created successfully. Please sign in to continue.")
+            return redirect(settings.LOGIN_URL)
+
+        else:
+            print(form.errors)
+
+    else:
+        form=RegisterForm()
+
+    context = {"form": form,}
+    return render(request,'authentication/register_page.html',context)
+
 
 def forgot_password(request):
     return render(request,'authentication/forgot_password.html')

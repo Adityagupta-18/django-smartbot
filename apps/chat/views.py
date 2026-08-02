@@ -8,6 +8,8 @@ from django.utils import timezone
 from groq import RateLimitError
 from datetime import date, timedelta
 import re
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -36,7 +38,7 @@ def new_chat(request):
             "message": "Invalid request"}, status=400)
     
 
-
+@login_required
 def conversation_detail(request,conversation_id):
     user=request.user
     all_conversations=Conversation.objects.filter(user=user).order_by('-updated_at')

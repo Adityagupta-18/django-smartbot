@@ -9,7 +9,7 @@ class EmailAuthenticationBackend(ModelBackend):
         if email is None or password is None:
             return None
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email__iexact=email)
             
         except User.DoesNotExist:
             return None

@@ -221,7 +221,7 @@ body{
   color:var(--txt3);
   cursor:pointer;
 }
-.ico-right:hover{ color:var(--txt); }
+.ico-right:hover{ color:var(--txt2); }
 
 .auth-link-small{
   font-size:12.5px;
@@ -384,6 +384,31 @@ body{
   font-size:14.5px;
   color:var(--txt2);
   margin:0;
+}
+
+.password-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: var(--txt3);
+    transition: color 0.2s ease;
+}
+
+.password-toggle .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.password-toggle.password-visible {
+    color: var(--txt);
+}
+
+.password-toggle use {
+    transition: opacity 0.15s ease;
 }
 
 input[type="password"]::-ms-reveal,

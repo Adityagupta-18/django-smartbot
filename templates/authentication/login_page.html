@@ -1,4 +1,6 @@
 {% extends "auth_base.html" %}
+{% load static %}
+
 
 {% block content %}
 <main class="auth-page">
@@ -115,4 +117,7 @@
 
   </div>
 </main>
+
+<script src="{% static 'js/authentication.js' %}"></script>
+
 {% endblock content %}

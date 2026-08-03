@@ -71,13 +71,32 @@ class LoginForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
+
         email = cleaned_data.get("email")
-        password=cleaned_data.get("password")
+        password = cleaned_data.get("password")
+
         if email and password:
-            user=authenticate(email=email , password=password)
+
+            user = authenticate(
+                email=email,
+                password=password
+            )
 
             if user is None:
-                raise forms.ValidationError("Invalid email or password.")
-        
-            self.user=user
+
+                inactive_user = CustomUser.objects.filter(
+                    email__iexact=email
+                ).first()
+
+                if inactive_user and not inactive_user.is_active:
+                    raise forms.ValidationError(
+                        "Please verify your email before logging in."
+                    )
+
+                raise forms.ValidationError(
+                    "Invalid email or password."
+                )
+
+            self.user = user
+
         return cleaned_data

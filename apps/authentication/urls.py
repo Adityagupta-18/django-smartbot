@@ -24,5 +24,6 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path("logout/", logout_view, name="logout"),
     path('register/', register_view, name='register'),
-    path('forgot-password/', forgot_password, name='forgot_password')
+    path('forgot-password/', forgot_password, name='forgot_password'),
+    path("verify/<uidb64>/<token>/",verify_email,name="verify_email"),
 ]

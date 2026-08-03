@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .forms import *
@@ -7,12 +8,23 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from .tokens import email_verification_token
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.contrib import messages
+from .models import CustomUser
+from .tokens import email_verification_token
+
 
 
 def login_view(request):
     next_url = request.GET.get("next") or request.POST.get("next")
     if next_url in (None, "", "None"):
-        next_url = None
+        next_url = None 
 
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
@@ -62,18 +74,73 @@ def register_view(request):
         form=RegisterForm(request.POST)
 
         if form.is_valid():
-            user=form.save()
-            messages.success(request,"Your account has been created successfully. Please sign in to continue.")
-            return redirect(settings.LOGIN_URL)
+            user=form.save(commit=False)
+            user.is_active=False
+            user.save()
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = email_verification_token.make_token(user)
+            verification_path = reverse(
+                "authentication:verify_email",
+                kwargs={
+                    "uidb64": uid,
+                    "token": token,
+                },
+            )
 
-        else:
-            print(form.errors)
+            verification_url = request.build_absolute_uri(
+                verification_path
+            )
+
+            # Sending email
+            send_mail(
+                subject="Verify your SmartBot account",
+                message=(
+                    f"Hi {user.first_name},\n\n"
+                    f"Welcome to SmartBot!\n\n"
+                    f"Please verify your email by clicking the link below:\n\n"
+                    f"{verification_url}\n\n"
+                    f"If you didn't create this account, you can safely ignore this email."
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            messages.success(request,"Account created successfully! A verification link has been sent to your email.")
+            return redirect(settings.LOGIN_URL)
 
     else:
         form=RegisterForm()
 
     context = {"form": form,}
     return render(request,'authentication/register_page.html',context)
+
+
+
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user and email_verification_token.check_token(user, token):
+
+        user.is_active = True
+        user.save()
+        messages.success(
+            request,
+            "Your email has been verified successfully. You can now sign in."
+        )
+    else:
+        messages.error(
+            request,
+            "This verification link is invalid or has expired."
+        )
+
+    return redirect("authentication:login")
+
 
 
 def forgot_password(request):

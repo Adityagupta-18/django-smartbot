@@ -9,6 +9,7 @@ from groq import RateLimitError
 from datetime import date, timedelta
 import re
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 
 # Create your views here.
@@ -234,4 +235,29 @@ def rename_conversation(request):
 
     return JsonResponse({
         "success": False
+    })
+
+
+
+@login_required
+@require_POST
+def delete_conversation(request):
+    try:
+        data = json.loads(request.body)
+        conversation_id = data.get("conversation_id")
+        conversation=get_object_or_404(
+            Conversation,
+            id=conversation_id,
+            user=request.user
+            )
+        conversation.delete()
+        
+    except Exception:
+        return JsonResponse({
+            "success": False,
+            "error": "Something went wrong."
+        }, status=500)
+
+    return JsonResponse({
+        "success": True
     })

@@ -25,4 +25,5 @@ urlpatterns = [
     path("<int:conversation_id>/", conversation_detail, name="conversation_detail"),
     path("send-message/", send_message, name="send_message"),
     path("rename-conversation/",rename_conversation,name="rename_conversation"),
+    path("delete-conversation/",delete_conversation,name="delete_conversation"),
 ]

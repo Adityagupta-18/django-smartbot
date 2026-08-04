@@ -34,6 +34,34 @@
                 {% endblock content %}
 
                 {% include "components/composer.html" %}
+
+                <div id="deleteConversationModal" class="confirmation-modal d-none">
+                    <div class="confirmation-modal-content">
+                        <div class="confirmation-modal-icon">
+                            <!-- Your delete SVG -->
+                        </div>
+                        <h3>Delete Conversation?</h3>
+                        <p>
+                            This conversation and all of its messages will be permanently deleted.
+                            This action cannot be undone.
+                        </p>
+                        <div class="confirmation-modal-actions">
+                            <button
+                                type="button"
+                                id="deleteConversationCancel"
+                                class="secondary-btn">
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                id="deleteConversationConfirm"
+                                class="danger-btn">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>

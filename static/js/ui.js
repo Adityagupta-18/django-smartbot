@@ -146,6 +146,59 @@ function removeRateLimitBanner(){
     }
 }
 
+// Chat Searching
+if (convSearch) {
+
+    convSearch.addEventListener("input", function () {
+
+        const conversations = document.querySelectorAll(".sidebar-conversation");
+        const searchValue = convSearch.value.toLowerCase().trim();
+        let matchedCount = 0;
+
+        conversations.forEach(function (conversation) {
+            const title = conversation.dataset.title.toLowerCase();
+
+            if (title.includes(searchValue)) {
+
+                conversation.style.display = "";
+                matchedCount++;
+
+            } 
+            else {
+                conversation.style.display = "none";
+            }
+
+        });
+
+
+        // Hide empty Today / Previous groups
+        const groups = document.querySelectorAll(".sidebar-group");
+
+        groups.forEach(function (group) {
+            const visibleChats = group.querySelectorAll(
+                ".sidebar-conversation:not([style*='display: none'])"
+            );
+
+            if (visibleChats.length === 0) {
+                group.style.display = "none";
+            } 
+            else {
+                group.style.display = "";
+            }
+
+        });
+
+        // Show "No conversations found"
+        if (matchedCount === 0 && conversations.length > 0) {
+            noConvoResults.classList.remove("d-none");
+
+        } 
+        else {
+            noConvoResults.classList.add("d-none");
+        }
+    });
+
+}
 
 
 

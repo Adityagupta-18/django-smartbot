@@ -91,6 +91,7 @@
 }
 
 .sidebar-search-input{
+  margin-top: 3px;
   width:100%;
   background:var(--bg-surf2);
   border:1px solid var(--hairline);

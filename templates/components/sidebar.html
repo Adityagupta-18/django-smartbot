@@ -18,6 +18,10 @@
       <span>New chat</span>
     </button>
 
+
+    <!-- Conversation history -->
+    <nav class="sidebar-conversations flex-grow-1" aria-label="Conversation history">
+
     <!-- Search -->
     <form class="sidebar-search" role="search" aria-label="Search conversations">
       <label for="convSearch" class="visually-hidden">Search chats</label>
@@ -31,9 +35,6 @@
         autocomplete="off"
       >
     </form>
-
-    <!-- Conversation history -->
-    <nav class="sidebar-conversations flex-grow-1" aria-label="Conversation history">
 
 {% if has_conversations %}
 

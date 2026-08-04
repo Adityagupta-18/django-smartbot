@@ -117,6 +117,7 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                             conversationItem.querySelector(
                                 ".sidebar-conversation-title"
                             ).textContent = data.title;
+                            conversationItem.dataset.title = data.title;
 
                         }
                     }

@@ -95,7 +95,7 @@
     <form class="sidebar-logout-form" method="post" action="{% url 'authentication:logout' %}">
       {% csrf_token %}
 
-      <button type="submit" class="sidebar-icon-btn" aria-label="Log out">
+      <button type="submit" class="sidebar-icon-btn logoutbtn" aria-label="Log out">
           <svg class="icon icon-sm" aria-hidden="true">
               <use href="/static/icons/logout.svg"></use>
           </svg>

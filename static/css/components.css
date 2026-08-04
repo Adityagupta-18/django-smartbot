@@ -265,6 +265,7 @@
   display:flex;
   align-items:center;
   justify-content:center;
+  position: relative;
   width:28px;
   height:28px;
   padding:0;
@@ -276,11 +277,35 @@
   transition:color .15s ease;
 }
 
-.sidebar-logout-form {
+.sidebar-logout-form {  
     display: inline;
 }
 
-.sidebar-icon-btn:hover{ color:var(--txt); }
+.sidebar-icon-btn:hover{ 
+  color:var(--txt);
+ }
+
+.sidebar-icon-btn::after {
+  content: "Logout";
+  position: absolute;
+  top: 80%;                 
+  left: 50%;        
+  z-index: 99;
+  transform: translateX(-50%);
+  background: var(--accent);    
+  color: var(--txt);   
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-top: 2px;     
+  pointer-events: none;       
+  opacity: 0;
+}
+
+.sidebar-icon-btn:hover::after {
+  opacity: 1;
+}
 
 
 /* ********** TOPBAR ********* */
@@ -368,7 +393,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: #fff;      
+  color: var(--txt);      
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -376,7 +401,6 @@
   margin-top: 6px;     
   pointer-events: none;       
   opacity: 0;
-  transition: opacity 0.2s;
 }
 
 .deleteconversation:hover::after {
@@ -387,7 +411,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: #fff;      
+  color: var(--txt);      
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -395,7 +419,6 @@
   margin-top: 6px;     
   pointer-events: none;       
   opacity: 0;
-  transition: opacity 0.2s;
 }
 
 .topbar-icon-btn:hover::after {

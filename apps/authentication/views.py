@@ -18,6 +18,7 @@ from django.utils.encoding import force_str
 from django.contrib import messages
 from .models import CustomUser
 from .tokens import email_verification_token
+from django.contrib.auth.tokens import default_token_generator
 
 
 
@@ -139,9 +140,92 @@ def verify_email(request, uidb64, token):
             "This verification link is invalid or has expired."
         )
 
-    return redirect("authentication:login")
+    return redirect(settings.LOGIN_REDIRECT_URL)
+
 
 
 
 def forgot_password(request):
-    return render(request,'authentication/forgot_password.html')
+    if request.method=='POST':
+        form=ForgotPasswordForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            user = CustomUser.objects.get(email__iexact=email)
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+
+            reset_path = reverse(
+                "authentication:reset_password",
+                kwargs={
+                    "uidb64": uid,
+                    "token": token,
+                },
+            )
+            reset_url = request.build_absolute_uri(reset_path)
+
+            send_mail(
+                subject="Reset your SmartBot password",
+                message=(
+                    f"Hi {user.first_name},\n\n"
+                    f"Welcome to SmartBot!\n\n"
+                    f"We received a request to reset your SmartBot password.\n\n"
+                    f"click the link below:\n\n"
+                    f"{reset_url}\n\n"
+                    f"If you didn't request this, simply ignore this email."
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            messages.success(
+                request,
+                "Password reset link has been sent to your email."
+            )
+
+            return redirect(settings.LOGIN_REDIRECT_URL)
+        
+    else:
+        form = ForgotPasswordForm()
+
+    context={"form":form,}
+    return render(request,'authentication/forgot_password.html',context)
+
+
+
+
+def reset_password(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is None or not default_token_generator.check_token(user, token):
+        messages.error(
+            request,
+            "This password reset link is invalid or has expired."
+        )
+        return redirect("authentication:login")
+
+    if request.method == "POST":
+        form = ResetPasswordForm(user, request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "Your password has been updated successfully. Please sign in."
+            )
+
+            return redirect(settings.LOGIN_REDIRECT_URL)
+
+    else:
+        form = ResetPasswordForm(user)
+
+    context = {"form": form,}
+
+    return render(request,"authentication/reset_password.html",context)

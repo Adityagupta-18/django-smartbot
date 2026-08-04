@@ -83,11 +83,11 @@
 
     <!-- Profile footer -->
     <footer class="sidebar-footer d-flex align-items-center gap-2">
-      <div class="sidebar-avatar" aria-hidden="true">A</div>
+      <div class="sidebar-avatar" aria-hidden="true">{{ request.user.first_name|first|upper }}</div>
 
       <div class="sidebar-user flex-grow-1">
-        <p class="sidebar-user-name">Aditya Gupta</p>
-        <p class="sidebar-user-plan">Pro plan</p>
+        <p class="sidebar-user-name">{{ request.user.username|upper }}</p>
+        <p class="sidebar-user-plan">{{ request.user.email }}</p>
       </div>
 
 

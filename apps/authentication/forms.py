@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from django import forms
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import authenticate
+
 
 
 class RegisterForm(UserCreationForm):
@@ -100,3 +102,24 @@ class LoginForm(forms.Form):
             self.user = user
 
         return cleaned_data
+
+
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField()
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+
+        if not CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                "No account exists with this email."
+            )
+
+        return email
+
+
+
+class ResetPasswordForm(SetPasswordForm):
+    pass

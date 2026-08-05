@@ -312,6 +312,44 @@ chatTitleInput.addEventListener("blur", () => {
 });
 
 
+// DELETE BUTTON
+const deleteConversationBtn = document.getElementById("deleteConversationBtn");
+const deleteConversationModal = document.getElementById("deleteConversationModal");
+const deleteConversationCancel = document.getElementById("deleteConversationCancel");
+
+if (deleteConversationBtn) {
+
+    deleteConversationBtn.addEventListener("click", function () {
+        deleteConversationModal.classList.remove("d-none");
+
+    });
+
+}
+
+if (deleteConversationCancel) {
+    deleteConversationCancel.addEventListener("click", function () {
+        deleteConversationModal.classList.add("d-none");
+
+    });
+
+}
+
+
+if (deleteConversationModal) {
+
+    deleteConversationModal.addEventListener("click", function (event) {
+        if (event.target === deleteConversationModal) {
+            deleteConversationModal.classList.add("d-none");
+
+        }
+
+    });
+
+}
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     renderAllMarkdown();
     decorateCodeBlocks();

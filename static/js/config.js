@@ -15,10 +15,6 @@ const chatbody = document.querySelector(".chat-body");
 const scrollBtn=document.getElementById("scroll-btn")
 let isSending=false;
 
-const deleteConversationBtn = document.getElementById("deleteConversationBtn");
-const deleteConversationModal = document.getElementById("deleteConversationModal");
-const deleteConversationCancel = document.getElementById("deleteConversationCancel");
-
 // SIDE BAR
 const todayGroup=document.getElementById("today-group");
 const currentConversation=document.getElementById(`conversation-${conversationId}`)

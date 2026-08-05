@@ -35,32 +35,50 @@
 
                 {% include "components/composer.html" %}
 
-                <div id="deleteConversationModal" class="confirmation-modal d-none">
-                    <div class="confirmation-modal-content">
-                        <div class="confirmation-modal-icon">
-                            <!-- Your delete SVG -->
+                    <div id="deleteConversationModal" class="confirmation-modal d-none">
+
+                        <div class="confirmation-modal-content">
+
+                            <div class="confirmation-modal-icon">
+                                <svg class="icon">
+                                    <use href="/static/icons/delete.svg"></use>
+                                </svg>
+                            </div>
+
+                            <h3 class="confirmation-modal-title">
+                                Delete Conversation?
+                            </h3>
+
+                            <p class="confirmation-modal-description">
+                                This conversation and all of its messages will be permanently deleted.
+                                This action cannot be undone.
+                            </p>
+
+                            <div class="confirmation-modal-actions">
+
+                                <button
+                                    type="button"
+                                    id="deleteConversationCancel"
+                                    class="modal-btn modal-btn-secondary">
+
+                                    Cancel
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    id="deleteConversationConfirm"
+                                    class="modal-btn modal-btn-danger">
+
+                                    Delete
+
+                                </button>
+
+                            </div>
+
                         </div>
-                        <h3>Delete Conversation?</h3>
-                        <p>
-                            This conversation and all of its messages will be permanently deleted.
-                            This action cannot be undone.
-                        </p>
-                        <div class="confirmation-modal-actions">
-                            <button
-                                type="button"
-                                id="deleteConversationCancel"
-                                class="secondary-btn">
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                id="deleteConversationConfirm"
-                                class="danger-btn">
-                                Delete
-                            </button>
-                        </div>
+
                     </div>
-                </div>
 
             </main>
         </div>

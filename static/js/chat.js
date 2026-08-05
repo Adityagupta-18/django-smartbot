@@ -316,6 +316,7 @@ chatTitleInput.addEventListener("blur", () => {
 const deleteConversationBtn = document.getElementById("deleteConversationBtn");
 const deleteConversationModal = document.getElementById("deleteConversationModal");
 const deleteConversationCancel = document.getElementById("deleteConversationCancel");
+const deleteConversationConfirm = document.getElementById("deleteConversationConfirm");
 
 if (deleteConversationBtn) {
 
@@ -346,6 +347,51 @@ if (deleteConversationModal) {
     });
 
 }
+
+
+
+if (deleteConversationConfirm) {
+
+    deleteConversationConfirm.addEventListener("click", deleteConversation);
+    async function deleteConversation() {
+
+        try {
+            const response = await fetch("/chat/delete-conversation/", {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify({
+                    conversation_id: conversationId
+                })
+
+            });
+
+            const data = await response.json();
+
+            if (data.success){
+                
+                deleteConversationModal.classList.add("d-none");
+                const conversationElement = document.getElementById(`conversation-${conversationId}`);
+
+                    if (conversationElement) {
+                        conversationElement.remove();
+                    }
+                window.location.href = "/";
+            }
+        }
+
+        catch (error) {
+            console.error(error);
+
+        }
+
+    }
+
+}
+
 
 
 

@@ -383,7 +383,12 @@
   cursor:pointer;
   transition:color .15s ease;
 }
-
+ .topbar-actions{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+ }
 
 .renameconversation:hover::after {
   content: "Rename";

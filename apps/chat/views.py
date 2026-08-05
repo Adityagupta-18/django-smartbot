@@ -114,7 +114,7 @@ def send_message(request):
             conversation.save()
 
         
-        MAX_HISTORY_MESSAGES = 20
+        MAX_HISTORY_MESSAGES = 15
         history = list(conversation.messages.all().order_by("-created_at")[:MAX_HISTORY_MESSAGES])
         history.reverse()
         history_dict=[]

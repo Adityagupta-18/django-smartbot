@@ -202,6 +202,44 @@ if (convSearch) {
 
 
 
+// SIDE OPENING AND CLOSING
+function closeSidebar() {
+    sidebar.classList.remove("is-open");
+}
+
+function openSidebar() {
+    sidebar.classList.add("is-open");
+}
+
+if (menuBtn && sidebar) {
+
+    menuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("is-open");
+    });
+
+    // CLICK OUTSIDE
+    document.addEventListener("click", (event) => {
+        if (
+            sidebar.classList.contains("is-open") &&
+            !sidebar.contains(event.target) &&
+            !menuBtn.contains(event.target)
+        ) {
+            closeSidebar();
+        }
+
+    });
+
+    // CLOSE BUTTON
+    if(closeBtn){
+        closeBtn.addEventListener("click", closeSidebar);
+    }
+
+}
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     if (
         window.AI_AVAILABLE === false &&

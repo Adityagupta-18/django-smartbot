@@ -16,6 +16,9 @@ const scrollBtn=document.getElementById("scroll-btn")
 let isSending=false;
 
 // SIDE BAR
+const menuBtn = document.querySelector(".topbar-menu-btn");
+const sidebar = document.querySelector("#appSidebar");
+const closeBtn = document.querySelector(".sidebar-close-btn");
 const todayGroup=document.getElementById("today-group");
 const currentConversation=document.getElementById(`conversation-${conversationId}`)
 const convSearch = document.getElementById("convSearch");

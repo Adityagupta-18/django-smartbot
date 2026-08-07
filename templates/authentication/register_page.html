@@ -53,6 +53,8 @@
             </div>
             <div class="form-group">
               <label for="id_username" class="field-label">Username</label>
+              <div class="input-icon-wrap">
+              <svg class="icon ico-left" aria-hidden="true"><use href="/static/svg/user.svg"></use></svg>
               <input
                 type="text"
                 name="username"
@@ -62,6 +64,7 @@
                 placeholder="aditya.dev"
                 required
               >
+              </div>
               {% if form.username.errors %}
               <p class="field-error">{{ form.username.errors|first }}</p>
               {% endif %}

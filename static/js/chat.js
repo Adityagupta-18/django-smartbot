@@ -204,6 +204,11 @@ mesginput.addEventListener("keydown", (e) => {
     }
 });
 
+// Home Button
+const homeBnt=document.getElementById("homeBtn");
+homeBnt.addEventListener("click",()=>{
+    window.location.href = "/";
+})
 
 
 // Rename button

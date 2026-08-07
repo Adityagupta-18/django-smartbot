@@ -25,6 +25,10 @@
   <div class="topbar-actions">  
 
     {% if conversation %}
+    <button type="button" id="homeBtn" class="topbar-icon-btn home-button" aria-label="Go To Home">
+      <svg class="icon" aria-hidden="true"><use href="/static/icons/home.svg"></use></svg>
+    </button>
+
     <button type="button" id="renameConversationBtn" class="topbar-icon-btn renameconversation" aria-label="Rename conversation">
       <svg class="icon" aria-hidden="true"><use href="/static/icons/edit.svg"></use></svg>
     </button>

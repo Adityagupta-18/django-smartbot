@@ -260,7 +260,6 @@ Your goal is not only to answer questions, but to provide a high-quality assista
 
 
 # TITLE PROMPT :
-
 TITLE_PROMPT = """
 You are an AI assistant responsible only for generating conversation titles.
 
@@ -312,4 +311,32 @@ Title:
 Ideas to Beat Boredom
 
 Return only the title and nothing else.
+"""
+
+
+# SUMMARY PROMPT
+SUMMARY_PROMPT = """
+You are responsible for creating a concise conversation summary.
+
+Summarize the important information from the conversation.
+
+Rules:
+- Return only the summary.
+- Do not mention that you are creating a summary.
+- Keep it medium length.
+- Preserve important context, decisions, user goals, technical details, and preferences.
+- Ignore greetings and unnecessary small talk.
+- Write in third person.
+- The summary should help another AI continue the conversation later.
+
+Focus on:
+- What the user is trying to achieve.
+- Important decisions made.
+- Technologies, tools, or topics involved.
+- Problems solved or still pending.
+
+Do not include:
+- Temporary debugging messages.
+- Repetitive conversation.
+- Exact message history.
 """

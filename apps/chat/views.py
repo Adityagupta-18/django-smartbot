@@ -134,8 +134,19 @@ def send_message(request):
                 conversation=conversation,
                 sender="AI",
                 content=ai_response
-            )
-            conversation.save()
+            )   
+
+            if conversation.messages.count() % 6 == 0:
+                summary_history = "\n".join(
+                    [
+                        f"{msg.sender}: {msg.content}"
+                        for msg in conversation.messages.all()
+                    ]
+                )
+                
+                summary = generate_conversation_summary(summary_history)
+                conversation.summary=summary
+                conversation.save(update_fields=["summary"])
 
             if conversation.messages.count() == 2 and conversation.title == "New Chat":
                 try:
@@ -182,7 +193,6 @@ def send_message(request):
             })
 
         except Exception as e:
-            print("GENERAL ERROR:", e)
             return JsonResponse({
                 "success": False,
                 "error_type": "server_error",

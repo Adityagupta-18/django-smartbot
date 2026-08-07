@@ -5,6 +5,7 @@ from django.conf import settings
 class Conversation(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title=models.CharField(max_length=50)
+    summary=models.TextField(blank=True, null=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 

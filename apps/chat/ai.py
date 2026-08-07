@@ -1,6 +1,6 @@
 import os
 from groq import Groq
-from apps.chat.prompts import SYSTEM_PROMPT , TITLE_PROMPT
+from apps.chat.prompts import SYSTEM_PROMPT , TITLE_PROMPT , SUMMARY_PROMPT
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"),)
 
@@ -20,8 +20,6 @@ def generate_ai_response(history):
 
 
 def generate_conversation_title(user_message, ai_response):
-    print("USER MESSAGE:", user_message)
-    print("AI RESPONSE:", ai_response[:200])
     chat_completion = client.chat.completions.create(
         messages=[
             {
@@ -54,3 +52,25 @@ def generate_conversation_title(user_message, ai_response):
         title = "New Chat"
 
     return title
+
+
+
+def generate_conversation_summary(conversation_history):
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role":"system",
+                "content": SUMMARY_PROMPT,
+            },
+            {
+                "role":"user",
+                "content": conversation_history,
+            },
+        ],
+        model="llama-3.3-70b-versatile",
+        temperature=0.3,
+    )
+
+    summary = chat_completion.choices[0].message.content.strip()
+
+    return summary

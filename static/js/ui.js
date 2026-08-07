@@ -81,6 +81,16 @@ scrollBtn.addEventListener("click", () => {
 updateScrollButton();
 
 
+// DISABLED CARDS
+function toggleSuggestionCards(disabled){
+    const cards = document.querySelectorAll(".suggestion-card");
+
+    cards.forEach(card=>{
+        card.disabled = disabled;
+    });
+
+}
+
 
 function startCountdown(seconds){
 
@@ -111,6 +121,7 @@ function startCountdown(seconds){
 
             mesginput.disabled = false;
             Sendbtn.disabled = false;
+            toggleSuggestionCards(false);
 }
 
     },1000);
@@ -134,6 +145,7 @@ function showRateLimitBanner(retryAfter) {
 
     mesginput.disabled = true;
     Sendbtn.disabled = true;
+    toggleSuggestionCards(true);
     startCountdown(retryAfter);
 }
 

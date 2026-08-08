@@ -752,326 +752,411 @@ Authentication changes should primarily remain within the authentication applica
 This reduces coupling between unrelated parts of the system and provides a cleaner foundation for future development.
 
 ---
+
 # Application Workflow
 
-SmartBot follows a request-driven architecture in which the browser handles user interaction, Django coordinates application logic, the database maintains persistent state, and the AI layer handles language generation.
+SmartBot follows a request-driven architecture in which the browser communicates with Django through asynchronous HTTP requests, while Django coordinates persistence, AI processing, and external services.
 
-The application is designed so that a user interaction can move through the system without requiring a full page reload. AJAX requests are used for chat operations, while Django remains responsible for authentication, authorization, persistence, and business logic.
-
-## End-to-End Request Flow
-
-The following diagram represents the general lifecycle of a chat request:
+The following workflow represents the typical lifecycle of a user message.
 
 ```text
-                                                        ┌──────────────────────┐
-                                                        │        User          │
-                                                        │  Enters a message    │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │      Frontend        │
-                                                        │ HTML + JavaScript    │
-                                                        │ Fetch API / AJAX     │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   │ HTTP POST
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │    Django View       │
-                                                        │ Authentication       │
-                                                        │ Validation           │
-                                                        │ Conversation Lookup  │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │      Database        │
-                                                        │ Save User Message    │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │    AI Context        │
-                                                        │                      │
-                                                        │ System Prompt        │
-                                                        │ Conversation Summary │
-                                                        │ Recent Messages      │
-                                                        │ Current Message      │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │      AI Module       │
-                                                        │                      │
-                                                        │ Context / Query      │
-                                                        │ Analysis             │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                    Requires current information?
-                                                         /                   \
-                                                        No                   Yes
-                                                        │                     │
-                                                        ▼                     ▼
-                                                ┌────────────────┐    ┌──────────────────────┐
-                                                │    Groq /      │    │   Tavily Search API  │
-                                                │    Llama       │    │                      │
-                                                │                │    │ Real-Time Web Search │
-                                                │ AI Generation  │    │ Search Results       │
-                                                └───────┬────────┘    └──────────┬───────────┘
-                                                        │                        │
-                                                        │                        │ Retrieved
-                                                        │                        │ Web Context
-                                                        │                        ▼
-                                                        │                 ┌────────────────┐
-                                                        │                 │  Groq / Llama  │
-                                                        │                 │                │
-                                                        │                 │ Final Response │
-                                                        │                 └───────┬────────┘
-                                                        │                         │
-                                                        └────────────┬────────────┘
-                                                                     │
-                                                                     │ AI Response
-                                                                     ▼
-                                                        ┌──────────────────────┐
-                                                        │      Database        │
-                                                        │                      │
-                                                        │ Save AI Response     │
-                                                        │ Update Conversation  │
-                                                        └──────────────────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │     Django JSON      │
-                                                        │       Response       │
-                                                        └──────────┬───────────┘
-                                                                   │
-                                                                   ▼
-                                                        ┌──────────────────────┐
-                                                        │      Frontend        │
-                                                        │ Markdown Rendering   │
-                                                        │ Syntax Highlighting  │
-                                                        │ UI Updates           │
-                                                        └──────────────────────┘
+                                                    User
+                                                    │
+                                                    │ Enter message
+                                                    ▼
+                                                    Browser
+                                                    │
+                                                    │ Fetch / AJAX
+                                                    ▼
+                                                    Django Chat Endpoint
+                                                    │
+                                                    ├── Validate request
+                                                    │
+                                                    ├── Identify conversation
+                                                    │
+                                                    ├── Save user message
+                                                    │
+                                                    ├── Build conversation context
+                                                    │
+                                                    └── Process AI request
+                                                            │
+                                                            ├── Normal request
+                                                            │       │
+                                                            │       ▼
+                                                            │     Groq
+                                                            │
+                                                            └── Current-information request
+                                                                    │
+                                                                    ▼
+                                                                Tavily
+                                                                    │
+                                                                    ▼
+                                                            Retrieved Context
+                                                                    │
+                                                                    ▼
+                                                                Groq
+                                                                    │
+                                                                    ▼
+                                                            AI Response
+                                                                    │
+                                                                    ▼
+                                                            Save AI Response
+                                                            │
+                                                            ├── Update conversation activity
+                                                            ├── Update conversation metadata
+                                                            └── Return JSON response
+                                                                    │
+                                                                    ▼
+                                                            Browser
+                                                            │
+                                                            ├── Render AI response
+                                                            ├── Render Markdown
+                                                            ├── Highlight code
+                                                            ├── Update sidebar
+                                                            └── Update chat state
 ```
 
-This flow keeps the frontend responsible for presentation while Django remains the central coordinator of application state and backend operations.
+## Request Lifecycle
+
+### 1. User Input
+
+The user enters a message through the chat composer.
+
+The frontend validates the input and prevents empty or whitespace-only submissions.
+
+### 2. Asynchronous Request
+
+The JavaScript chat module sends the message to Django using the Fetch API.
+
+The page does not need to reload, allowing the conversation to remain interactive while the request is processed.
+
+### 3. Backend Processing
+
+Django receives the request and performs the required validation and conversation lookup.
+
+The user's message is persisted before AI processing so that the conversation remains durable even while the AI request is being processed.
+
+### 4. Context Construction
+
+The backend constructs the context required by the AI layer.
+
+Depending on the conversation state, this can include:
+
+* System instructions
+* Conversation summary
+* Recent messages
+* Current user input
+
+For requests requiring current information, web results retrieved through Tavily are also incorporated into the AI context.
+
+### 5. AI Generation
+
+Groq provides the LLM inference layer.
+
+For normal requests, the conversation context is sent directly to Groq.
+
+For current-information requests, Tavily first retrieves relevant web information, which is then provided to Groq so the model can generate the final response.
+
+### 6. Persistence
+
+The generated AI response is stored in the corresponding conversation.
+
+Conversation activity metadata is also updated so that recently active conversations can be correctly ordered in the sidebar.
+
+### 7. JSON Response
+
+Django returns the result to the browser as JSON.
+
+The response contains the information required by the frontend to update the current conversation and relevant UI state.
+
+### 8. Client-Side Rendering
+
+The frontend receives the response and updates the interface without a full page reload.
+
+The response is processed through the existing rendering pipeline, including Markdown conversion and syntax highlighting where applicable.
+
+The sidebar and conversation state are also updated to reflect the latest activity.
+
+## Design Principle
+
+The workflow keeps responsibilities separated:
+
+* **Browser** handles presentation and interaction.
+* **Django** handles application orchestration and persistence.
+* **Tavily** handles real-time information retrieval.
+* **Groq** handles language-model inference and response generation.
+* **Database** provides persistent application state.
+
+This separation allows individual components to evolve without tightly coupling the entire application to a single service.
 
 ---
 
-## AI Processing Pipeline
+# AI Processing Pipeline
 
-SmartBot does not send the entire conversation to the language model indefinitely. Instead, it combines long-term summarized context with recent messages to maintain conversational continuity while controlling the amount of context sent to the model.
+SmartBot separates information retrieval from language generation. Groq is responsible for generating responses using Meta Llama models, while Tavily provides real-time web retrieval when a request requires current information.
+
+This separation allows the application to combine persistent conversational context with fresh external information without coupling the AI generation layer to the retrieval provider.
+
+## Context Construction
+
+Before generating a response, SmartBot constructs the relevant conversational context.
+
+The context can contain:
+
+* System instructions
+* Conversation summary
+* Recent conversation messages
+* Current user message
+* Retrieved web information when required
+
+Older conversation history can be represented through the stored conversation summary, while recent messages preserve the immediate conversational context.
+
+Original messages remain stored in the database and are never deleted as part of context optimization.
+
+## Retrieval Decision
+
+Not every user request requires a web search.
+
+SmartBot first determines whether the request requires information that may have changed recently.
+
+### Standard Request
+
+For questions that can be answered using the model's existing knowledge and the conversation context:
 
 ```text
-                                                        User Message
-                                                            │
-                                                            ▼
-                                                    Save to Database
-                                                            │
-                                                            ▼
-                                                Build Conversation Context
-                                                             │
-                                                ┌────────────┼────────────┐
-                                                │            │            │
-                                                ▼            ▼            ▼
-                                        System Prompt   Summary    Recent Messages
-                                                │            │            │
-                                                └────────────┼────────────┘
-                                                             │
-                                                             ▼
-                                                    Current User Message
-                                                             │
-                                                             ▼
-                                                ┌──────────────────────┐
-                                                │      AI Module       │
-                                                │                      │
-                                                │ Query + Context      │
-                                                │ Analysis             │
-                                                └──────────┬───────────┘
-                                                           │
-                                                Fresh information needed?
-                                                     /               \
-                                                    No               Yes
-                                                    │                 │
-                                                    ▼                 ▼
-                                            ┌──────────────┐   ┌─────────────────┐
-                                            │ Groq / Llama │   │ Tavily Search   │
-                                            │              │   │                 │
-                                            │ Generation   │   │ Web Retrieval   │
-                                            └──────┬───────┘   └────────┬────────┘
-                                                   │                    │
-                                                   │                    ▼
-                                                   │             Retrieved Context
-                                                   │                    │
-                                                   │                    ▼
-                                                   │            ┌──────────────┐
-                                                   └──────────► │ Groq / Llama │
-                                                                │              │
-                                                                │ Generation   │
-                                                                └──────┬───────┘
-                                                                       │
-                                                                       ▼
-                                                                Final AI Response
-                                                                        │
-                                                            ┌───────────┴───────────┐
-                                                            │                       │
-                                                            ▼                       ▼
-                                                    Save Response          Additional AI Tasks
-                                                                                     │
-                                                                        ┌────────────┴────────────┐
-                                                                        ▼                         ▼
-                                                                Generate Title            Generate Summary
-                                                                (when required)           (when required)
+User Message
+      │
+      ▼
+Context Construction
+      │
+      ▼
+Groq / Meta Llama
+      │
+      ▼
+AI Response
 ```
 
-### Context Strategy
+### Current-Information Request
 
-The AI context is composed of four logical components:
+When the request requires fresh information:
 
-1. **System Prompt** — Defines SmartBot's identity, behavior, communication style, and formatting rules.
-2. **Conversation Summary** — Provides compressed context from earlier parts of a long conversation.
-3. **Recent Messages** — Preserves the latest conversational exchanges with their original detail.
-4. **Current User Message** — Provides the immediate request being answered.
+```text
+User Message
+      │
+      ▼
+Context / Query Analysis
+      │
+      ▼
+Tavily Search API
+      │
+      ▼
+Relevant Web Results
+      │
+      ▼
+Retrieved Web Context
+      │
+      ▼
+Groq / Meta Llama
+      │
+      ▼
+Final AI Response
+```
 
-Original messages remain permanently stored in the database. Summarization is used for context optimization rather than data deletion.
+Tavily is therefore used as a retrieval layer rather than as the response-generation engine.
+
+## Retrieval-Augmented Generation
+
+For current-information requests, SmartBot follows a retrieval-augmented generation approach.
+
+```text
+                         ┌─────────────────────┐
+                         │      User Query     │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │ Context / Query     │
+                         │ Analysis             │
+                         └──────────┬──────────┘
+                                    │
+                          Fresh information?
+                              /           \
+                            No             Yes
+                            │               │
+                            ▼               ▼
+                    ┌──────────────┐  ┌──────────────┐
+                    │    Groq      │  │    Tavily    │
+                    │   / Llama    │  │    Search    │
+                    └──────┬───────┘  └──────┬───────┘
+                           │                  │
+                           │                  ▼
+                           │          Web Search Results
+                           │                  │
+                           │                  ▼
+                           │          Retrieved Context
+                           │                  │
+                           └──────────┬───────┘
+                                      │
+                                      ▼
+                              ┌──────────────┐
+                              │    Groq      │
+                              │   / Llama    │
+                              │              │
+                              │ Final Answer │
+                              └──────┬───────┘
+                                     │
+                                     ▼
+                              Stored Response
+```
+
+The retrieval process provides external evidence to the language model, while Groq remains responsible for interpreting the information and producing the final response.
+
+## Conversation Memory
+
+SmartBot maintains conversational continuity using persistent database messages and conversation summaries.
+
+The effective context is structured as:
+
+```text
+System Instructions
+        +
+Conversation Summary
+        +
+Recent Messages
+        +
+Current User Message
+        +
+Retrieved Web Context (when required)
+```
+
+This approach allows SmartBot to maintain relevant historical context without continually sending the entire conversation to the model.
+
+## AI-Generated Conversation Titles
+
+New conversations can receive an AI-generated title based on the initial interaction.
+
+The title-generation process is separate from normal response generation.
+
+```text
+First User Message
+        │
+        ▼
+AI Response
+        │
+        ▼
+Title Generation
+        │
+        ▼
+Conversation Title
+        │
+        ▼
+Database
+```
+
+Titles are generated only when a conversation still has its initial title, preventing subsequent messages from repeatedly changing the conversation name.
+
+## Conversation Summarization
+
+Long conversations can accumulate significant amounts of message history.
+
+SmartBot uses conversation summaries to preserve important historical context while reducing the amount of older raw conversation data that must be included in every AI request.
+
+The summary prioritizes information such as:
+
+* User goals
+* Important technical details
+* Decisions made during the conversation
+* Relevant constraints
+* Important contextual information
+
+Unnecessary greetings, repetition, and conversational noise are excluded from the summary.
+
+## Separation of Responsibilities
+
+The AI architecture follows a clear separation of concerns:
+
+| Component          | Responsibility                                 |
+| ------------------ | ---------------------------------------------- |
+| Django             | Application orchestration and request handling |
+| Conversation Layer | Persistent conversation state                  |
+| Summary System     | Compressing relevant historical context        |
+| Tavily             | Real-time web information retrieval            |
+| Groq               | LLM inference and response generation          |
+| Meta Llama         | Underlying language model                      |
+| Frontend           | Response rendering and user interaction        |
+
+This architecture allows the retrieval provider, language model, and application layer to evolve independently.
+
+## Failure Handling
+
+External AI services are treated as unreliable dependencies.
+
+The application therefore handles service-level failures without allowing an external API failure to compromise the overall application state.
+
+Examples include:
+
+* AI provider rate limits
+* Temporary retrieval failures
+* Empty search results
+* Network failures
+* Invalid API credentials
+* AI service availability changes
+
+The backend remains responsible for determining the appropriate fallback or user-facing state while keeping API credentials and external service communication server-side.
 
 ---
 
-## Conversation Lifecycle
+# Authentication Flow
 
-A conversation begins when a user creates a new chat and continues as messages are exchanged.
+SmartBot uses Django's authentication framework with a custom user model and email-based authentication.
 
-```text
-                                                        ┌───────────────┐
-                                                        │   New Chat    │
-                                                        └───────┬───────┘
-                                                                │
-                                                                ▼
-                                                        ┌────────────────────┐
-                                                        │ Create Conversation│
-                                                        └────────┬───────────┘
-                                                                 │
-                                                                 ▼
-                                                        ┌────────────────────┐
-                                                        │ User Sends Message │
-                                                        └────────┬───────────┘
-                                                                 │
-                                                                 ▼
-                                                        ┌────────────────────┐
-                                                        │ Generate AI Reply  │
-                                                        └────────┬───────────┘
-                                                                 │
-                                                                 ▼
-                                                      ┌─────────────────────────┐
-                                                      │ Persist User + AI Data  │
-                                                      └──────────┬──────────────┘
-                                                                 │
-                                                                 ▼
-                                                       ┌─────────────────────────┐
-                                                       │ Update Conversation     │
-                                                       │ Activity / Title /      │
-                                                       │ Summary when required   │
-                                                       └──────────┬──────────────┘
-                                                                  │
-                                                                  ▼
-                                                        ┌─────────────────────────┐
-                                                        │ Continue Conversation   │
-                                                        └─────────────────────────┘
+The authentication system protects user conversations and ensures that conversation data remains associated with the authenticated account.
+
+```text id="a7k3p2"
+                    ┌─────────────────┐
+                    │      User       │
+                    └────────┬────────┘
+                             │
+                    Login / Register
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ Django Auth     │
+                    │ System          │
+                    └────────┬────────┘
+                             │
+                 ┌───────────┴───────────┐
+                 │                       │
+              Register                 Login
+                 │                       │
+                 ▼                       ▼
+          Create Account          Validate Credentials
+                 │                       │
+                 ▼                       ▼
+        Email Verification       Authentication Backend
+                 │                       │
+                 ▼                       ▼
+          Activate Account       Create Authenticated Session
+                 │                       │
+                 └───────────┬───────────┘
+                             │
+                             ▼
+                       SmartBot Chat
+                             │
+                             ▼
+                  User-specific Conversations
 ```
 
----
+## Key Security Measures
 
-## Authentication Workflow
+* Custom user model with unique email addresses.
+* Email verification before account activation.
+* Passwords handled through Django's secure password hashing.
+* Email-based authentication with case-insensitive lookup.
+* CSRF protection for state-changing requests.
+* POST-only logout and destructive operations.
+* Protected conversation access using the authenticated user.
+* Secure password-reset tokens provided by Django.
+* Environment variables used for sensitive credentials.
 
-Authentication is handled by Django using a custom user model and dedicated authentication workflows.
-
-```text
-                                                            Registration
-                                                                │
-                                                                ▼
-                                                        Create User Account
-                                                                │
-                                                                ▼
-                                                        Email Verification
-                                                                │
-                                                        ┌───────┴───────┐
-                                                        │               │
-                                                    Invalid          Valid
-                                                        │               │
-                                                        ▼               ▼
-                                                Reject Access    Activate Account
-                                                                        │
-                                                                        ▼
-                                                                    Login
-                                                                        │
-                                                                        ▼
-                                                                Authenticated Session
-                                                                        │
-                                                                        ▼
-                                                                Access Protected Areas
-```
-
-Users can also recover their accounts through Django's password-reset workflow using secure, time-limited tokens.
-
----
-
-## Conversation Management Workflow
-
-SmartBot provides conversation management directly from the sidebar without requiring unnecessary page reloads.
-
-```text
-                                                      Conversation
-                                                           │
-                                            ┌──────────────┼──────────────┐
-                                            │              │              │
-                                            ▼              ▼              ▼
-                                         Rename         Search         Delete
-                                            │              │              │
-                                            ▼              ▼              ▼
-                                          Validate       Filter        Confirm
-                                            │              │              │
-                                            ▼              │              ▼
-                                        AJAX Update        │          AJAX Delete
-                                            │              │              │
-                                            └──────────────┼──────────────┘
-                                                           ▼
-                                                    Update Sidebar
-```
-
-Ownership checks are performed on protected conversation operations so that users can only modify conversations belonging to their own account.
-
----
-
-## Frontend Rendering Pipeline
-
-AI responses are returned to the browser as structured JSON rather than rendered server-side as complete HTML pages.
-
-The frontend then processes the response through the presentation layer:
-
-```text
-                                                        AI Response
-                                                            │
-                                                            ▼
-                                                        JSON Response
-                                                            │
-                                                            ▼
-                                                        JavaScript
-                                                            │
-                                                            ▼
-                                                        Markdown Parser
-                                                            │
-                                                            ▼
-                                                        HTML Rendering
-                                                            │
-                                                            ▼
-                                                        Syntax Highlighting
-                                                            │
-                                                            ▼
-                                                        Code Block Enhancement
-                                                            │
-                                                            ▼
-                                                        Chat Interface
-```
-
-This approach allows the interface to update individual components dynamically while keeping the server responsible for data and application state.
+Once authenticated, each conversation is associated with its owner, ensuring that users can access only their own conversation data.

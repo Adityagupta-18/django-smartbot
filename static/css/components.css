@@ -470,6 +470,70 @@
 }
 
 
+/* THEME */
+.icon{
+  width:18px; height:18px;
+  stroke:currentColor; fill:none;
+  stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
+  flex-shrink:0;
+}
+
+.theme-switcher{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.theme-opt{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 20px;
+  background:var(--bg-surf);
+  border:1px solid var(--hairline);
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+  cursor:pointer;
+  transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+
+.theme-opt:hover{
+  border-color:var(--accent);
+  background:var(--bg-surf2);
+  transform:translateY(-1px);
+}
+
+.theme-opt.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1.5px var(--accent);
+}
+
+.theme-opt-icon{
+  width: 18px;
+  height: 18px;
+  display:block;
+  margin:0 auto 8px;
+  color:var(--txt2);
+  transform: translateY(2px);
+  transition:color .18s ease, transform .25s ease;
+}
+
+.theme-opt.active .theme-opt-icon{
+  color:var(--accent2);
+  transform:scale(1.08) rotate(-8deg);
+}
+
+.theme-opt-label{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--txt);
+  margin:0;
+}
+
+
+
 /* ===============================
    Confirmation Modal
 ================================ */
@@ -638,6 +702,7 @@
   min-width:0;
   max-height:160px;
   padding:6px 0;
+  overflow-y: auto;
   background:transparent;
   border:none;
   outline:none;

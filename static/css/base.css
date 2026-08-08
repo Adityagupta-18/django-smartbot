@@ -8,6 +8,24 @@ body{
 .font-tight{ font-family:'Inter Tight','Inter',sans-serif; }
 textarea{ font-family:'Inter',sans-serif; }
 
+
+body,
+.app-sidebar,
+.topbar,
+.sidebar-search,
+.sidebar-conversation,
+.new-chat-btn,
+.topbar-icon-btn,
+.theme-switcher,
+.theme-opt {
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+
 /* scrollbars  */
 .scroll-thin::-webkit-scrollbar{ width:8px; height:8px; }
 .scroll-thin::-webkit-scrollbar-track{ background:transparent; }

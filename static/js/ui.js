@@ -269,6 +269,59 @@ if (menuBtn && sidebar) {
 
 
 
+// ================================
+// Theme Switcher
+// ================================
+
+// ================================
+// Theme Switcher
+// ================================
+
+const themeSwitcher = document.getElementById("themeSwitcher");
+
+if (themeSwitcher) {
+
+    const themeOptions = themeSwitcher.querySelectorAll(".theme-opt");
+
+    const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
+
+    themeOptions.forEach(option => {
+
+        if (option.dataset.themeOpt === currentTheme) {
+            option.classList.add("active");
+        } else {
+            option.classList.remove("active");
+        }
+
+    });
+    themeOptions.forEach(option => {
+
+        option.addEventListener("click", () => {
+
+            const selectedTheme = option.dataset.themeOpt;
+
+            document.documentElement.setAttribute(
+                "data-theme",
+                selectedTheme
+            );
+
+            localStorage.setItem("theme", selectedTheme);
+            themeOptions.forEach(opt => {
+                opt.classList.remove("active");
+            });
+
+            option.classList.add("active");
+
+        });
+
+    });
+}
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     if (
         window.AI_AVAILABLE === false &&

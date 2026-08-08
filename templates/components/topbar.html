@@ -38,6 +38,20 @@
     </button>
     {% endif %}
     
+
+    {% if not conversation %} 
+      <div class="theme-switcher" id="themeSwitcher">
+        <div class="theme-opt" data-theme-opt="dark">
+          <svg class="icon theme-opt-icon" aria-hidden="true"><use href="/static/svg/moon.svg"></use></svg>
+          <p class="theme-opt-label">Dark</p>
+        </div>
+        <div class="theme-opt" data-theme-opt="light">
+          <svg class="icon theme-opt-icon" aria-hidden="true"><use href="/static/svg/sun.svg"></use></svg>
+          <p class="theme-opt-label">Light</p>
+        </div>
+      </div>
+    {% endif %}
+
   </div>
 
 </header>

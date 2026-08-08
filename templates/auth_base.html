@@ -4,6 +4,13 @@
 <html lang="en" data-theme="dark">
 
 <head>
+    <script>
+    const savedTheme = localStorage.getItem("theme");
+        document.documentElement.setAttribute(
+            "data-theme",
+            savedTheme || "dark"
+        );
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}SmartBot{% endblock title %}</title>

@@ -293,7 +293,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: var(--txt);   
+  color: #F1F0F7;   
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -398,7 +398,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: var(--txt);      
+  color: #F1F0F7;      
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -416,7 +416,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: var(--txt);      
+  color: #F1F0F7;      
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -434,7 +434,7 @@
   z-index: 99;
   transform: translateX(-50%);
   background: var(--accent);    
-  color: var(--txt);      
+  color: #F1F0F7;      
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;

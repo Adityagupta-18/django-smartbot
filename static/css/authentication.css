@@ -373,7 +373,7 @@ body{
   font-weight:700;
   font-size:30px;
   line-height:1.25;
-  color:var(--txt);
+  color:#F1F0F7;
   margin:0 0 12px;
 }
 
@@ -382,7 +382,7 @@ body{
   z-index:1;
   max-width:420px;
   font-size:14.5px;
-  color:var(--txt2);
+  color:#A6A3BD;
   margin:0;
 }
 

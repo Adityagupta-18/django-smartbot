@@ -6,14 +6,52 @@ from apps.chat.prompts import SYSTEM_PROMPT , TITLE_PROMPT , SUMMARY_PROMPT
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"),)
 tavily_client = TavilyClient(api_key=os.environ.get("TAVILY_API_KEY"))
 
-def search_web(query):
-    response = tavily_client.search(
-        query=query,
-        search_depth="basic",
-        max_results=5,
-    )
 
-    return response
+class TavilySearchError(Exception):
+    pass
+
+
+# TRAVILY SEARCH
+def search_web(query):
+    try:
+        response = tavily_client.search(
+            query=query,
+            search_depth="basic",
+            max_results=3,
+        )
+
+        results = []
+
+        for result in response.get("results", []):
+            results.append({
+                "title": result.get("title", ""),
+                "url": result.get("url", ""),
+                "content": result.get("content", ""),
+            })
+        return results
+    
+    except Exception as e:
+        raise TavilySearchError(str(e))
+
+
+# FORMATTED SERACH
+def format_search_results(results):
+    if not results:
+        return ""
+
+    web_context = []
+
+    for index, result in enumerate(results, start=1):
+        web_context.append(
+            f"""Source {index}
+            Title: {result["title"]}
+            URL: {result["url"]}
+            Content: {result["content"]}"""
+                    )
+
+    return "\n\n".join(web_context)
+
+
 
 
 def requires_web_search(user_message):
@@ -86,20 +124,60 @@ Question:
 def generate_ai_response(history):
     user_message=history[-1]["content"]
     web_search_required = requires_web_search(user_message)
-    print("Web search required:", web_search_required)
 
-    chat_completion = client.chat.completions.create(
-        messages=[
+    if web_search_required:
+        print("**************** WEB SEARCHED ******************************")
+        try:
+            search_results = search_web(user_message)
+
+        except TavilySearchError:
+            raise TavilySearchError("Smart Search is currently unavailable. Please try again later.")
+        web_context = format_search_results(search_results)
+
+        if not web_context:
+            raise Exception("Smart Search could not find useful information for this question.")
+
+        messages = [
             {
-                'role':'system',
+                "role": "system",
                 "content": SYSTEM_PROMPT,
             },
-            *history
-        ],
+            *history,
+            {
+                "role": "system",
+                "content": f"""
+                    The following information was retrieved from the web to help answer
+                    the user's current question.
+
+                    Use this information when relevant and prioritize it for
+                    current or time-sensitive facts.
+
+                    Do not invent facts or sources.
+
+                    WEB INFORMATION:
+
+                    {web_context}
+                    """,
+            },
+        ]
+
+    else:
+        print("**************** NOTHING SEARCHED ******************************")
+        messages = [
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT,
+            },
+            *history,
+        ]
+
+    chat_completion = client.chat.completions.create(
+        messages=messages,
         model="llama-3.3-70b-versatile",
         temperature=0.7)
 
     return chat_completion.choices[0].message.content
+
 
 
 def generate_conversation_title(user_message, ai_response):

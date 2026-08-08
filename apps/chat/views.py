@@ -192,6 +192,13 @@ def send_message(request):
                 "retry_after": retry_after
             })
 
+        except TavilySearchError as e:
+            return JsonResponse({
+                "success": False,
+                "error_type": "web_search_unavailable",
+                "message": str(e)
+            })
+
         except Exception as e:
             return JsonResponse({
                 "success": False,

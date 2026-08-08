@@ -11,7 +11,6 @@
 ![Tavily](https://img.shields.io/badge/Web%20Search-Tavily-6C47FF?style=for-the-badge)
 ![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge\&logo=sqlite)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Planned-336791?style=for-the-badge\&logo=postgresql)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 
 </div>
@@ -34,6 +33,7 @@ SmartBot is being developed incrementally through well-defined engineering miles
 
 * [Overview](#overview)
 * [Key Features](#key-features)
+* [Screenshots](#screenshots)
 * [System Architecture](#system-architecture)
 * [Technology Stack](#technology-stack)
 * [Project Structure](#project-structure)
@@ -138,6 +138,57 @@ SmartBot combines conversational AI with modern web application engineering to p
 
 ---
 
+# Screenshots
+
+SmartBot provides a responsive, premium SaaS-style interface designed around conversational AI workflows.
+
+## Product Showcase
+
+A complete view of SmartBot demonstrating the overall application experience, including the chat workspace, conversation sidebar, AI interaction, and polished UI.
+
+<p align="center">
+  <img src="screenshots/showcase.png" alt="SmartBot product showcase" width="950">
+</p>
+
+## Core Application
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>Chat Interface</strong><br><br>
+      <img src="screenshots/chat-interface.png" alt="SmartBot chat interface" width="450">
+    </td>
+    <td align="center">
+      <strong>Conversation Management</strong><br><br>
+      <img src="screenshots/conversation-management.png" alt="SmartBot conversation management" width="450">
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <strong>Authentication</strong><br><br>
+      <img src="screenshots/authentication.png" alt="SmartBot authentication interface" width="450">
+    </td>
+    <td align="center">
+      <strong>AI Response</strong><br><br>
+      <img src="screenshots/ai-response.png" alt="SmartBot AI response" width="450">
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <strong>Real-Time Information Retrieval</strong><br><br>
+      <img src="screenshots/real-time-search.png" alt="SmartBot real-time information retrieval" width="450">
+    </td>
+    <td align="center">
+      <strong>Responsive Interface</strong><br><br>
+      <img src="screenshots/responsive-interface.png" alt="SmartBot responsive interface" width="450">
+    </td>
+  </tr>
+</table>
+
+
+---
 # System Architecture
 
 SmartBot follows a layered architecture that separates responsibilities across the frontend, backend, AI integration, and persistence layers. This separation keeps the codebase modular, maintainable, and easier to extend as new features are introduced.
@@ -1156,3 +1207,29 @@ The authentication system protects user conversations and ensures that conversat
 * Environment variables used for sensitive credentials.
 
 Once authenticated, each conversation is associated with its owner, ensuring that users can access only their own conversation data.
+
+---
+
+# Future Improvements
+
+SmartBot is designed with extensibility in mind. Potential future improvements include:
+
+* **Production Database** — Migrate from SQLite to PostgreSQL for production workloads.
+* **Production Deployment** — Deploy the application using a production-grade hosting and infrastructure setup.
+* **AI Model Flexibility** — Support configurable LLM providers and models instead of relying on a single provider.
+* **Advanced Web Retrieval** — Further improve Tavily-based retrieval, source handling, and current-information responses.
+* **Performance Optimization** — Introduce caching, query optimization, and improved handling of high-concurrency workloads.
+* **Observability** — Add structured logging, monitoring, error tracking, and service health metrics.
+* **Automated Testing** — Expand unit, integration, and end-to-end test coverage.
+* **Scalable Background Processing** — Move suitable AI and summarization workloads to asynchronous background jobs.
+* **Enhanced Conversation Intelligence** — Improve long-term memory, context management, and personalization while maintaining predictable token usage.
+
+---
+
+# Author
+
+**Aditya Gupta**
+
+B.Tech Computer Science & Applied Mathematics
+
+SmartBot was designed and developed as a full-stack AI assistant project, with a focus on AI integration, conversational systems, backend architecture, frontend experience, and production-oriented software engineering practices.

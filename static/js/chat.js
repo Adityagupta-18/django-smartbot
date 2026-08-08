@@ -108,6 +108,8 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                     chattitle.innerText=data.title
 
                     if(data.title){
+                        
+                        document.title = data.title;
 
                         const conversationItem = document.querySelector(
                             `#conversation-${conversationId}`
@@ -118,6 +120,8 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                                 ".sidebar-conversation-title"
                             ).textContent = data.title;
                             conversationItem.dataset.title = data.title;
+
+                            
 
                         }
                     }

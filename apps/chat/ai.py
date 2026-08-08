@@ -126,14 +126,13 @@ def generate_ai_response(history):
     web_search_required = requires_web_search(user_message)
 
     if web_search_required:
-        print("**************** WEB SEARCHED ******************************")
         try:
             search_results = search_web(user_message)
 
         except TavilySearchError:
             raise TavilySearchError("Smart Search is currently unavailable. Please try again later.")
+        
         web_context = format_search_results(search_results)
-
         if not web_context:
             raise Exception("Smart Search could not find useful information for this question.")
 
@@ -146,23 +145,25 @@ def generate_ai_response(history):
             {
                 "role": "system",
                 "content": f"""
-                    The following information was retrieved from the web to help answer
-                    the user's current question.
+            Web information was retrieved for the user's current question.
 
-                    Use this information when relevant and prioritize it for
-                    current or time-sensitive facts.
+            Use the retrieved information when it is relevant, especially for
+            current or time-sensitive facts.
 
-                    Do not invent facts or sources.
+            Do not invent facts that are not supported by the retrieved information.
+            If the retrieved information is insufficient, say so rather than
+            making up an answer.
 
-                    WEB INFORMATION:
+            Do not claim that you searched the web unless web information was
+            actually provided.
 
-                    {web_context}
-                    """,
+            WEB INFORMATION:
+            {web_context}
+            """
             },
         ]
 
     else:
-        print("**************** NOTHING SEARCHED ******************************")
         messages = [
             {
                 "role": "system",

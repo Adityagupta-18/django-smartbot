@@ -128,7 +128,11 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                 else if (data.error_type === "rate_limit") {
                      showRateLimitBanner(data.retry_after);
 
-                } else {
+                } 
+                else if (data.error_type === "web_search_unavailable") {
+                    showErrorBanner()
+                }
+                else {
                     console.log("Something went wrong.");
                 }
         })
@@ -151,6 +155,11 @@ function sendMessage() {
 
     const mesgcontent = mesginput.value.trim();
     if (!mesgcontent) return;
+    
+    const smartSearchStatus = document.getElementById("smart-search-status");
+    if (smartSearchStatus) {
+        smartSearchStatus.innerHTML = "";
+    }
 
     mesginput.value = "";
 

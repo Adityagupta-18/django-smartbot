@@ -196,7 +196,7 @@ def send_message(request):
             return JsonResponse({
                 "success": False,
                 "error_type": "web_search_unavailable",
-                "message": str(e)
+                "message": "Smart Search is currently unavailable. Please try again later."
             })
 
         except Exception as e:

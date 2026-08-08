@@ -158,6 +158,23 @@ function removeRateLimitBanner(){
     }
 }
 
+
+function showErrorBanner() {
+    const SearcherrorContainer = document.getElementById("smart-search-status");
+
+    SearcherrorContainer.innerHTML = `
+        <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-0" role="alert">
+            <div>
+                <strong>Smart Search is currently unavailable</strong><br>
+                Please try again later. You can send another message and SmartBot will still try to answer it normally.
+            </div>
+        </div>
+    `;
+}
+
+
+
+
 // Chat Searching
 if (convSearch) {
 

@@ -689,7 +689,7 @@
 }
  
    /* Input bar */
-   .composer-bar{
+.composer-bar{
   background:var(--bg-surf2);
   border:1px solid var(--hairline-strong);
   border-radius:16px;
@@ -711,9 +711,33 @@
   font-family:'Inter',sans-serif;
   font-size:14.5px;
   line-height:1.5;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline-strong) transparent;
 }
+
 .composer-textarea::placeholder{ color:var(--txt3); }
  
+.chat-body::-webkit-scrollbar,
+.composer-textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-body::-webkit-scrollbar-track,
+.composer-textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-body::-webkit-scrollbar-thumb,
+.composer-textarea::-webkit-scrollbar-thumb {
+    background: var(--hairline-strong);
+    border-radius: 99px;
+}
+
+.chat-body::-webkit-scrollbar-thumb:hover,
+.composer-textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
 .composer-send-btn{
   display:flex;
   align-items:center;

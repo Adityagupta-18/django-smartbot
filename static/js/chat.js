@@ -108,7 +108,7 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                     chattitle.innerText=data.title
 
                     if(data.title){
-                        
+
                         document.title = data.title;
 
                         const conversationItem = document.querySelector(
@@ -216,6 +216,16 @@ mesginput.addEventListener("keydown", (e) => {
         sendMessage();
     }
 });
+
+
+
+function autoResizeComposer() {
+    mesginput.style.height = "auto";
+    mesginput.style.height = `${mesginput.scrollHeight}px`;
+}
+
+mesginput.addEventListener("input", autoResizeComposer);
+
 
 // Home Button
 const homeBnt=document.getElementById("homeBtn");

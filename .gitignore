@@ -21,6 +21,9 @@ db.sqlite3
 
 media/
 
+# STATIC FILES
+staticfiles/
+
 # ==========================
 # Environment Variables
 # ==========================

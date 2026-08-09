@@ -124,6 +124,14 @@ SmartBot combines conversational AI with modern web application engineering to p
 
 ---
 
+### Theme Switching
+
+SmartBot includes a dynamic theme system that allows users to switch between dark and light interfaces directly from the application.
+
+The selected theme updates the application's visual system consistently across the sidebar, chat workspace, composer, controls, typography, surfaces, and other UI components.
+
+---
+
 ## Software Engineering
 
 * Modular Django application architecture.
@@ -144,49 +152,47 @@ SmartBot provides a responsive, premium SaaS-style interface designed around con
 
 ## Product Showcase
 
-A complete view of SmartBot demonstrating the overall application experience, including the chat workspace, conversation sidebar, AI interaction, and polished UI.
+A complete view of the SmartBot interface, highlighting the main workspace, conversation sidebar, welcome experience, and composer.
 
 <p align="center">
-  <img src="screenshots/showcase.png" alt="SmartBot product showcase" width="950">
+  <img src="docs/screenshots/showcase.png" alt="SmartBot product showcase" width="900">
 </p>
 
-## Core Application
+## Chat Experience
+
+### Dark Theme — AI Coding Assistance
+
+SmartBot supports technical conversations with formatted Markdown, syntax-highlighted code blocks, and interactive code-copy functionality.
 
 <table>
   <tr>
-    <td align="center">
-      <strong>Chat Interface</strong><br><br>
-      <img src="screenshots/chat-interface.png" alt="SmartBot chat interface" width="450">
+    <td align="center" width="50%">
+      <strong>Dark Theme</strong><br><br>
+      <img src="docs/screenshots/chat-dark.png" alt="SmartBot dark theme chat with Python code" width="500">
     </td>
-    <td align="center">
-      <strong>Conversation Management</strong><br><br>
-      <img src="screenshots/conversation-management.png" alt="SmartBot conversation management" width="450">
-    </td>
-  </tr>
-
-  <tr>
-    <td align="center">
-      <strong>Authentication</strong><br><br>
-      <img src="screenshots/authentication.png" alt="SmartBot authentication interface" width="450">
-    </td>
-    <td align="center">
-      <strong>AI Response</strong><br><br>
-      <img src="screenshots/ai-response.png" alt="SmartBot AI response" width="450">
-    </td>
-  </tr>
-
-  <tr>
-    <td align="center">
-      <strong>Real-Time Information Retrieval</strong><br><br>
-      <img src="screenshots/real-time-search.png" alt="SmartBot real-time information retrieval" width="450">
-    </td>
-    <td align="center">
-      <strong>Responsive Interface</strong><br><br>
-      <img src="screenshots/responsive-interface.png" alt="SmartBot responsive interface" width="450">
+    <td align="center" width="50%">
+      <strong>Light Theme — Real-Time Information</strong><br><br>
+      <img src="docs/screenshots/chat-light.png" alt="SmartBot light theme with real-time web search" width="500">
     </td>
   </tr>
 </table>
 
+## Authentication
+
+SmartBot provides a dedicated authentication experience for account creation and secure access.
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <strong>Login</strong><br><br>
+      <img src="docs/screenshots/login.png" alt="SmartBot login page" width="500">
+    </td>
+    <td align="center" width="50%">
+      <strong>Register</strong><br><br>
+      <img src="docs/screenshots/register.png" alt="SmartBot registration page" width="500">
+    </td>
+  </tr>
+</table>
 
 ---
 # System Architecture

@@ -155,7 +155,7 @@ SmartBot provides a responsive, premium SaaS-style interface designed around con
 A complete view of the SmartBot interface, highlighting the main workspace, conversation sidebar, welcome experience, and composer.
 
 <p align="center">
-  <img src="docs/screenshots/showcase.png" alt="SmartBot product showcase" width="900">
+  <img src="docs/screenshots/showcase.png" alt="SmartBot product showcase" width="800">
 </p>
 
 ## Chat Experience

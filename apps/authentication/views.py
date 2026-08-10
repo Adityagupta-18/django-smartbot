@@ -12,13 +12,13 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from .tokens import email_verification_token
-from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib import messages
 from .models import CustomUser
 from .tokens import email_verification_token
 from django.contrib.auth.tokens import default_token_generator
+import resend
 
 
 
@@ -93,19 +93,21 @@ def register_view(request):
             )
 
             # Sending email
-            send_mail(
-                subject="Verify your SmartBot account",
-                message=(
+            resend.api_key = settings.RESEND_API_KEY
+
+            resend.Emails.send({
+                "from": "SmartBot <onboarding@resend.dev>",
+                "to": [user.email],
+                "subject": "Verify your SmartBot account",
+                "text": (
                     f"Hi {user.first_name},\n\n"
                     f"Welcome to SmartBot!\n\n"
                     f"Please verify your email by clicking the link below:\n\n"
                     f"{verification_url}\n\n"
                     f"If you didn't create this account, you can safely ignore this email."
                 ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
+            })
+
             messages.success(request,"Account created successfully! A verification link has been sent to your email.")
             return redirect(settings.LOGIN_URL)
 
@@ -164,21 +166,21 @@ def forgot_password(request):
                 },
             )
             reset_url = request.build_absolute_uri(reset_path)
+            
+            resend.api_key = settings.RESEND_API_KEY
 
-            send_mail(
-                subject="Reset your SmartBot password",
-                message=(
+            resend.Emails.send({
+                "from": "SmartBot <onboarding@resend.dev>",
+                "to": [user.email],
+                "subject": "Verify your SmartBot account",
+                "text": (
                     f"Hi {user.first_name},\n\n"
                     f"Welcome to SmartBot!\n\n"
-                    f"We received a request to reset your SmartBot password.\n\n"
-                    f"click the link below:\n\n"
+                    f"Please verify your email by clicking the link below:\n\n"
                     f"{reset_url}\n\n"
-                    f"If you didn't request this, simply ignore this email."
+                    f"If you didn't create this account, you can safely ignore this email."
                 ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
+            })
             messages.success(
                 request,
                 "Password reset link has been sent to your email."

@@ -132,6 +132,7 @@ LOGOUT_REDIRECT_URL = "core:home"
 
 
 # EMAIL SETUP
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "smtp.gmail.com"

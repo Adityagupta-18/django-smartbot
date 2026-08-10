@@ -13,7 +13,13 @@
     <p class="topbar-subtitle d-none d-lg-block">SmartBot Pro &middot; AI Assistant</p>
   </div>
  
-  <span class="topbar-badge d-none d-lg-inline-flex">Pro</span>
+<span class="topbar-badge d-none d-lg-inline-flex">
+    {% if user.is_authenticated %}
+        Pro
+    {% else %}
+        Guest
+    {% endif %}
+</span>
 
 <input
     type="text"

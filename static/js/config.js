@@ -24,6 +24,7 @@ const currentConversation=document.getElementById(`conversation-${conversationId
 const convSearch = document.getElementById("convSearch");
 const noConvoResults = document.getElementById("noConvoResults");
 
+const isAuthenticated =document.body.dataset.authenticated === "true";
 
 // SUGGESTION CARD PROMPTS
 const SMARTBOT_SUGGESTIONS = [

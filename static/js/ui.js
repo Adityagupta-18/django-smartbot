@@ -173,6 +173,24 @@ function showErrorBanner() {
 }
 
 
+function showGuestLimitBanner() {
+    const guestLimitContainer =
+        document.getElementById("smart-search-status");
+
+    if (!guestLimitContainer) return;
+
+    guestLimitContainer.innerHTML = `
+        <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-0" role="alert">
+            <div>
+                <strong>You've reached the guest message limit</strong><br>
+                Please log in or register to continue using SmartBot.
+            </div>
+        </div>
+    `;
+
+    mesginput.disabled = true;
+    Sendbtn.disabled = true;
+}
 
 
 // Chat Searching

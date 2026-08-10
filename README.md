@@ -112,6 +112,14 @@ SmartBot combines conversational AI with modern web application engineering to p
 
 ---
 
+## Guest Access
+* Unauthenticated visitors can try SmartBot
+* Guests can send up to 10 messages
+* Login/Register required after reaching the guest limit
+* Authenticated users get the full chat experience
+
+---
+
 ## User Experience
 
 * Responsive premium dark interface.
@@ -156,6 +164,14 @@ A complete view of the SmartBot interface, highlighting the main workspace, conv
 
 <p align="center">
   <img src="docs/screenshots/showcase.png" alt="SmartBot product showcase" width="800">
+</p>
+
+## Guest Experience
+
+SmartBot allows users to explore the core chat experience without creating an account, while account-based features remain protected behind authentication.
+
+<p align="center">
+  <img src="docs/screenshots/guest-user.png" alt="SmartBot product showcase" width="800">
 </p>
 
 ## Chat Experience

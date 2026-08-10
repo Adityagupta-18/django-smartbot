@@ -128,7 +128,7 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = "core:home"
 LOGIN_URL = "authentication:login"
-LOGOUT_REDIRECT_URL = "authentication:login"
+LOGOUT_REDIRECT_URL = "core:home"
 
 
 # EMAIL SETUP

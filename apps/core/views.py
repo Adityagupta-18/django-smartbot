@@ -4,9 +4,11 @@ from django.utils import timezone
 from datetime import date
 from django.contrib.auth.decorators import login_required
 
-@login_required
 def home(request):
-    all_conversations = Conversation.objects.filter(user=request.user).order_by("-updated_at")
+    if request.user.is_authenticated:
+        all_conversations = Conversation.objects.filter(user=request.user).order_by("-updated_at")
+    else:
+        all_conversations = Conversation.objects.none()
     today=date.today()
     has_conversations = all_conversations.exists()
     today_conversations = []

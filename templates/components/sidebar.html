@@ -13,28 +13,35 @@
     </header>
 
     <!-- New chat -->
+{% if user.is_authenticated %}
     <button type="button" id="new-chat-btn" class="sidebar-new-chat-btn d-flex align-items-center justify-content-center gap-2 w-100">
       <svg class="icon icon-sm" aria-hidden="true"><use href="/static/svg/plus.svg"></use></svg>
       <span>New chat</span>
     </button>
-
+{% endif %}
 
     <!-- Conversation history -->
     <nav class="sidebar-conversations flex-grow-1" aria-label="Conversation history">
 
     <!-- Search -->
+    {% if user.is_authenticated %}
     <form class="sidebar-search" role="search" aria-label="Search conversations">
-      <label for="convSearch" class="visually-hidden">Search chats</label>
-      <svg class="icon icon-sm sidebar-search-icon" aria-hidden="true"><use href="/static/icons/search.svg"></use></svg>
-      <input
+    <label for="convSearch" class="visually-hidden">Search chats</label>
+
+    <svg class="icon icon-sm sidebar-search-icon" aria-hidden="true">
+        <use href="/static/icons/search.svg"></use>
+    </svg>
+
+    <input
         type="search"
         id="convSearch"
         name="q"
         class="sidebar-search-input"
         placeholder="Search chats"
         autocomplete="off"
-      >
+    >
     </form>
+    {% endif %}
 
 {% if has_conversations %}
 
@@ -70,12 +77,61 @@
       </div>
     {% endif %}
 
-  {% else %}
-  <div class="sidebar-empty-state">
-    <p class="sidebar-empty-title">No conversations yet</p>
-    <p class="sidebar-empty-subtitle">Start a new chat to begin.</p>
-  </div>
+
+{% else %}
+
+    {% if user.is_authenticated %}
+
+          <div class="sidebar-empty-state">
+            <p class="sidebar-empty-title">No conversations yet</p>
+            <p class="sidebar-empty-subtitle">Start a new chat to begin.</p>
+          </div>
+
+    {% else %}
+        <div class="guest-sidebar-card">
+
+            <div class="guest-card-glow"></div>
+
+            <div class="guest-card-icon">
+                <svg class="icon" aria-hidden="true">
+                    <use href="/static/svg/sparkle.svg"></use>
+                </svg>
+            </div>
+
+            <div class="guest-card-content">
+                <div class="guest-card-heading">
+                    <span class="guest-status-dot"></span>
+                    Guest Mode
+                </div>
+
+                <p class="guest-card-title">
+                    Unlock the full SmartBot experience
+                </p>
+
+                <p class="guest-card-description">
+                    Log in to save your conversations and unlock chat history,
+                    create, rename, search, delete, and more.
+                </p>
+            </div>
+
+            <div class="guest-card-actions">
+                <a href="{% url 'authentication:login' %}"
+                   class="guest-login-btn">
+                    Log In
+                </a>
+
+                <a href="{% url 'authentication:register' %}"
+                   class="guest-register-btn">
+                    Create Account
+                </a>
+            </div>
+
+        </div>
+
+    {% endif %}
+
 {% endif %}
+
 
 
       <p class="sidebar-empty d-none" id="noConvoResults">No conversations found</p>
@@ -83,26 +139,64 @@
 
 
     <!-- Profile footer -->
-    <footer class="sidebar-footer d-flex align-items-center gap-2">
-      <div class="sidebar-avatar" aria-hidden="true">{{ request.user.first_name|first|upper }}</div>
+<footer class="sidebar-footer d-flex align-items-center gap-2">
 
-      <div class="sidebar-user flex-grow-1">
-        <p class="sidebar-user-name">{{ request.user.username|upper }}</p>
-        <p class="sidebar-user-plan">{{ request.user.email }}</p>
-      </div>
+    {% if user.is_authenticated %}
 
+        <div class="sidebar-avatar" aria-hidden="true">
+            {{ request.user.first_name|first|upper }}
+        </div>
 
-    <form class="sidebar-logout-form" method="post" action="{% url 'authentication:logout' %}">
-      {% csrf_token %}
+        <div class="sidebar-user flex-grow-1">
+            <p class="sidebar-user-name">
+                {{ request.user.username|upper }}
+            </p>
 
-      <button type="submit" class="sidebar-icon-btn logoutbtn" aria-label="Log out">
-          <svg class="icon icon-sm" aria-hidden="true">
-              <use href="/static/icons/logout.svg"></use>
-          </svg>
-      </button>
-  </form>
+            <p class="sidebar-user-plan">
+                {{ request.user.email }}
+            </p>
+        </div>
 
-    </footer>
+        <form class="sidebar-logout-form"
+              method="post"
+              action="{% url 'authentication:logout' %}">
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="sidebar-icon-btn logoutbtn"
+                    aria-label="Log out">
+                <svg class="icon icon-sm" aria-hidden="true">
+                    <use href="/static/icons/logout.svg"></use>
+                </svg>
+            </button>
+        </form>
+
+    {% else %}
+
+        <div class="sidebar-avatar guest-avatar" aria-hidden="true">
+            <svg class="icon icon-sm">
+                <use href="/static/svg/user.svg"></use>
+            </svg>
+        </div>
+
+        <div class="sidebar-user flex-grow-1">
+            <p class="sidebar-user-name">
+                GUEST USER
+            </p>
+
+            <p class="sidebar-user-plan">
+                Limited access
+            </p>
+        </div>
+
+        <a href="{% url 'authentication:login' %}"
+           class="guest-footer-login">
+            Log In
+        </a>
+
+    {% endif %}
+</footer>
+
 
   </div>
 </aside>

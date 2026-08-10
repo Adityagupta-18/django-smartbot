@@ -104,35 +104,40 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                     scrollToBottom("partial");
                     updateScrollButton();
 
-                    const chattitle=document.getElementById("chatTitle");
-                    chattitle.innerText=data.title
+                    if (isAuthenticated) {
+                        const chattitle=document.getElementById("chatTitle");
+                        chattitle.innerText=data.title
 
-                    if(data.title){
+                        if(data.title){
 
-                        document.title = data.title;
+                            document.title = data.title;
 
-                        const conversationItem = document.querySelector(
-                            `#conversation-${conversationId}`
-                        );
+                            const conversationItem = document.querySelector(
+                                `#conversation-${conversationId}`
+                            );
 
-                        if(conversationItem){
-                            conversationItem.querySelector(
-                                ".sidebar-conversation-title"
-                            ).textContent = data.title;
-                            conversationItem.dataset.title = data.title;
+                            if(conversationItem){
+                                conversationItem.querySelector(
+                                    ".sidebar-conversation-title"
+                                ).textContent = data.title;
+                                conversationItem.dataset.title = data.title;
 
-                            
+                                
 
+                            }
                         }
+                        const firstConversation = todayGroup.querySelector(".sidebar-conversation");
+                        todayGroup.insertBefore(currentConversation,firstConversation);
                     }
-                    const firstConversation = todayGroup.querySelector(".sidebar-conversation");
-                    todayGroup.insertBefore(currentConversation,firstConversation);
                 }
                 
                 else if (data.error_type === "rate_limit") {
                      showRateLimitBanner(data.retry_after);
 
-                } 
+                }
+                else if (data.error_type === "guest_limit") {
+                    showGuestLimitBanner();
+                }
                 else if (data.error_type === "web_search_unavailable") {
                     showErrorBanner()
                 }
@@ -170,38 +175,40 @@ function sendMessage() {
     isSending = true;
     Sendbtn.disabled = true;
 
-    if (conversationId) {
+    if (conversationId){
         sendMessageToServer(conversationId, mesgcontent, false);
-    } else {
-        fetch("/chat/new/", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success){
+        } else if (isAuthenticated) {
+            fetch("/chat/new/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
 
-                sessionStorage.setItem(
-                    "pending_message",
-                    mesgcontent
+                    sessionStorage.setItem(
+                        "pending_message",
+                        mesgcontent
+                    );
+
+                    console.log(
+                    "Saved pending message:",
+                    sessionStorage.getItem("pending_message")
                 );
 
-                console.log(
-                "Saved pending message:",
-                sessionStorage.getItem("pending_message")
-            );
-
-                window.location.href = `/chat/${data.conversation_id}/`;
-            }
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            isSending = false;
-            Sendbtn.disabled = false;
-        });
-    }
+                    window.location.href = `/chat/${data.conversation_id}/`;
+                }
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                isSending = false;
+                Sendbtn.disabled = false;
+            });
+        }
+        else {
+            sendMessageToServer(null, mesgcontent, false);} 
 }
 
 
@@ -224,14 +231,17 @@ function autoResizeComposer() {
     mesginput.style.height = `${mesginput.scrollHeight}px`;
 }
 
-mesginput.addEventListener("input", autoResizeComposer);
-
+if (mesginput) {
+    mesginput.addEventListener("input", autoResizeComposer);
+}
 
 // Home Button
 const homeBnt=document.getElementById("homeBtn");
-homeBnt.addEventListener("click",()=>{
-    window.location.href = "/";
-})
+if (homeBnt){
+    homeBnt.addEventListener("click",()=>{
+        window.location.href = "/";
+    })
+}
 
 
 // Rename button
@@ -239,6 +249,7 @@ const renameBtn = document.getElementById("renameConversationBtn");
 const chatTitle = document.getElementById("chatTitle");
 const chatTitleInput = document.getElementById("chatTitleInput");
 
+if (renameBtn) {
 renameBtn.addEventListener("click", () => {
 
     chatTitle.classList.add("d-none");
@@ -247,8 +258,10 @@ renameBtn.addEventListener("click", () => {
 
     chatTitleInput.focus();
     chatTitleInput.select();
+    });
+}
 
-});
+
 function saveConversationTitle(){
 
     const newTitle = chatTitleInput.value.trim();

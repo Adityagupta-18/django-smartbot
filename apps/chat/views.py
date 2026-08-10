@@ -81,52 +81,181 @@ def conversation_detail(request,conversation_id):
     return render(request,"core/home.html",context)
 
 
-@login_required
+
 @require_POST
 def send_message(request):
+    if request.user.is_authenticated:
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({
+                "success": False,
+                "error_type": "invalid_request",
+                "message": "Invalid request data."
+            }, status=400)
 
-    try:
-        data = json.loads(request.body)
-    except json.JSONDecodeError:
-        return JsonResponse({
-            "success": False,
-            "error_type": "invalid_request",
-            "message": "Invalid request data."
-        }, status=400)
+        conversation_id = data.get("conversation_id")
+        content = data.get("content", "").strip()
+        if not conversation_id:
+            return JsonResponse({
+                "success": False,
+                "error_type": "invalid_request",
+                "message": "Conversation ID is required."
+            }, status=400)
 
-    conversation_id = data.get("conversation_id")
-    content = data.get("content", "").strip()
-    if not conversation_id:
-        return JsonResponse({
-            "success": False,
-            "error_type": "invalid_request",
-            "message": "Conversation ID is required."
-        }, status=400)
+        if not content:
+            return JsonResponse({
+                "success": False,
+                "error_type": "invalid_request",
+                "message": "Message cannot be empty."
+            }, status=400)
 
-    if not content:
-        return JsonResponse({
-            "success": False,
-            "error_type": "invalid_request",
-            "message": "Message cannot be empty."
-        }, status=400)
+        conversation = get_object_or_404(Conversation,id=conversation_id,user=request.user)
 
-    conversation = get_object_or_404(Conversation,id=conversation_id,user=request.user)
+        message=Message.objects.create(conversation=conversation,sender="USER",content=content)
+        
+        MAX_HISTORY_MESSAGES = 20
+        history = list(conversation.messages.all().order_by("-created_at")[:MAX_HISTORY_MESSAGES])
+        history.reverse()
+        history_dict=[]
+        for mesgcont in history:
+            if mesgcont.sender=='USER':
+                history_dict.append({"role":"user","content":mesgcont.content})
+            else:
+                history_dict.append({"role":"assistant","content":mesgcont.content})
+        
+        try:
+            AIservicestatus = AIStatus.objects.get()
 
-    message=Message.objects.create(conversation=conversation,sender="USER",content=content)
-    
-    MAX_HISTORY_MESSAGES = 20
-    history = list(conversation.messages.all().order_by("-created_at")[:MAX_HISTORY_MESSAGES])
-    history.reverse()
-    history_dict=[]
-    for mesgcont in history:
-        if mesgcont.sender=='USER':
-            history_dict.append({"role":"user","content":mesgcont.content})
-        else:
-            history_dict.append({"role":"assistant","content":mesgcont.content})
-    
-    try:
+            if not AIservicestatus.is_available:
+
+                if timezone.now() >= AIservicestatus.reset_time:
+                    AIservicestatus.is_available = True
+                    AIservicestatus.reset_time = None
+                    AIservicestatus.save()
+
+                else:
+                    remaining_seconds = int(
+                        (AIservicestatus.reset_time - timezone.now()).total_seconds()
+                    )
+
+                    return JsonResponse({
+                        "success": False,
+                        "error_type": "rate_limit",
+                        "message": "SmartBot is temporarily unavailable.",
+                        "retry_after": remaining_seconds
+                    })
+
+            ai_response = generate_ai_response(history_dict)
+
+            Message.objects.create(
+                conversation=conversation,
+                sender="AI",
+                content=ai_response
+            )   
+
+            if conversation.messages.count() % 6 == 0:
+                summary_history = "\n".join(
+                    [
+                        f"{msg.sender}: {msg.content}"
+                        for msg in conversation.messages.all()
+                    ]
+                )
+                
+                summary = generate_conversation_summary(summary_history)
+                conversation.summary=summary
+                conversation.save(update_fields=["summary"])
+
+            if conversation.messages.count() == 2 and conversation.title == "New Chat":
+                try:
+                    title=generate_conversation_title(user_message=message.content,ai_response=ai_response)
+                except Exception:
+                    title="New Chat"
+                conversation.title = title
+                conversation.save(update_fields=["title"])
+
+            return JsonResponse({
+                "success": True,
+                "ai_response": ai_response,
+                "title": conversation.title,
+            })
+
+        except RateLimitError as e:
+            error_message = str(e)
+            match = re.search(
+                r"Please try again in (\d+)h(\d+)m([\d.]+)s",
+                error_message
+            )
+            if match:
+                hours = int(match.group(1))
+                minutes = int(match.group(2))
+                seconds = int(float(match.group(3)))
+
+                retry_after = (
+                    hours * 3600 +
+                    minutes * 60 +
+                    seconds
+                )
+            else:
+                retry_after = 7200
+
+            AIservicestatus.is_available = False
+            AIservicestatus.reset_time = timezone.now() + timedelta(hours=2)
+            AIservicestatus.save()
+
+            return JsonResponse({
+                "success": False,
+                "error_type": "rate_limit",
+                "message": "Daily AI usage limit has been reached. Please try again after the limit resets.",
+                "retry_after": retry_after
+            })
+
+        except TavilySearchError as e:
+            return JsonResponse({
+                "success": False,
+                "error_type": "web_search_unavailable",
+                "message": "Smart Search is currently unavailable. Please try again later."
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "error_type": "server_error",
+                "message": "Something went wrong. Please try again."
+            })
+    else:
+        guest_count = request.session.get("guest_message_count", 0)
+        if guest_count >= 10:
+            return JsonResponse({
+                "success": False,
+                "error_type": "guest_limit",
+                "message": "You've reached the guest message limit. Please log in or register to continue."
+            }, status=403)
+        try:
+            data = json.loads(request.body)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                "success": False,
+                "error_type": "invalid_request",
+                "message": "Invalid request."
+            }, status=400)
+
+        content = data.get("content", "").strip()
+        if not content:
+            return JsonResponse({
+                "success": False,
+                "error_type": "invalid_request",
+                "message": "Message cannot be empty."
+            }, status=400)
+
+        guest_history = request.session.get("guest_history", [])
+        guest_history.append({
+            "role": "user",
+            "content": content
+        })
+
         AIservicestatus = AIStatus.objects.get()
-
         if not AIservicestatus.is_available:
 
             if timezone.now() >= AIservicestatus.reset_time:
@@ -146,82 +275,67 @@ def send_message(request):
                     "retry_after": remaining_seconds
                 })
 
-        ai_response = generate_ai_response(history_dict)
+        try:
+            ai_response = generate_ai_response(guest_history)
 
-        Message.objects.create(
-            conversation=conversation,
-            sender="AI",
-            content=ai_response
-        )   
+        except RateLimitError as e:
+            error_message = str(e)
 
-        if conversation.messages.count() % 6 == 0:
-            summary_history = "\n".join(
-                [
-                    f"{msg.sender}: {msg.content}"
-                    for msg in conversation.messages.all()
-                ]
+            match = re.search(
+                r"Please try again in (\d+)h(\d+)m([\d.]+)s",
+                error_message
             )
-            
-            summary = generate_conversation_summary(summary_history)
-            conversation.summary=summary
-            conversation.save(update_fields=["summary"])
 
-        if conversation.messages.count() == 2 and conversation.title == "New Chat":
-            try:
-                title=generate_conversation_title(user_message=message.content,ai_response=ai_response)
-            except Exception:
-                title="New Chat"
-            conversation.title = title
-            conversation.save(update_fields=["title"])
+            if match:
+                hours = int(match.group(1))
+                minutes = int(match.group(2))
+                seconds = int(float(match.group(3)))
+
+                retry_after = (
+                    hours * 3600 +
+                    minutes * 60 +
+                    seconds
+                )
+            else:
+                retry_after = 7200
+
+            AIservicestatus.is_available = False
+            AIservicestatus.reset_time = timezone.now() + timedelta(hours=2)
+            AIservicestatus.save()
+
+            return JsonResponse({
+                "success": False,
+                "error_type": "rate_limit",
+                "message": "Daily AI usage limit has been reached. Please try again after the limit resets.",
+                "retry_after": retry_after
+            })
+
+        except TavilySearchError:
+            return JsonResponse({
+                "success": False,
+                "error_type": "web_search_unavailable",
+                "message": "Smart Search is currently unavailable. Please try again later."
+            })
+
+        except Exception:
+            return JsonResponse({
+                "success": False,
+                "error_type": "server_error",
+                "message": "Something went wrong. Please try again."
+            })
+
+        guest_history.append({
+            "role": "assistant",
+            "content": ai_response
+        })
+
+        request.session["guest_history"] = guest_history
+        request.session["guest_message_count"] = guest_count + 1
+        request.session.modified = True
 
         return JsonResponse({
             "success": True,
-            "ai_response": ai_response,
-            "title": conversation.title,
-        })
-
-    except RateLimitError as e:
-        error_message = str(e)
-        match = re.search(
-            r"Please try again in (\d+)h(\d+)m([\d.]+)s",
-            error_message
-        )
-        if match:
-            hours = int(match.group(1))
-            minutes = int(match.group(2))
-            seconds = int(float(match.group(3)))
-
-            retry_after = (
-                hours * 3600 +
-                minutes * 60 +
-                seconds
-            )
-        else:
-            retry_after = 7200
-
-        AIservicestatus.is_available = False
-        AIservicestatus.reset_time = timezone.now() + timedelta(hours=2)
-        AIservicestatus.save()
-
-        return JsonResponse({
-            "success": False,
-            "error_type": "rate_limit",
-            "message": "Daily AI usage limit has been reached. Please try again after the limit resets.",
-            "retry_after": retry_after
-        })
-
-    except TavilySearchError as e:
-        return JsonResponse({
-            "success": False,
-            "error_type": "web_search_unavailable",
-            "message": "Smart Search is currently unavailable. Please try again later."
-        })
-
-    except Exception as e:
-        return JsonResponse({
-            "success": False,
-            "error_type": "server_error",
-            "message": "Something went wrong. Please try again."
+            "ai_response": ai_response
         })
 
 

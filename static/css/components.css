@@ -308,6 +308,311 @@
 }
 
 
+
+/* =========================================================
+   Guest Sidebar Card
+   ========================================================= */
+   
+.guest-sidebar-card {
+    position: relative;
+    overflow: hidden;
+    margin: 12px;
+    padding: 18px;
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--accent) 9%, var(--bg-surf)),
+            var(--bg-surf)
+        );
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    isolation: isolate;
+}
+
+/* Subtle violet ambient glow */
+.guest-card-glow {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    top: -65px;
+    right: -45px;
+    background: var(--accent);
+    opacity: 0.10;
+    filter: blur(38px);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+
+/* Icon */
+.guest-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 13px;
+    border: 1px solid color-mix(
+        in srgb,
+        var(--accent) 28%,
+        var(--hairline)
+    );
+
+    border-radius: 10px;
+
+    color: var(--accent2);
+
+    background: color-mix(
+        in srgb,
+        var(--accent) 11%,
+        transparent
+    );
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.guest-card-icon .icon {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* Heading */
+.guest-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+    color: var(--txt2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+
+/* Small live/status indicator */
+.guest-status-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--accent2);
+    box-shadow:
+        0 0 0 3px color-mix(
+            in srgb,
+            var(--accent) 13%,
+            transparent
+        ),
+        0 0 10px color-mix(
+            in srgb,
+            var(--accent) 45%,
+            transparent
+        );
+}
+
+/* Main title */
+.guest-card-title {
+    margin: 0 0 7px;
+    color: var(--txt);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+
+/* Description */
+.guest-card-description {
+    margin: 0;
+    color: var(--txt3);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+
+/* Buttons */
+.guest-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-top: 16px;
+}
+
+
+/* Primary login button */
+.guest-login-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 8px 13px;
+    border: 1px solid color-mix(
+        in srgb,
+        var(--accent2) 45%,
+        transparent
+    );
+
+    border-radius: 9px;
+    color: #fff;
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent2),
+            var(--accent-deep)
+        );
+
+    box-shadow:
+        0 5px 16px color-mix(
+            in srgb,
+            var(--accent) 22%,
+            transparent
+        ),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        filter 0.16s ease;
+}
+
+.guest-login-btn:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow:
+        0 8px 22px color-mix(
+            in srgb,
+            var(--accent) 30%,
+            transparent
+        ),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.guest-login-btn:active {
+    transform: translateY(0);
+}
+
+/* Secondary register button */
+.guest-register-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 7px 13px;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 9px;
+    color: var(--txt2);
+    background: color-mix(
+        in srgb,
+        var(--bg-surf2) 72%,
+        transparent
+    );
+
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        color 0.16s ease;
+}
+
+.guest-register-btn:hover {
+    color: var(--txt);
+    background: var(--bg-surf3);
+    border-color: color-mix(
+        in srgb,
+        var(--accent) 30%,
+        var(--hairline-strong)
+    );
+}
+
+
+/* Keyboard focus */
+.guest-login-btn:focus-visible,
+.guest-register-btn:focus-visible {
+    outline: 2px solid var(--accent2);
+    outline-offset: 2px;
+}
+
+
+/* Smaller sidebar widths */
+@media (max-width: 420px) {
+    .guest-sidebar-card {
+        margin: 10px;
+        padding: 15px;
+    }
+}
+
+.guest-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent2);
+    background: color-mix(
+        in srgb,
+        var(--accent) 12%,
+        var(--bg-surf2)
+    );
+    border: 1px solid color-mix(
+        in srgb,
+        var(--accent) 22%,
+        var(--hairline)
+    );
+}
+
+.guest-footer-login {
+    padding: 6px 10px;
+    border: 1px solid color-mix(
+        in srgb,
+        var(--accent) 30%,
+        var(--hairline-strong)
+    );
+
+    border-radius: 8px;
+    color: var(--accent2);
+    background: color-mix(
+        in srgb,
+        var(--accent) 7%,
+        transparent
+    );
+
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        color 0.16s ease;
+}
+
+.guest-footer-login:hover {
+    color: var(--txt);
+    background: color-mix(
+        in srgb,
+        var(--accent) 14%,
+        transparent
+    );
+    border-color: color-mix(
+        in srgb,
+        var(--accent) 45%,
+        var(--hairline-strong)
+    );
+}
+
+
+
 /* ********** TOPBAR ********* */
  
 /* Topbar shell */

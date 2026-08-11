@@ -122,7 +122,6 @@ function sendMessageToServer(conversationId,messagecontent,isNewChat){
                                 ).textContent = data.title;
                                 conversationItem.dataset.title = data.title;
 
-                                
 
                             }
                         }

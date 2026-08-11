@@ -36,6 +36,14 @@
   border:1px solid var(--hairline);
   color:var(--txt);
   border-radius:18px 18px 18px 4px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.msg-ai a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 

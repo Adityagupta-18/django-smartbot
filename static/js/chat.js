@@ -299,6 +299,7 @@ function saveConversationTitle(){
 
             chatTitle.textContent = data.title;
             chatTitleInput.value = data.title;
+            document.title = data.title;
 
             const sidebarConversation =
                 document.querySelector(

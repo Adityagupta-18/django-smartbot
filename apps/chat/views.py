@@ -125,7 +125,13 @@ def send_message(request):
                 history_dict.append({"role":"assistant","content":mesgcont.content})
         
         try:
-            AIservicestatus = AIStatus.objects.get()
+            AIservicestatus, created = AIStatus.objects.get_or_create(
+                pk=1,
+                defaults={
+                    "is_available": True,
+                    "reset_time": None,
+                }
+            )
 
             if not AIservicestatus.is_available:
 
@@ -255,7 +261,13 @@ def send_message(request):
             "content": content
         })
 
-        AIservicestatus = AIStatus.objects.get()
+        AIservicestatus, created = AIStatus.objects.get_or_create(
+            pk=1,
+            defaults={
+                "is_available": True,
+                "reset_time": None,
+            }
+        )
         if not AIservicestatus.is_available:
 
             if timezone.now() >= AIservicestatus.reset_time:

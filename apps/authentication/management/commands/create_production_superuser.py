@@ -5,16 +5,20 @@ from django.contrib.auth import get_user_model
 
 
 class Command(BaseCommand):
-    help = "Promote an existing production user to superuser."
+    help = "Configure the production superuser."
 
     def handle(self, *args, **options):
         User = get_user_model()
 
+        username = os.getenv("ADMIN_USERNAME")
         email = os.getenv("ADMIN_EMAIL")
+        password = os.getenv("ADMIN_PASSWORD")
 
-        if not email:
+        if not username or not email or not password:
             self.stdout.write(
-                self.style.ERROR("ADMIN_EMAIL must be set.")
+                self.style.ERROR(
+                    "ADMIN_USERNAME, ADMIN_EMAIL and ADMIN_PASSWORD must be set."
+                )
             )
             return
 
@@ -28,15 +32,7 @@ class Command(BaseCommand):
             )
             return
 
-        password = os.getenv("ADMIN_PASSWORD")
-        if not email or not password:
-            self.stdout.write(
-                self.style.ERROR(
-                    "ADMIN_EMAIL and ADMIN_PASSWORD must be set."
-                )
-            )
-            return
-
+        user.username = username
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True

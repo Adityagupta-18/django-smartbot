@@ -16,11 +16,10 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib import messages
 from .models import CustomUser
-from django.core.mail import send_mail
+from .email_service import send_email
 from smtplib import SMTPException
 from .tokens import email_verification_token
 from django.contrib.auth.tokens import default_token_generator
-import resend
 
 
 
@@ -95,34 +94,22 @@ def register_view(request):
             )
 
             # Sending email
-            resend.api_key = settings.RESEND_API_KEY
+            send_email(
+                to_email=user.email,
+                subject="Verify your SmartBot account",
+                message=(
+                    f"Hi {user.first_name},\n\n"
+                    f"Welcome to SmartBot!\n\n"
+                    f"Please verify your email by clicking the link below:\n\n"
+                    f"{verification_url}\n\n"
+                    f"If you didn't create this account, you can safely ignore this email."
+                ),
+            )
 
-            # Sending email
-            try:
-                send_mail(
-                    subject="Verify your SmartBot account",
-                    message=(
-                        f"Hi {user.first_name},\n\n"
-                        f"Welcome to SmartBot!\n\n"
-                        f"Please verify your email by clicking the link below:\n\n"
-                        f"{verification_url}\n\n"
-                        f"If you didn't create this account, you can safely ignore this email."
-                    ),
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],
-                    fail_silently=False,
-                )
-
-                messages.success(
-                    request,
-                    "Account created successfully! A verification link has been sent to your email."
-                )
-
-            except (SMTPException, OSError, TimeoutError):
-                messages.warning(
-                    request,
-                    "Account created, but we couldn't send the verification email right now. Please try again later."
-                )
+            messages.success(
+                request,
+                "Account created successfully! A verification link has been sent to your email."
+            )
 
             return redirect(settings.LOGIN_URL)
 
@@ -183,10 +170,9 @@ def forgot_password(request):
             )
             reset_url = request.build_absolute_uri(reset_path)
             
-            resend.api_key = settings.RESEND_API_KEY
-
             # Sending email
-            send_mail(
+            send_email(
+                to_email=user.email,
                 subject="Verify your SmartBot account",
                 message=(
                     f"Hi {user.first_name},\n\n"
@@ -195,9 +181,6 @@ def forgot_password(request):
                     f"{reset_url}\n\n"
                     f"If you didn't create this account, you can safely ignore this email."
                 ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
             )
 
             messages.success(

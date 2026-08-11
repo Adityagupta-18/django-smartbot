@@ -17,6 +17,7 @@ from django.utils.encoding import force_str
 from django.contrib import messages
 from .models import CustomUser
 from django.core.mail import send_mail
+from smtplib import SMTPException
 from .tokens import email_verification_token
 from django.contrib.auth.tokens import default_token_generator
 import resend
@@ -97,22 +98,32 @@ def register_view(request):
             resend.api_key = settings.RESEND_API_KEY
 
             # Sending email
-            send_mail(
-                subject="Verify your SmartBot account",
-                message=(
-                    f"Hi {user.first_name},\n\n"
-                    f"Welcome to SmartBot!\n\n"
-                    f"Please verify your email by clicking the link below:\n\n"
-                    f"{verification_url}\n\n"
-                    f"If you didn't create this account, you can safely ignore this email."
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    subject="Verify your SmartBot account",
+                    message=(
+                        f"Hi {user.first_name},\n\n"
+                        f"Welcome to SmartBot!\n\n"
+                        f"Please verify your email by clicking the link below:\n\n"
+                        f"{verification_url}\n\n"
+                        f"If you didn't create this account, you can safely ignore this email."
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
 
+                messages.success(
+                    request,
+                    "Account created successfully! A verification link has been sent to your email."
+                )
 
-            messages.success(request,"Account created successfully! A verification link has been sent to your email.")
+            except (SMTPException, OSError, TimeoutError):
+                messages.warning(
+                    request,
+                    "Account created, but we couldn't send the verification email right now. Please try again later."
+                )
+
             return redirect(settings.LOGIN_URL)
 
     else:

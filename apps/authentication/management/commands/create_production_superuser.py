@@ -5,39 +5,36 @@ from django.contrib.auth import get_user_model
 
 
 class Command(BaseCommand):
-    help = "Create the production superuser from environment variables."
+    help = "Promote an existing production user to superuser."
 
     def handle(self, *args, **options):
         User = get_user_model()
 
-        username = os.getenv("ADMIN_USERNAME")
         email = os.getenv("ADMIN_EMAIL")
-        password = os.getenv("ADMIN_PASSWORD")
 
-        if not all([username, email, password]):
+        if not email:
+            self.stdout.write(
+                self.style.ERROR("ADMIN_EMAIL must be set.")
+            )
+            return
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
             self.stdout.write(
                 self.style.ERROR(
-                    "ADMIN_USERNAME, ADMIN_EMAIL and ADMIN_PASSWORD must be set."
+                    f"No user found with email '{email}'."
                 )
             )
             return
 
-        if User.objects.filter(username=username).exists():
-            self.stdout.write(
-                self.style.WARNING(
-                    f"User '{username}' already exists. Nothing to do."
-                )
-            )
-            return
-
-        User.objects.create_superuser(
-            username=username,
-            email=email,
-            password=password,
-        )
+        user.is_staff = True
+        user.is_superuser = True
+        user.is_active = True
+        user.save(update_fields=["is_staff", "is_superuser", "is_active"])
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Production superuser '{username}' created successfully."
+                f"User '{user.email}' is now a production superuser."
             )
         )

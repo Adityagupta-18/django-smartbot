@@ -28,10 +28,20 @@ class Command(BaseCommand):
             )
             return
 
+        password = os.getenv("ADMIN_PASSWORD")
+        if not email or not password:
+            self.stdout.write(
+                self.style.ERROR(
+                    "ADMIN_EMAIL and ADMIN_PASSWORD must be set."
+                )
+            )
+            return
+
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
-        user.save(update_fields=["is_staff", "is_superuser", "is_active"])
+        user.set_password(password)
+        user.save()
 
         self.stdout.write(
             self.style.SUCCESS(

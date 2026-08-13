@@ -27,8 +27,12 @@ The primary objective of SmartBot is to demonstrate how modern AI applications c
 
 SmartBot is being developed incrementally through well-defined engineering milestones, with each milestone focusing on a specific aspect of the application—from foundational architecture and AI integration to production engineering and deployment.
 
----
 
+## Demo
+
+[Watch the SmartBot Demo](./demo/SmartBot-Demo.mp4)
+
+---
 # Table of Contents
 
 * [Overview](#overview)

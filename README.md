@@ -30,7 +30,9 @@ SmartBot is being developed incrementally through well-defined engineering miles
 
 ## Demo
 
-[Watch the SmartBot Demo](./demo/SmartBot-Demo.mp4)
+[Live Demo](https://smartbot-k012.onrender.com/)
+
+[Watch Demo Video](https://lnkd.in/p/euy2EWJf)
 
 ---
 # Table of Contents

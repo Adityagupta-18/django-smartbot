@@ -112,7 +112,7 @@ Question:
                 "content": check_prompt,
             }
         ],
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0,
     )
 
@@ -174,7 +174,7 @@ def generate_ai_response(history):
 
     chat_completion = client.chat.completions.create(
         messages=messages,
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0.7)
 
     return chat_completion.choices[0].message.content
@@ -201,7 +201,7 @@ def generate_conversation_title(user_message, ai_response):
                     """,
             },
         ],
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0.4,
     )
 
@@ -229,7 +229,7 @@ def generate_conversation_summary(conversation_history):
                 "content": conversation_history,
             },
         ],
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0.3,
     )
 

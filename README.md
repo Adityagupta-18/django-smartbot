@@ -365,7 +365,7 @@ SmartBot is built using a combination of backend, frontend, database, and AI tec
 | Database            | SQLite                       | Development database                                                     |
 | Production Database | PostgreSQL                   | Planned production database                                              |
 | AI Provider         | Groq API                     | High-performance LLM inference                                           |
-| AI Model            | Meta Llama                   | Conversational language generation                                       |
+| AI Model            | OpenAI GPT-OSS 120B          | Conversational language generation                                       |
 | Web Search          | Tavily Search API            | Retrieves current information from the web for time-sensitive queries    |
 | Markdown            | Marked.js                    | Rendering AI-generated Markdown responses                                |
 | Syntax Highlighting | Highlight.js                 | Syntax highlighting for generated code                                   |

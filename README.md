@@ -46,6 +46,7 @@ SmartBot is being developed incrementally through well-defined engineering miles
 * [Application Workflow](#application-workflow)
 * [AI Processing Pipeline](#ai-processing-pipeline)
 * [Authentication Flow](#authentication-flow)
+* [Docker Setup](#docker-setup)
 * [Future Improvements](#future-improvements)
 * [License](#license)
 * [Author](#author)
@@ -1235,6 +1236,126 @@ The authentication system protects user conversations and ensures that conversat
 * Environment variables used for sensitive credentials.
 
 Once authenticated, each conversation is associated with its owner, ensuring that users can access only their own conversation data.
+
+---
+
+# Docker Setup
+
+SmartBot can be run in a Docker container using Docker Compose. The setup packages the Django application and its dependencies into a container while storing SQLite database data in a persistent Docker volume.
+
+## Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- Git
+- API credentials for the integrations you want to use
+
+## Environment Configuration
+
+Create a local `.env` file in the project root. Use `.env.example` as the template:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Configure your own credentials in `.env`:
+
+| Variable | Purpose |
+| --- | --- |
+| `SECRET_KEY` | Django application secret |
+| `GROQ_API_KEY` | Required for AI response generation |
+| `TAVILY_API_KEY` | Web search integration |
+| `BREVO_API_KEY` | Email integration, if configured |
+| `BREVO_SENDER_EMAIL` | Sender address for email integration, if configured |
+
+Use your own credentials. Never commit `.env` or publish API keys.
+
+## Build and Run
+
+From the project root, validate the Compose configuration and start the application:
+
+```powershell
+docker compose config
+docker compose up -d --build
+```
+
+Run database migrations:
+
+```powershell
+docker compose exec web python manage.py migrate
+```
+
+Create an administrator account for Django Admin:
+
+```powershell
+docker compose exec web python manage.py createsuperuser
+```
+
+Open the application at [http://localhost:8000](http://localhost:8000).
+
+Django Admin is available at [http://localhost:8000/admin/](http://localhost:8000/admin/).
+
+## Container Management
+
+View the running services:
+
+```powershell
+docker compose ps
+```
+
+View application logs:
+
+```powershell
+docker compose logs -f web
+```
+
+Stop the application without removing its container:
+
+```powershell
+docker compose stop
+```
+
+Start it again:
+
+```powershell
+docker compose start
+```
+
+Stop the application and remove its containers and Compose network:
+
+```powershell
+docker compose down
+```
+
+## Database Persistence
+
+Docker Compose uses a named volume to store the SQLite database at `/app/data/db.sqlite3` inside the container.
+
+The database persists when the container is stopped, restarted, or removed using `docker compose down`.
+
+**Warning:** Running `docker compose down -v` removes the Compose-managed volume and deletes the database data stored in it. Back up important data before removing volumes.
+
+The database inside Docker is separate from the original local `db.sqlite3` file.
+
+## Docker Image
+
+The published SmartBot image is available on [Docker Hub](https://hub.docker.com/r/adityagupta18/smartbot).
+
+The image can be downloaded with:
+
+```powershell
+docker pull adityagupta18/smartbot:1.0
+```
+
+The image contains the application and its installed dependencies. API credentials and other runtime configuration must be supplied separately.
+
+For the complete source-based setup, use the project's `compose.yaml` and the instructions above.
+
+## Security Notes
+
+- Never include `.env` or real credentials in the Docker image or source repository.
+- Use your own API keys and Django secret key.
+- Do not reuse production credentials in local development.
+- Keep important database data backed up independently of the container image.
 
 ---
 
